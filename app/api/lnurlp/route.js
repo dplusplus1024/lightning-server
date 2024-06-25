@@ -1,4 +1,4 @@
-// const axios = require('axios');
+const axios = require('axios');
 // const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 import { NextResponse } from 'next/server';
 
@@ -94,23 +94,11 @@ export async function GET(req) {
     'Access-Control-Allow-Methods': 'GET, POST, PUT',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
+
+  const referer = req.headers.referer || "an unknown source";
   const url = new URL(req.url);
-  var referer = req.headers.referer;
-  // console.log(req.headers);
-  // domain = req.headers.host || process.env.DOMAIN;
-  // user = null;
-  // user = req.query.user;
-  // console.log("The username is: " + user);
-
   user = url.searchParams.get('user');
-  console.log("myuser is: " + user);
-
-  if (user)
-    user = user.toLowerCase();
-  else user = "none";
-
-  if (!referer)
-    referer = "an unknown source"
+  user = user ? user.toLowerCase() : "none";
 
   console.log(user + ' visited from ' + referer + '.');
 
