@@ -94,7 +94,7 @@ export async function GET(req) {
     'Access-Control-Allow-Methods': 'GET, POST, PUT',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
-
+  const url = new URL(req.url);
   var referer = req.headers.referer;
   // console.log(req.headers);
   // domain = req.headers.host || process.env.DOMAIN;
