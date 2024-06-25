@@ -105,7 +105,6 @@ export async function GET(req) {
   user = url.searchParams.get('user');
   console.log("myuser is: " + user);
 
-
   if (user)
     user = user.toLowerCase();
   else user = "none";
@@ -120,14 +119,14 @@ export async function GET(req) {
     console.log("In D++ alias list. Going to D++ node...");
     myNode();
     logTime(); // takes 0.0 seconds to return this
-    return res.status(200).json(lnurl1);
+    return NextResponse.json(lnurl1, { headers });
   }
   // check for peeps in the internal (fast) database...
   if (user in database) {
     console.log("Found in internal custodial database.");
     let result = await getLNURL(database[user]);
     logTime();
-    return res.status(200).json(result);
+    return NextResponse.json(result, { headers });
   }
   // check external database (MongoDB)
   var getDatabase = await mongo(); // takes about .40 - .55 seconds
@@ -137,15 +136,12 @@ export async function GET(req) {
     logTime();
     console.log("the result is: ");
     console.log(result);
-    return res.status(200).json(result);
+    return NextResponse.json(result, { headers });
   }
   // catch all case, send to D++ non-custodial node
   // console.log("Catch all case: going to D++ node...");
   // myNode();
   // logTime();
-  return res.status(200).json(lnurl1);
 
-  const response = { message: "hello world" };
-
-  return NextResponse.json(response, { headers });
+  // return NextResponse.json(lnurl1, { headers });
 }
