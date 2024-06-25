@@ -1,5 +1,6 @@
 // const axios = require('axios');
 // const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+import { NextResponse } from 'next/server';
 
 const aliases = ['halving', 'bazaar', '💖', '%f0%9f%92%96', '⚡', '%e2%9a%a1', '%e2%9a%a1%ef%b8%8f', '%e2%9a%a1%ef%b8%8e', 'dplusplus', 'me', 'alias', 'd', 'sats', 'node', 'wallet', 'undefined', 'none', 'ping', 'tip', 'tips', 'ln', 'lnurl', 'glitch'];
 
@@ -91,11 +92,11 @@ function logTime() {
   console.log("Time elapsed: " + (new Date().getTime() - startTime) + " milliseconds.");
 }
 
-export default async function handler(req, res) {
-  startTime = new Date().getTime();
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+// export default async function handler(req, res) {
+//   startTime = new Date().getTime();
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   //
   // var referer = req.headers.referer;
   // console.log(req.headers);
@@ -141,5 +142,22 @@ export default async function handler(req, res) {
   // // logTime();
   // return res.status(200).json(lnurl1);
 
-  return res.status(200).json("hello world");
+//   return res.status(200).json("hello world");
+// }
+
+export async function GET(request) {
+  const startTime = new Date().getTime();
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+
+  const response = { message: "hello world" };
+
+  return NextResponse.json(response, { headers });
+}
+
+export async function POST(request) {
+  // Handle POST requests
 }
