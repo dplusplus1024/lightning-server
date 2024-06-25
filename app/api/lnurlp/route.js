@@ -107,7 +107,7 @@ export async function GET(req) {
 
 
   if (user)
-    user = req.query.user.toLowerCase();
+    user = user.toLowerCase();
   else user = "none";
 
   if (!referer)
