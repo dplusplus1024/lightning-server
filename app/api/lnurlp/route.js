@@ -2,7 +2,9 @@
 // const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 import { NextResponse } from 'next/server';
 
-const aliases = ['halving', 'bazaar', '💖', '%f0%9f%92%96', '⚡', '%e2%9a%a1', '%e2%9a%a1%ef%b8%8f', '%e2%9a%a1%ef%b8%8e', 'dplusplus', 'me', 'alias', 'd', 'sats', 'node', 'wallet', 'undefined', 'none', 'ping', 'tip', 'tips', 'ln', 'lnurl', 'glitch'];
+// const aliases = ['halving', 'bazaar', '💖', '%f0%9f%92%96', '⚡', '%e2%9a%a1', '%e2%9a%a1%ef%b8%8f', '%e2%9a%a1%ef%b8%8e', 'dplusplus', 'me', 'alias', 'd', 'sats', 'node', 'wallet', 'undefined', 'none', 'ping', 'tip', 'tips', 'ln', 'lnurl', 'glitch'];
+
+const aliases = [];
 
 const database = {
   d:    "me@dplus.plus",
@@ -94,10 +96,16 @@ export async function GET(req) {
   };
 
   var referer = req.headers.referer;
-  console.log(req.headers);
-  domain = req.headers.host || process.env.DOMAIN;
+  // console.log(req.headers);
+  // domain = req.headers.host || process.env.DOMAIN;
   user = null;
   user = req.query.user;
+  console.log("The username is: " + user);
+
+  const myuser = url.searchParams.get('user');
+  console.log("myuser is: " + myuser);
+
+
   if (user)
     user = req.query.user.toLowerCase();
   else user = "none";
