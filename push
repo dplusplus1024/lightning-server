@@ -1,0 +1,8 @@
+# #!/bin/bash
+# cd c:/dev/vercel
+# # Load the .env file
+# source .env
+git add .
+git commit -m "updated"
+output=$(git push 2>&1)
+echo "$output"
