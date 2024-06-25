@@ -5,15 +5,8 @@ import { NextResponse } from 'next/server';
 const aliases = ['halving', 'bazaar', '💖', '%f0%9f%92%96', '⚡', '%e2%9a%a1', '%e2%9a%a1%ef%b8%8f', '%e2%9a%a1%ef%b8%8e', 'dplusplus', 'me', 'alias', 'd', 'sats', 'node', 'wallet', 'undefined', 'none', 'ping', 'tip', 'tips', 'ln', 'lnurl', 'glitch'];
 
 const database = {
-  zap:      "juicymist71@walletofsatoshi.com",
-  zaps:     "juicymist71@walletofsatoshi.com",
-  jc:       "abidingchord86@walletofsatoshi.com",
-  crown:    "abidingchord86@walletofsatoshi.com",
-  jccrown:  "abidingchord86@walletofsatoshi.com",
-  wos:      "juicymist71@walletofsatoshi.com",
-  rockstar: "finickywhorl45@walletofsatoshi.com", // domain: entropy.page
-  "%f0%9f%91%91": "abidingchord86@walletofsatoshi.com",
-  "👑": "abidingchord86@walletofsatoshi.com",
+  d:    "me@dplus.plus",
+  alby: "dread@getalby.com"
 }
 
 var lnurl1 = {};
@@ -92,60 +85,7 @@ function logTime() {
   console.log("Time elapsed: " + (new Date().getTime() - startTime) + " milliseconds.");
 }
 
-// export default async function handler(req, res) {
-//   startTime = new Date().getTime();
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  //
-  // var referer = req.headers.referer;
-  // console.log(req.headers);
-  // domain = req.headers.host || process.env.DOMAIN;
-  // user = null;
-  // user = req.query.user;
-  // if (user)
-  //   user = req.query.user.toLowerCase();
-  // else user = "none";
-  //
-  // if (!referer)
-  //   referer = "an unknown source"
-  //
-  // console.log(user + ' visited from ' + referer + '.');
-  //
-  // // check the D++ aliases first...
-  // if (aliases.includes(user)) {
-  //   console.log("In D++ alias list. Going to D++ node...");
-  //   myNode();
-  //   logTime(); // takes 0.0 seconds to return this
-  //   return res.status(200).json(lnurl1);
-  // }
-  // // check for peeps in the internal (fast) database...
-  // if (user in database) {
-  //   console.log("Found in internal custodial database.");
-  //   let result = await getLNURL(database[user]);
-  //   logTime();
-  //   return res.status(200).json(result);
-  // }
-  // // check external database (MongoDB)
-  // var getDatabase = await mongo(); // takes about .40 - .55 seconds
-  // if (getDatabase) {
-  //   console.log("Found in external custodial database (MongoDB).");
-  //   let result = await getLNURL(getDatabase);
-  //   logTime();
-  //   console.log("the result is: ");
-  //   console.log(result);
-  //   return res.status(200).json(result);
-  // }
-  // // catch all case, send to D++ non-custodial node
-  // // console.log("Catch all case: going to D++ node...");
-  // // myNode();
-  // // logTime();
-  // return res.status(200).json(lnurl1);
-
-//   return res.status(200).json("hello world");
-// }
-
-export async function GET(request) {
+export async function GET(req) {
   const startTime = new Date().getTime();
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -153,11 +93,51 @@ export async function GET(request) {
     'Access-Control-Allow-Headers': 'Content-Type',
   };
 
+  var referer = req.headers.referer;
+  console.log(req.headers);
+  domain = req.headers.host || process.env.DOMAIN;
+  user = null;
+  user = req.query.user;
+  if (user)
+    user = req.query.user.toLowerCase();
+  else user = "none";
+
+  if (!referer)
+    referer = "an unknown source"
+
+  console.log(user + ' visited from ' + referer + '.');
+
+  // check the D++ aliases first...
+  if (aliases.includes(user)) {
+    console.log("In D++ alias list. Going to D++ node...");
+    myNode();
+    logTime(); // takes 0.0 seconds to return this
+    return res.status(200).json(lnurl1);
+  }
+  // check for peeps in the internal (fast) database...
+  if (user in database) {
+    console.log("Found in internal custodial database.");
+    let result = await getLNURL(database[user]);
+    logTime();
+    return res.status(200).json(result);
+  }
+  // check external database (MongoDB)
+  var getDatabase = await mongo(); // takes about .40 - .55 seconds
+  if (getDatabase) {
+    console.log("Found in external custodial database (MongoDB).");
+    let result = await getLNURL(getDatabase);
+    logTime();
+    console.log("the result is: ");
+    console.log(result);
+    return res.status(200).json(result);
+  }
+  // catch all case, send to D++ non-custodial node
+  // console.log("Catch all case: going to D++ node...");
+  // myNode();
+  // logTime();
+  return res.status(200).json(lnurl1);
+
   const response = { message: "hello world" };
 
   return NextResponse.json(response, { headers });
-}
-
-export async function POST(request) {
-  // Handle POST requests
 }
