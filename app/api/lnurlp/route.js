@@ -98,12 +98,12 @@ export async function GET(req) {
   var referer = req.headers.referer;
   // console.log(req.headers);
   // domain = req.headers.host || process.env.DOMAIN;
-  user = null;
-  user = req.query.user;
-  console.log("The username is: " + user);
+  // user = null;
+  // user = req.query.user;
+  // console.log("The username is: " + user);
 
-  const myuser = url.searchParams.get('user');
-  console.log("myuser is: " + myuser);
+  user = url.searchParams.get('user');
+  console.log("myuser is: " + user);
 
 
   if (user)
