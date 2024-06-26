@@ -1,7 +1,6 @@
 const axios = require('axios');
 // const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
 
 // const aliases = ['halving', 'bazaar', '💖', '%f0%9f%92%96', '⚡', '%e2%9a%a1', '%e2%9a%a1%ef%b8%8f', '%e2%9a%a1%ef%b8%8e', 'dplusplus', 'me', 'alias', 'd', 'sats', 'node', 'wallet', 'undefined', 'none', 'ping', 'tip', 'tips', 'ln', 'lnurl', 'glitch'];
 
@@ -98,11 +97,9 @@ export async function GET(req: NextRequest) {
 
   const referer = req.headers.referer || "an unknown source";
 
-
-
-  const url = req.url;
-  const { searchParams } = new URL(url);
-  console.log(searchParams) // should print lorem
+  const url = new URL(fullUrl);
+  const searchParams = url.searchParams;
+  console.log(searchParams);
 
   user = searchParams.get('user') || "none";
 
