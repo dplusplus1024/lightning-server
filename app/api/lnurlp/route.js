@@ -99,7 +99,7 @@ export async function GET(req) {
   const url = new URL(req.url);
 
   // Handle both string and array cases for the 'user' parameter
-  const user = Array.isArray(req.query.user) ? req.query.user.join('/') : req.query.user;
+  user = Array.isArray(req.query.user) ? req.query.user.join('/') : req.query.user;
   console.log("User:", user);
 
   //user = url.searchParams.get('user');
