@@ -3,8 +3,9 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/.well-known/lnurlp/:user',
-        destination: '/api/lnurlp', // Matched parameters can be used in the destination
+
+        source: '/.well-known/lnurlp/:user*',
+        destination: '/api/lnurlp?user=:user', // Ensure query string is passed
       },
       // add clean urls
       {
