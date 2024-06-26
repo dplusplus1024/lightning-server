@@ -98,14 +98,17 @@ export async function GET(req: NextRequest) {
 
   const referer = req.headers.referer || "an unknown source";
 
-  console.log(req.query);
+
 
   const url = req.url;
   const { searchParams } = new URL(url);
   console.log(searchParams) // should print lorem
 
-  user = searchParams
-  // user = req.query.user.toLowerCase() || "none";
+  user = searchParams.get('user') || "none";
+
+  if (user == "none")
+    return;
+
 
   console.log(user + ' visited from ' + referer + '.');
 
