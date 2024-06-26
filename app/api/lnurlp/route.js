@@ -99,9 +99,10 @@ export async function GET(req) {
 
   console.log(req.query);
 
-  user = req.query.user;
+  const url = req.url;
+  const { searchParams } = new URL(url);
+  console.log(searchParams) // should print lorem
 
-  console.log("User: " + user);  // Log the user parameter
 
   // user = req.query.user.toLowerCase() || "none";
 
