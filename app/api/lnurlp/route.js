@@ -1,7 +1,6 @@
 const axios = require('axios');
 // const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 import { NextResponse } from 'next/server';
-import { useSearchParams } from 'next/navigation'
 
 // const aliases = ['halving', 'bazaar', '💖', '%f0%9f%92%96', '⚡', '%e2%9a%a1', '%e2%9a%a1%ef%b8%8f', '%e2%9a%a1%ef%b8%8e', 'dplusplus', 'me', 'alias', 'd', 'sats', 'node', 'wallet', 'undefined', 'none', 'ping', 'tip', 'tips', 'ln', 'lnurl', 'glitch'];
 
@@ -98,8 +97,11 @@ export async function GET(req) {
 
   const referer = req.headers.referer || "an unknown source";
 
-  const searchParams = useSearchParams();
-  user = searchParams.get('user') || "none";
+  console.log(req.query);
+
+  user = req.query.user;
+
+  console.log("User: " + user);  // Log the user parameter
 
   // user = req.query.user.toLowerCase() || "none";
 
