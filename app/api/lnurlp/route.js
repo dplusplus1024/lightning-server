@@ -1,6 +1,7 @@
 const axios = require('axios');
 // const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 import { NextResponse } from 'next/server';
+import { NextRequest } from 'next/server'l
 
 // const aliases = ['halving', 'bazaar', '💖', '%f0%9f%92%96', '⚡', '%e2%9a%a1', '%e2%9a%a1%ef%b8%8f', '%e2%9a%a1%ef%b8%8e', 'dplusplus', 'me', 'alias', 'd', 'sats', 'node', 'wallet', 'undefined', 'none', 'ping', 'tip', 'tips', 'ln', 'lnurl', 'glitch'];
 
@@ -87,7 +88,7 @@ function logTime() {
   console.log("Time elapsed: " + (new Date().getTime() - startTime) + " milliseconds.");
 }
 
-export async function GET(req) {
+export async function GET(req: NextRequest) {
   startTime = new Date().getTime();
   const headers = {
     'Access-Control-Allow-Origin': '*',
