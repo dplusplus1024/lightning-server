@@ -87,7 +87,7 @@ function logTime() {
   console.log("Time elapsed: " + (new Date().getTime() - startTime) + " milliseconds.");
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   startTime = new Date().getTime();
   const headers = {
     'Access-Control-Allow-Origin': '*',
