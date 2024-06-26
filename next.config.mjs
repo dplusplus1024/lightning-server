@@ -3,8 +3,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-
-        source: '/.well-known/lnurlp/:user*',
+        source: '/.well-known/lnurlp/:user',
         destination: '/api/lnurlp?user=:user', // Ensure query string is passed
       },
       // add clean urls
