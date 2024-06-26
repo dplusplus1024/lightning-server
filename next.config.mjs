@@ -5,7 +5,7 @@ const nextConfig = {
       {
 
         source: '/.well-known/lnurlp/:user*',
-        destination: '/api/lnurlp?user=:user*', // Ensure query string is passed
+        destination: '/api/lnurlp?user=:user', // Ensure query string is passed
       },
       // add clean urls
       {
