@@ -88,7 +88,7 @@ function logTime() {
 }
 
 export async function GET(req) {
-  const startTime = new Date().getTime();
+  startTime = new Date().getTime();
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, PUT',
