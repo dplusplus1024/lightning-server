@@ -96,11 +96,7 @@ export async function GET(req) {
   };
 
   const referer = req.headers.referer || "an unknown source";
-  const url = new URL(req.url);
-
-  // Handle both string and array cases for the 'user' parameter
-  user = Array.isArray(req.query.user) ? req.query.user.join('/') : req.query.user;
-  console.log("User:", user);
+  user = req.query.user;
 
   //user = url.searchParams.get('user');
   user = user ? user.toLowerCase() : "none";
