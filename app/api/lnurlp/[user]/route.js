@@ -87,7 +87,7 @@ function logTime() {
   console.log("Time elapsed: " + (new Date().getTime() - startTime) + " milliseconds.");
 }
 
-export async function GET(req) {
+export async function GET(req, { params }) {
   startTime = new Date().getTime();
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -96,12 +96,9 @@ export async function GET(req) {
   };
 
   const referer = req.headers.referer || "an unknown source";
-  const fullUrl = `http://${req.headers.host}${req.url}`;
-  const url = new URL(fullUrl);
-  const searchParams = url.searchParams;
-  console.log(searchParams);
+  user = params.user || "none";
 
-  user = searchParams.get('user') || "none";
+  console.log("User:", user);
 
   if (user == "none")
     return;
