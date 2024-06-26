@@ -96,7 +96,7 @@ export async function GET(req) {
   };
 
   const referer = req.headers.referer || "an unknown source";
-
+  const fullUrl = `http://${req.headers.host}${req.url}`;
   const url = new URL(fullUrl);
   const searchParams = url.searchParams;
   console.log(searchParams);
