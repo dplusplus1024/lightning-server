@@ -16,6 +16,11 @@ const nextConfig = {
        has: [{ type: "host", value: "treasure.islandbitcoin.com" }],
        permanent: false,
       },
+      {
+        source: '/treasure',
+        destination: 'https://treasurebeach.rsvpify.com',
+        permanent: false,
+      },
 
     ];
   },
