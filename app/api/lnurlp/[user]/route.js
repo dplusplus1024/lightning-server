@@ -24,7 +24,7 @@ function myNode() {
       meta = "Bitcoin Bazaar";
       break;
     default:
-      meta = "Pay to D++";
+      meta = "Pay to Island Bitcoin";
   }
   // on digital ocean
   lnurl1.callback = `https://islandbitcoin.com/api/getInvoice/${user}`;
