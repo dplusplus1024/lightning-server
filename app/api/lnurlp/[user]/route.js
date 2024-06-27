@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 // const aliases = ['halving', 'bazaar', '💖', '%f0%9f%92%96', '⚡', '%e2%9a%a1', '%e2%9a%a1%ef%b8%8f', '%e2%9a%a1%ef%b8%8e', 'dplusplus', 'me', 'alias', 'd', 'sats', 'node', 'wallet', 'undefined', 'none', 'ping', 'tip', 'tips', 'ln', 'lnurl', 'glitch'];
 
-const aliases = [];
+const aliases = ['me', 'node', 'dread'];
 
 const database = {
   d:    "me@dplus.plus",
@@ -27,7 +27,7 @@ function myNode() {
       meta = "Pay to D++";
   }
   // on digital ocean
-  lnurl1.callback = `https://dpluspl.us/api/getInvoice/${user}-${domain}`;
+  lnurl1.callback = `https://islandbitcoin.com/api/getInvoice/${user}-${domain}`;
   lnurl1.maxSendable = 1000000000000;
   lnurl1.minSendable = 1000;
   lnurl1.metadata = JSON.stringify([["text/plain", meta],["text/identifier", `${user}@${domain}`]]);
