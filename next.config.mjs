@@ -21,7 +21,6 @@ const nextConfig = {
         destination: 'https://treasurebeach.rsvpify.com',
         permanent: false,
       },
-
     ];
   },
 };

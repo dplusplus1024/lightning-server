@@ -94,14 +94,10 @@ export async function GET(req, { params }) {
 
   const referer = req.headers.referer || "an unknown source";
   user = params.user.toLowerCase() || "none";
-
-  console.log("User:", user);
+  console.log(user + ' visited from ' + referer + '.');
 
   if (user == "none")
     return;
-
-
-  console.log(user + ' visited from ' + referer + '.');
 
   // check the aliases first...
   if (aliases.includes(user)) {
