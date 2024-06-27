@@ -241,8 +241,8 @@ export async function GET(req, { params }) {
 
   var lnurl = {};
 
-  const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
-  const amount = Number(searchParams.get('amount'));
+  const url = new URL(req.url);
+  const amount = Number(url.searchParams.get('amount'));
 
   if (isNaN(amount)) {
     return NextResponse.json({ message: "No amount was provided." }, { headers });
