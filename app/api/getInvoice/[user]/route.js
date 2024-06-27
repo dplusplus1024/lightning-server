@@ -4,11 +4,11 @@ import * as nostr from 'nostr-tools';
 import crypto from 'crypto';
 import 'websocket-polyfill';
 import bolt11 from 'bolt11';
-import { MongoClient, ServerApiVersion, ObjectId } from 'mongodb';
+// import { MongoClient, ServerApiVersion, ObjectId } from 'mongodb';
 
 // MongoDB stuff
-const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}${process.env.MONGODB_URL}`;
-const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1});
+// const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}${process.env.MONGODB_URL}`;
+// const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1});
 
 /* for nostr */
 const publicKey  = "910bf554c8cb3384798d5b1402b79810a44b304c5c8fe1b27d396223e5a04f0e";
@@ -148,30 +148,30 @@ function createNostrInvoice(amount, descriptionHash) {
  });
 }
 
-async function addMongoData(data) {
-  try {
-    await client.connect();
-    const collection = client.db("BOLT11").collection("zaps");
-
-    const newDocument = {
-      bolt11:       data.bolt11,
-      description:  data.description,
-      createdAt: new Date(),
-    };
-
-    try {
-      const insert = await collection.insertOne(newDocument);
-      // console.log("Insert operation completed:", insert);
-    } catch (err) {
-      // console.log("There was an error adding the invoice to the database.");
-    }
-     // console.log('MongoDB operation successful.');
-   } catch (err) {
-     // console.log('Error connecting to MongoDB: ' + err);
-   } finally {
-     await client.close();
-   }
-}
+// async function addMongoData(data) {
+//   try {
+//     await client.connect();
+//     const collection = client.db("BOLT11").collection("zaps");
+//
+//     const newDocument = {
+//       bolt11:       data.bolt11,
+//       description:  data.description,
+//       createdAt: new Date(),
+//     };
+//
+//     try {
+//       const insert = await collection.insertOne(newDocument);
+//       // console.log("Insert operation completed:", insert);
+//     } catch (err) {
+//       // console.log("There was an error adding the invoice to the database.");
+//     }
+//      // console.log('MongoDB operation successful.');
+//    } catch (err) {
+//      // console.log('Error connecting to MongoDB: ' + err);
+//    } finally {
+//      await client.close();
+//    }
+// }
 
 async function getNostrInvoice(amount, description) {
   const descriptionHash = sha256(description);
