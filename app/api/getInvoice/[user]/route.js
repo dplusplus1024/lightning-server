@@ -277,8 +277,6 @@ export async function GET(req, { params }) {
   // }
 
   // not a nostr zap, just a regular invoice
-  console.log(req.query.user);
-
   let user = params.user.toLowerCase() || "none";
   let comment = url.searchParams.get('comment');
 
