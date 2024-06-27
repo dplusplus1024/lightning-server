@@ -169,46 +169,46 @@ function getStatus(hash) {
   });
 }
 
-async function zapReceipt(data) {
-  const note = JSON.parse(data.description);
-  let e = note.tags.find(tag => tag[0] === 'e')?.[1];
-  let p = note.tags.find(tag => tag[0] === 'p')?.[1];
-
-  if (!p) {
-    return;
-  }
-  let zap = {
-    content: '', // leave this blank
-    kind: 9735,
-    pubkey: note.pubkey, // pubkey from the lnurl endpoint used to sign zap receipts == publicKey
-    created_at: Math.floor(Date.now() / 1000), // time of invoice paid
-    tags: [
-      ["bolt11", data.bolt11],
-      ["description", data.description],
-      ["p", p],
-    ]
-  };
-  if (e) {
-    zap.tags[zap.tags.length] = ["e", e];
-  }
-  zap.id = nostr.getEventHash(zap);
-  zap.sig = nostr.getSignature(zap, privateKey);
-  const signedEvent = nostr.finishEvent(zap, privateKey);
-  // console.log("sending to relays...");
-  let isPublished = false;
-  for (let relayUrl of relays) {
-    try {
-      let relay = nostr.relayInit(relayUrl);
-      await relay.connect();
-      await relay.publish(signedEvent);
-      console.log(`Published to ${relayUrl}`);
-      isPublished = true;
-      relay.close();
-    } catch (error) {
-      console.error(`Failed to publish to ${relayUrl}:`, error);
-    }
-  }
-}
+// async function zapReceipt(data) {
+//   const note = JSON.parse(data.description);
+//   let e = note.tags.find(tag => tag[0] === 'e')?.[1];
+//   let p = note.tags.find(tag => tag[0] === 'p')?.[1];
+//
+//   if (!p) {
+//     return;
+//   }
+//   let zap = {
+//     content: '', // leave this blank
+//     kind: 9735,
+//     pubkey: note.pubkey, // pubkey from the lnurl endpoint used to sign zap receipts == publicKey
+//     created_at: Math.floor(Date.now() / 1000), // time of invoice paid
+//     tags: [
+//       ["bolt11", data.bolt11],
+//       ["description", data.description],
+//       ["p", p],
+//     ]
+//   };
+//   if (e) {
+//     zap.tags[zap.tags.length] = ["e", e];
+//   }
+//   zap.id = nostr.getEventHash(zap);
+//   zap.sig = nostr.getSignature(zap, privateKey);
+//   const signedEvent = nostr.finishEvent(zap, privateKey);
+//   // console.log("sending to relays...");
+//   let isPublished = false;
+//   for (let relayUrl of relays) {
+//     try {
+//       let relay = nostr.relayInit(relayUrl);
+//       await relay.connect();
+//       await relay.publish(signedEvent);
+//       console.log(`Published to ${relayUrl}`);
+//       isPublished = true;
+//       relay.close();
+//     } catch (error) {
+//       console.error(`Failed to publish to ${relayUrl}:`, error);
+//     }
+//   }
+// }
 
 function pause(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -226,8 +226,6 @@ function getHash(invoice) {
 }
 
 export async function GET(req, { params }) {
-
-// export default async function handler(req, res) {
   startTime = new Date().getTime();
   console.log("welcome to getInvoice.js");
 
@@ -280,10 +278,10 @@ export async function GET(req, { params }) {
 
   // not a nostr zap, just a regular invoice
   console.log(req.query.user);
-  var user   = req.query.user.split("-")[0];
-  var domain = req.query.user.split("-")[1].split(".html")[0];
 
-  var comment = req.query.comment;
+  const user = url.searchParams.get('user');
+  const comment = url.searchParams.get('comment');
+
   var meta;
   switch (user) {
     case "glitch":
@@ -313,5 +311,5 @@ export async function GET(req, { params }) {
   lnurl.pr = await createInvoice(user, address, amount, hash, comment);
   lnurl.routes = [];
   logTime("Invoice creation success!");
-  return res.status(200).json(lnurl);
+  return NextResponse.json(lnurl, { headers });
 }
