@@ -247,13 +247,14 @@ export async function GET(req, { params }) {
     return NextResponse.json({ message: "No amount was provided." }, { headers });
   }
 
+  const zap = url.searchParams.get('nostr');
   // // it's a nostr zap
-  // if (req.query.nostr) {
+  // if (zap) {
   //   // get invoice
-  //   let bolt11 = await getNostrInvoice(amount, req.query.nostr);
+  //   let bolt11 = await getNostrInvoice(amount, zap);
   //
   //   // using my node as a data store... sorry LND! and we don't need to await this...
-  //   createDataInvoice(req.query.nostr);
+  //   createDataInvoice(zap);
   //
   //   lnurl.pr = bolt11;
   //   lnurl.routes = [];
@@ -272,14 +273,14 @@ export async function GET(req, { params }) {
   //     }
   //   }
   //   // successful zap! invoice settled.
-  //   await zapReceipt({ bolt11: bolt11, description: req.query.nostr });
+  //   await zapReceipt({ bolt11: bolt11, description: zap });
   //   logTime("Nostr zap receipt success!");
   //   return true;
   // }
 
   // not a nostr zap, just a regular invoice
-  const user = params.user.toLowerCase() || "none";
-  const comment = url.searchParams.get('comment');
+  let user = params.user.toLowerCase() || "none";
+  let comment = url.searchParams.get('comment');
 
   var meta;
   switch (user) {
