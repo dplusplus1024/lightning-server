@@ -1,6 +1,6 @@
 const axios = require('axios');
-// const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 import { NextResponse } from 'next/server';
+// const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // const aliases = ['halving', 'bazaar', '💖', '%f0%9f%92%96', '⚡', '%e2%9a%a1', '%e2%9a%a1%ef%b8%8f', '%e2%9a%a1%ef%b8%8e', 'dplusplus', 'me', 'alias', 'd', 'sats', 'node', 'wallet', 'undefined', 'none', 'ping', 'tip', 'tips', 'ln', 'lnurl', 'glitch'];
 
@@ -28,8 +28,6 @@ function myNode() {
   }
   // on digital ocean
   lnurl1.callback = `https://dpluspl.us/api/getInvoice/${user}-${domain}`;
-  // lnurl1.callback = `https://dpluspl.us/api/getInvoice?user=${user}`;
-  // lnurl1.callback = `https://${domain}/api/getInvoice?user=${user}`;
   lnurl1.maxSendable = 1000000000000;
   lnurl1.minSendable = 1000;
   lnurl1.metadata = JSON.stringify([["text/plain", meta],["text/identifier", `${user}@${domain}`]]);
@@ -41,7 +39,7 @@ function myNode() {
 }
 
 async function mongo() {
-  const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.3gijhbz.mongodb.net/?retryWrites=true&w=majority`;
+  const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGDB_URL}`;
   const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1});
   var result = false;
   try {
@@ -74,7 +72,6 @@ async function getLNURL(lnAddress) {
   console.log(url);
   try {
     const response = await axios.get(url);
-    // successful resposne
     console.log("response.data: " + response.data);
     return response.data;
   } catch (error) {
@@ -96,7 +93,7 @@ export async function GET(req, { params }) {
   };
 
   const referer = req.headers.referer || "an unknown source";
-  user = params.user || "none";
+  user = params.user.toLowerCase() || "none";
 
   console.log("User:", user);
 
@@ -106,7 +103,7 @@ export async function GET(req, { params }) {
 
   console.log(user + ' visited from ' + referer + '.');
 
-  // check the D++ aliases first...
+  // check the aliases first...
   if (aliases.includes(user)) {
     console.log("In D++ alias list. Going to D++ node...");
     myNode();
@@ -115,7 +112,7 @@ export async function GET(req, { params }) {
   }
   // check for peeps in the internal (fast) database...
   if (user in database) {
-    console.log("Found in internal custodial database.");
+    console.log("Found in internal redirect database.");
     let result = await getLNURL(database[user]);
     logTime();
     return NextResponse.json(result, { headers });
@@ -123,7 +120,7 @@ export async function GET(req, { params }) {
   // check external database (MongoDB)
   var getDatabase = await mongo(); // takes about .40 - .55 seconds
   if (getDatabase) {
-    console.log("Found in external custodial database (MongoDB).");
+    console.log("Found in external redirect database (MongoDB).");
     let result = await getLNURL(getDatabase);
     logTime();
     console.log("the result is: ");

@@ -7,7 +7,18 @@ const nextConfig = {
         destination: '/api/lnurlp/:user',
       }
     ]
-  }
+  },
+  async redirects() {
+    return [
+      {
+       source: "/",
+       destination: "https://treasurebeach.rsvpify.com",
+       has: [{ type: "host", value: "treasure.islandbitcoin.com" }],
+       permanent: false,
+      },
+
+    ];
+  },
 };
 
 export default nextConfig;
