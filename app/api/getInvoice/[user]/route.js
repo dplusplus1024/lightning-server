@@ -4,7 +4,7 @@ import * as nostr from 'nostr-tools';
 import crypto from 'crypto';
 import 'websocket-polyfill';
 import bolt11 from 'bolt11';
-import { MongoClient, ServerApiVersion, ObjectId } from 'mongodb';
+// import { MongoClient, ServerApiVersion, ObjectId } from 'mongodb';
 
 // MongoDB stuff
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}${process.env.MONGODB_URL}`;

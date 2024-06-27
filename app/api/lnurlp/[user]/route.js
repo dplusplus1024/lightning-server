@@ -33,7 +33,7 @@ function myNode() {
   lnurl1.metadata = JSON.stringify([["text/plain", meta],["text/identifier", `${user}@${domain}`]]);
   lnurl1.commentAllowed = 32;
   lnurl1.tag = "payRequest";
-  // this is the pubkey of my server that signs and sends zap receipts (see nostr.js)
+  // this is the nostr pubkey that signs and sends zap receipts
   lnurl1.nostrPubkey = "910bf554c8cb3384798d5b1402b79810a44b304c5c8fe1b27d396223e5a04f0e";
   lnurl1.allowsNostr = true;
 }
@@ -101,7 +101,7 @@ export async function GET(req, { params }) {
 
   // check the aliases first...
   if (aliases.includes(user)) {
-    console.log("In D++ alias list. Going to D++ node...");
+    console.log("In my alias list. Going to my node...");
     myNode();
     logTime(); // takes 0.0 seconds to return this
     return NextResponse.json(lnurl1, { headers });

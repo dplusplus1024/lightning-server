@@ -9,10 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.10.10",
     "axios": "^1.7.2",
+    "bolt11": "^1.4.1",
     "next": "14.2.4",
+    "nostr-tools": "^2.7.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "websocket-polyfill": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
