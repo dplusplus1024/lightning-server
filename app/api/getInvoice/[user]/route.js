@@ -240,7 +240,10 @@ export async function GET(req, { params }) {
   console.log("Welcome to getInvoice.js");
 
   var lnurl = {};
-  var amount = Number(req.query.amount);
+
+  const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
+  const amount = Number(searchParams.get('amount'));
+
   if (isNaN(amount)) {
     return NextResponse.json({ message: "No amount was provided." }, { headers });
   }
