@@ -4,6 +4,7 @@ import { promises as fs } from 'fs';
 import crypto from 'crypto';
 import 'websocket-polyfill';
 import bolt11 from 'bolt11';
+import { NextResponse } from 'next/server';
 
 /* for nostr */
 const publicKey  = "910bf554c8cb3384798d5b1402b79810a44b304c5c8fe1b27d396223e5a04f0e";
@@ -227,7 +228,7 @@ function getHash(invoice) {
 
 export async function GET(req, { params }) {
   startTime = new Date().getTime();
-  console.log("welcome to getInvoice.js");
+  console.log("Welcome to getInvoice.js!");
 
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -277,8 +278,8 @@ export async function GET(req, { params }) {
   // }
 
   // not a nostr zap, just a regular invoice
-  let user = params.user.toLowerCase() || "none";
-  let comment = url.searchParams.get('comment');
+  const user = params.user.toLowerCase() || "none";
+  const comment = url.searchParams.get('comment');
 
   var meta;
   switch (user) {
@@ -300,7 +301,6 @@ export async function GET(req, { params }) {
      user = '%E2%9A%A1%EF%B8%8F'; // variation selector to display as emoji
   if (user == '⚡︎')
      user = '%E2%9A%A1%EF%B8%8E'; // variation selector to display as text
-  user = user.toLowerCase();
 
   var address = `${user}@islandbitcoin.com`;
   var memo = JSON.stringify([["text/plain", meta],["text/identifier", `${address}`]]);
