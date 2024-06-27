@@ -225,18 +225,24 @@ function getHash(invoice) {
   }
 }
 
-export default async function handler(req, res) {
+export async function GET(req, { params }) {
+
+// export default async function handler(req, res) {
   startTime = new Date().getTime();
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  console.log("welcome to getInvoice.js");
+
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+
   console.log("Welcome to getInvoice.js");
 
   var lnurl = {};
   var amount = Number(req.query.amount);
   if (isNaN(amount)) {
-    res.status(200).send("No amount was provided.");
-    return;
+    return NextResponse.json({ message: "No amount was provided." }, { headers });
   }
 
   // it's a nostr zap
