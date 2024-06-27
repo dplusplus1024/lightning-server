@@ -297,6 +297,8 @@ export async function GET(req, { params }) {
       meta = "Pay to Island Bitcoin";
   }
   // fun with emojis!
+  if (user == '🇯🇲')
+    user = '%F0%9F%87%AF%F0%9F%87%B2';
   if (user == '💖')
     user = '%f0%9f%92%96';
   // these may look the same but they're not! we have variation selectors to consider
