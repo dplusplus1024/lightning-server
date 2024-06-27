@@ -279,8 +279,8 @@ export async function GET(req, { params }) {
   // not a nostr zap, just a regular invoice
   console.log(req.query.user);
 
-  const user = url.searchParams.get('user');
-  const comment = url.searchParams.get('comment');
+  let user = url.searchParams.get('user');
+  let comment = url.searchParams.get('comment');
 
   var meta;
   switch (user) {
