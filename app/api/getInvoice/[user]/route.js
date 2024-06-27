@@ -44,8 +44,11 @@ const packageDefinition = protoLoader.loadSync(
   loaderOptions
 );
 const lnrpc = grpc.loadPackageDefinition(packageDefinition).lnrpc;
-// invoice macaroon
-const invMacaroon = "0201036C6E640258030A1076C83CCD62C8FEE0EF7D7E107DDC62FD1201301A160A0761646472657373120472656164120577726974651A170A08696E766F69636573120472656164120577726974651A0F0A076F6E636861696E12047265616400000620C62E99D6B11CB72385CD10B681E8C3CF8DB4DD55A6727FDC0D085384E4672014";
+// Dread's Start9 invoice macaroon
+const invMacaroon = "0201036c6e64024f030a10e167061dd8992ff69ce2465ca42f6c901201301a0c0a04696e666f1204726561641a170a08696e766f69636573120472656164120577726974651a100a086f6666636861696e1204726561640000062053add79380c49b8ec1a836d2939178c9f54d23988ae972b9f8c4e465a8ce8d07";
+const socket = "chu4oq6qwjfnxiyyvpyfcmznsjuyx5peg56bixzbnfxal6jw4idwxeyd.onion:10009";
+// D's invoice macaroon
+// const invMacaroon = "0201036C6E640258030A1076C83CCD62C8FEE0EF7D7E107DDC62FD1201301A160A0761646472657373120472656164120577726974651A170A08696E766F69636573120472656164120577726974651A0F0A076F6E636861696E12047265616400000620C62E99D6B11CB72385CD10B681E8C3CF8DB4DD55A6727FDC0D085384E4672014";
 process.env.GRPC_SSL_CIPHER_SUITES = 'HIGH+ECDSA:ECDHE-RSA-AES128-GCM-SHA256';
 const lndCert = null; // voltage doesn't want a cert
 const sslCreds = grpc.credentials.createSsl(lndCert);
@@ -55,7 +58,7 @@ const macaroonCreds = grpc.credentials.createFromMetadataGenerator(function (arg
   callback(null, metadata);
 });
 const creds = grpc.credentials.combineChannelCredentials(sslCreds, macaroonCreds);
-const lightning = new lnrpc.Lightning('dplusplus.m.voltageapp.io:10009', creds);
+const lightning = new lnrpc.Lightning(socket, creds);
 
 // get bolt 11 invoice from node in amount specified
 function createInvoice(user, address, amount, descriptionHash, comment) {
@@ -293,6 +296,7 @@ export async function GET(req, { params }) {
     default:
       meta = "Pay to D++";
   }
+  // fun with emojis!
   if (user == '💖')
     user = '%f0%9f%92%96';
   // these may look the same but they're not! we have variation selectors to consider
