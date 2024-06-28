@@ -43,9 +43,9 @@ const packageDefinition = protoLoader.loadSync(
 const lnrpc = grpc.loadPackageDefinition(packageDefinition).lnrpc;
 const sslCreds = grpc.credentials.createSsl(null);
 // Dread's invoice macaroon
-// const invMacaroon = "0201036c6e640229030a10b68e2355c045048923a6f18b3e919e911201301a110a08696e766f6963657312057772697465000006206de6b449ca08f2ee590ab12557a606d118c3fe5dd9eef429510da7512e25dc15";
+const invMacaroon = "0201036c6e640229030a10b68e2355c045048923a6f18b3e919e911201301a110a08696e766f6963657312057772697465000006206de6b449ca08f2ee590ab12557a606d118c3fe5dd9eef429510da7512e25dc15";
 // D's invoice macaroon
-const invMacaroon = "0201036C6E640258030A1076C83CCD62C8FEE0EF7D7E107DDC62FD1201301A160A0761646472657373120472656164120577726974651A170A08696E766F69636573120472656164120577726974651A0F0A076F6E636861696E12047265616400000620C62E99D6B11CB72385CD10B681E8C3CF8DB4DD55A6727FDC0D085384E4672014";
+// const invMacaroon = "0201036C6E640258030A1076C83CCD62C8FEE0EF7D7E107DDC62FD1201301A160A0761646472657373120472656164120577726974651A170A08696E766F69636573120472656164120577726974651A0F0A076F6E636861696E12047265616400000620C62E99D6B11CB72385CD10B681E8C3CF8DB4DD55A6727FDC0D085384E4672014";
 
 const macaroonCreds = grpc.credentials.createFromMetadataGenerator(function (args,callback) {
   let metadata = new grpc.Metadata();
@@ -53,10 +53,10 @@ const macaroonCreds = grpc.credentials.createFromMetadataGenerator(function (arg
   callback(null, metadata);
 });
 const creds = grpc.credentials.combineChannelCredentials(sslCreds, macaroonCreds);
-// const grpcHost = "one-love-bitcoin.m.voltageapp.io:10009";
-// const restHost = "one-love-bitcoin.m.voltageapp.io:8080";
-const grpcHost = "dplusplus.m.voltageapp.io:10009";
-const restHost = "dplusplus.m.voltageapp.io:8080";
+const grpcHost = "one-love-bitcoin.m.voltageapp.io:10009";
+const restHost = "one-love-bitcoin.m.voltageapp.io:8080";
+// const grpcHost = "dplusplus.m.voltageapp.io:10009";
+// const restHost = "dplusplus.m.voltageapp.io:8080";
 const lightning = new lnrpc.Lightning(grpcHost, creds);
 
 function send(mailOptions) {
