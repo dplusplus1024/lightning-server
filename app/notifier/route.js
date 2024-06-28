@@ -6,7 +6,7 @@ import crypto from 'crypto';
 const WebSocket = require('ws');
 const fs = require('fs');
 import * as nostr from 'nostr-tools';
-import nodemailer from 'nodemailer';
+// import nodemailer from 'nodemailer';
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 const { bech32 } = require('bech32');
