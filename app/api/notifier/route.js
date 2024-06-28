@@ -335,6 +335,7 @@ function pushNotification(subject, body) {
 }
 
 function notify() {
+  console.log("inside notify()!");
   let requestBody = {
     // add_index: <uint64>, // <uint64>
     // settle_index: <uint64>, // <uint64>
