@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && curl -X POST https://dpluspl.us/api/notifier",
-    "start": "next start && curl -X POST https://dpluspl.us/api/notifier"",
+    "start": "next start && curl -X POST https://dpluspl.us/api/notifier",
     "lint": "next lint",
     "postbuild": "curl -X POST https://dpluspl.us/api/notifier"
   },
