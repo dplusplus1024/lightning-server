@@ -246,7 +246,7 @@ function sendEmail(invoice) {
   </body>
   </html>`;
 
-  let subject = `You got ${verb} ${amount} ${sats}${plural}${keysend}!`;
+  let subject = `DREAD | You got ${verb} ${amount} ${sats}${plural}${keysend}!`;
   let mailOptions = {
     from: `"D++ Notifier" <${process.env.EMAIL}>`,
     to: 'dplusplus@gmail.com',
@@ -272,7 +272,7 @@ function errorEmail(note) {
   let mailOptions = {
     from: `"D++ Notifier" <${process.env.EMAIL}>`,
     to: 'dplusplus@gmail.com',
-    subject: `Error: Lightning Node Unreacable`,
+    subject: `DREAD | Error: Lightning Node Unreacable`,
     html: `WebSocket connection failed. Please unlock your <a href="https://voltage.cloud/">Lightning node</a>.
     <br><br>
     If all goes well, you won't have to re-run <a href="https://dpluspl.us/api/notifier">notifier.js</a>!
