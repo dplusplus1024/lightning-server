@@ -458,6 +458,6 @@ export async function GET(req) {
     'Access-Control-Allow-Headers': 'Content-Type',
   };
   console.log("Starting notifier.js...");
-  NextResponse.json({ message: "Starting notifier.js..." }, { headers });
   notify();
+  return NextResponse.json({ message: "Starting notifier.js..." }, { headers });
 }
