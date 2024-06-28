@@ -353,7 +353,7 @@ function notify() {
       // Work-around for self-signed certificates.
       rejectUnauthorized: false,
       headers: {
-        'Grpc-Metadata-Macaroon': process.env.INVOICE_MACAROON,
+        'Grpc-Metadata-Macaroon': invMacaroon,
       },
     });
 
