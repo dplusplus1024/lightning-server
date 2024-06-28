@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postbuild": "curl -X POST https://dpluspl.us/api/notifier"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.10.10",
