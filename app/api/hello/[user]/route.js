@@ -1,6 +1,4 @@
-const axios = require('axios');
 import { NextResponse } from 'next/server';
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 export async function GET(req, { params }) {
   const headers = {
