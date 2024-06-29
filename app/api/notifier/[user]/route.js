@@ -43,7 +43,8 @@ const packageDefinition = protoLoader.loadSync(
 const lnrpc = grpc.loadPackageDefinition(packageDefinition).lnrpc;
 const sslCreds = grpc.credentials.createSsl(null);
 // Dread's invoice macaroon
-const invMacaroon = "0201036c6e640229030a10b68e2355c045048923a6f18b3e919e911201301a110a08696e766f6963657312057772697465000006206de6b449ca08f2ee590ab12557a606d118c3fe5dd9eef429510da7512e25dc15";
+const invMacaroon = "0201036c6e64025e030a10dcd195aa075eb70ba5dae8121f8cf3331207383635383234331a160a0761646472657373120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a0f0a076f6e636861696e120472656164000006207df91761969da0945f372847d4d1b4625bdc13e0eef5faa69edcb54a53b7ac29";
+// const invMacaroon = "0201036c6e640229030a10b68e2355c045048923a6f18b3e919e911201301a110a08696e766f6963657312057772697465000006206de6b449ca08f2ee590ab12557a606d118c3fe5dd9eef429510da7512e25dc15";
 // D's invoice macaroon
 // const invMacaroon = "0201036C6E640258030A1076C83CCD62C8FEE0EF7D7E107DDC62FD1201301A160A0761646472657373120472656164120577726974651A170A08696E766F69636573120472656164120577726974651A0F0A076F6E636861696E12047265616400000620C62E99D6B11CB72385CD10B681E8C3CF8DB4DD55A6727FDC0D085384E4672014";
 
@@ -267,7 +268,7 @@ function sendEmail(invoice) {
     type = type.toLowerCase();
   if (type == "zap")
     type = "Nostr";
-  pushNotification(`You got ${verb} ${amount} ${sats}${plural} via ${type}!`, `Amount: ${amount} ${sats}${plural} ${spacer}${memo}`);
+  pushNotification(`DREAD | You got ${verb} ${amount} ${sats}${plural} via ${type}!`, `Amount: ${amount} ${sats}${plural} ${spacer}${memo}`);
 }
 
 // If the node is unreachable, send an email notification to me
