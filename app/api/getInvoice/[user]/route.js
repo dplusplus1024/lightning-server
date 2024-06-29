@@ -300,19 +300,8 @@ export async function GET(req, { params }) {
     default:
       meta = "Pay to Island Bitcoin";
   }
-  // fun with emojis!
-  if (user == '🇯🇲')
-    user = '%F0%9F%87%AF%F0%9F%87%B2';
-  if (user == '💖')
-    user = '%f0%9f%92%96';
-  // these may look the same but they're not! we have variation selectors to consider
-  if (user == '⚡')
-    user = '%E2%9A%A1';           // no variation selector
-  if (user == '⚡️')
-     user = '%E2%9A%A1%EF%B8%8F'; // variation selector to display as emoji
-  if (user == '⚡︎')
-     user = '%E2%9A%A1%EF%B8%8E'; // variation selector to display as text
 
+  user = encodeURIComponent(user.toLowerCase());
   var address = `${user}@islandbitcoin.com`;
   var memo = JSON.stringify([["text/plain", meta], ["text/identifier", `${address}`]]);
   var hash = sha256(memo);
