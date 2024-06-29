@@ -319,7 +319,7 @@ function findZapInvoice(r_preimage) {
   return new Promise(function(resolve, reject) {
     lightning.lookupInvoice(request, function(err, response) {
       console.log("response inside of lightning.lookupInvoice: ");
-      console.log(response);
+      // console.log(response);
       console.log(response.memo);
       resolve(response.memo);
     });

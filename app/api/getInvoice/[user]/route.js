@@ -99,9 +99,9 @@ function createInvoice(user, address, amount, descriptionHash, comment) {
 function createDataInvoice(data) {
   let memo = {};
   data = JSON.parse(data);
-  console.log("data from nostr zap:");
-  console.log(data);
-  console.log("end data from nostr zap");
+  // console.log("data from nostr zap:");
+  // console.log(data);
+  // console.log("end data from nostr zap");
   memo.pubkey = data.pubkey;
   memo.content = data.content;
   memo.event = data.tags.find(tag => tag[0] === 'e')?.[1];
@@ -314,7 +314,7 @@ export async function GET(req, { params }) {
      user = '%E2%9A%A1%EF%B8%8E'; // variation selector to display as text
 
   var address = `${user}@islandbitcoin.com`;
-  var memo = JSON.stringify([["text/plain", meta],["text/identifier", `${address}`]]);
+  var memo = JSON.stringify([["text/plain", meta], ["text/identifier", `${address}`]]);
   var hash = sha256(memo);
 
   lnurl.pr = await createInvoice(user, address, amount, hash, comment);
