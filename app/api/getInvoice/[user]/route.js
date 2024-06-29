@@ -1,6 +1,6 @@
 import path from 'path';
 import { promises as fs } from 'fs';
-// import * as nostr from 'nostr-tools';
+import * as nostr from 'nostr-tools';
 import crypto from 'crypto';
 import 'websocket-polyfill';
 import bolt11 from 'bolt11';
@@ -96,61 +96,61 @@ function createInvoice(user, address, amount, descriptionHash, comment) {
 }
 
 // using this invoice as a data store for nostr zaps... sorry lND!
-// function createDataInvoice(data) {
-//   let memo = {};
-//   data = JSON.parse(data);
-//   console.log("data from nostr zap:");
-//   console.log(data);
-//   console.log("end data from nostr zap");
-//   memo.pubkey = data.pubkey;
-//   memo.content = data.content;
-//   memo.event = data.tags.find(tag => tag[0] === 'e')?.[1];
-//
-//   let requestInvoice = {
-//     memo: JSON.stringify(memo),
-//     r_preimage: preimage,
-//     value_msat: 0, // in millisatoshis
-//   }
-//
-//   const r_hash = crypto.createHash('sha256').update(preimage).digest();
-//   console.log("expected r_hash:");
-//   console.log(r_hash);
-//
-//   lightning.addInvoice(requestInvoice, function(err, response) {
-//     console.log("Created a data store!");
-//     console.log(response);
-//     console.log('end response');
-//   });
-// }
-//
-// function createNostrInvoice(amount, descriptionHash) {
-//   let requestInvoice = {
-//     memo: "Zap!",
-//     description_hash: Buffer.from(descriptionHash, 'hex'),
-//     //description_hash: descriptionHash,
-//     value_msat: amount, // in millisatoshis
-//   }
-//
-//   return new Promise(function(resolve, reject) {
-//     lightning.addInvoice(requestInvoice, function(err, response) {
-//        // create a new invoice linked to this one for a data store
-//        // to link them, we'll use this invoice's hash as its preimage
-//        console.log("hash for first invoice:");
-//        console.log(response.r_hash);
-//        preimage = response.r_hash;
-//
-//        console.log("response:");
-//        console.log(response);
-//        resolve(response.payment_request);
-//     });
-//  });
-// }
+function createDataInvoice(data) {
+  let memo = {};
+  data = JSON.parse(data);
+  console.log("data from nostr zap:");
+  console.log(data);
+  console.log("end data from nostr zap");
+  memo.pubkey = data.pubkey;
+  memo.content = data.content;
+  memo.event = data.tags.find(tag => tag[0] === 'e')?.[1];
 
-// async function getNostrInvoice(amount, description) {
-//   const descriptionHash = sha256(description);
-//   let bolt11 = await createNostrInvoice(amount, descriptionHash);
-//   return bolt11;
-// }
+  let requestInvoice = {
+    memo: JSON.stringify(memo),
+    r_preimage: preimage,
+    value_msat: 0, // in millisatoshis
+  }
+
+  const r_hash = crypto.createHash('sha256').update(preimage).digest();
+  console.log("expected r_hash:");
+  console.log(r_hash);
+
+  lightning.addInvoice(requestInvoice, function(err, response) {
+    console.log("Created a data store!");
+    console.log(response);
+    console.log('end response');
+  });
+}
+
+function createNostrInvoice(amount, descriptionHash) {
+  let requestInvoice = {
+    memo: "Zap!",
+    description_hash: Buffer.from(descriptionHash, 'hex'),
+    //description_hash: descriptionHash,
+    value_msat: amount, // in millisatoshis
+  }
+
+  return new Promise(function(resolve, reject) {
+    lightning.addInvoice(requestInvoice, function(err, response) {
+       // create a new invoice linked to this one for a data store
+       // to link them, we'll use this invoice's hash as its preimage
+       console.log("hash for first invoice:");
+       console.log(response.r_hash);
+       preimage = response.r_hash;
+
+       console.log("response:");
+       console.log(response);
+       resolve(response.payment_request);
+    });
+ });
+}
+
+async function getNostrInvoice(amount, description) {
+  const descriptionHash = sha256(description);
+  let bolt11 = await createNostrInvoice(amount, descriptionHash);
+  return bolt11;
+}
 
 function logTime(message) {
   console.log(message + " Time elapsed: " + (new Date().getTime() - startTime) + " milliseconds.");
@@ -172,46 +172,46 @@ function getStatus(hash) {
   });
 }
 
-// async function zapReceipt(data) {
-//   const note = JSON.parse(data.description);
-//   let e = note.tags.find(tag => tag[0] === 'e')?.[1];
-//   let p = note.tags.find(tag => tag[0] === 'p')?.[1];
-//
-//   if (!p) {
-//     return;
-//   }
-//   let zap = {
-//     content: '', // leave this blank
-//     kind: 9735,
-//     pubkey: note.pubkey, // pubkey from the lnurl endpoint used to sign zap receipts == publicKey
-//     created_at: Math.floor(Date.now() / 1000), // time of invoice paid
-//     tags: [
-//       ["bolt11", data.bolt11],
-//       ["description", data.description],
-//       ["p", p],
-//     ]
-//   };
-//   if (e) {
-//     zap.tags[zap.tags.length] = ["e", e];
-//   }
-//   zap.id = nostr.getEventHash(zap);
-//   zap.sig = nostr.getSignature(zap, privateKey);
-//   const signedEvent = nostr.finishEvent(zap, privateKey);
-//   // console.log("sending to relays...");
-//   let isPublished = false;
-//   for (let relayUrl of relays) {
-//     try {
-//       let relay = nostr.relayInit(relayUrl);
-//       await relay.connect();
-//       await relay.publish(signedEvent);
-//       console.log(`Published to ${relayUrl}`);
-//       isPublished = true;
-//       relay.close();
-//     } catch (error) {
-//       console.error(`Failed to publish to ${relayUrl}:`, error);
-//     }
-//   }
-// }
+async function zapReceipt(data) {
+  const note = JSON.parse(data.description);
+  let e = note.tags.find(tag => tag[0] === 'e')?.[1];
+  let p = note.tags.find(tag => tag[0] === 'p')?.[1];
+
+  if (!p) {
+    return;
+  }
+  let zap = {
+    content: '', // leave this blank
+    kind: 9735,
+    pubkey: note.pubkey, // pubkey from the lnurl endpoint used to sign zap receipts == publicKey
+    created_at: Math.floor(Date.now() / 1000), // time of invoice paid
+    tags: [
+      ["bolt11", data.bolt11],
+      ["description", data.description],
+      ["p", p],
+    ]
+  };
+  if (e) {
+    zap.tags[zap.tags.length] = ["e", e];
+  }
+  zap.id = nostr.getEventHash(zap);
+  zap.sig = nostr.getSignature(zap, privateKey);
+  const signedEvent = nostr.finishEvent(zap, privateKey);
+  // console.log("sending to relays...");
+  let isPublished = false;
+  for (let relayUrl of relays) {
+    try {
+      let relay = nostr.relayInit(relayUrl);
+      await relay.connect();
+      await relay.publish(signedEvent);
+      console.log(`Published to ${relayUrl}`);
+      isPublished = true;
+      relay.close();
+    } catch (error) {
+      console.error(`Failed to publish to ${relayUrl}:`, error);
+    }
+  }
+}
 
 function pause(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -250,35 +250,35 @@ export async function GET(req, { params }) {
   }
 
   const zap = url.searchParams.get('nostr');
-  // // it's a nostr zap
-  // if (zap) {
-  //   // get invoice
-  //   let bolt11 = await getNostrInvoice(amount, zap);
-  //
-  //   // using my node as a data store... sorry LND! and we don't need to await this...
-  //   createDataInvoice(zap);
-  //
-  //   lnurl.pr = bolt11;
-  //   lnurl.routes = [];
-  //   logTime("Created an invoice for a nostr zap.");
-  //   res.status(200).json(lnurl);
-  //   let hash = getHash(bolt11);
-  //   console.log("New invoice generated. Waiting for payment...");
-  //   pause(1000);
-  //   // check status of invoice here
-  //   while (await getStatus(hash) == false) {
-  //      pause(1000);
-  //      const currentTime = new Date().getTime();
-  //      if (currentTime - startTime > timeoutDuration) {
-  //       console.log("Timed out waiting for payment status.");
-  //       return false; // check for five minutes and then halt
-  //     }
-  //   }
-  //   // successful zap! invoice settled.
-  //   await zapReceipt({ bolt11: bolt11, description: zap });
-  //   logTime("Nostr zap receipt success!");
-  //   return true;
-  // }
+  // it's a nostr zap
+  if (zap) {
+    // get invoice
+    let bolt11 = await getNostrInvoice(amount, zap);
+
+    // using my node as a data store... sorry LND! and we don't need to await this...
+    createDataInvoice(zap);
+
+    lnurl.pr = bolt11;
+    lnurl.routes = [];
+    logTime("Created an invoice for a nostr zap.");
+    res.status(200).json(lnurl);
+    let hash = getHash(bolt11);
+    console.log("New invoice generated. Waiting for payment...");
+    pause(1000);
+    // check status of invoice here
+    while (await getStatus(hash) == false) {
+       pause(1000);
+       const currentTime = new Date().getTime();
+       if (currentTime - startTime > timeoutDuration) {
+        console.log("Timed out waiting for payment status.");
+        return false; // check for five minutes and then halt
+      }
+    }
+    // successful zap! invoice settled.
+    await zapReceipt({ bolt11: bolt11, description: zap });
+    logTime("Nostr zap receipt success!");
+    return true;
+  }
 
   // not a nostr zap, just a regular invoice
   let user = params.user.toLowerCase() || "none";
