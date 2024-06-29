@@ -1,6 +1,6 @@
 ![Logo](https://i.imgur.com/iexBI5J.jpeg)
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
 
 ## Getting Started
 
@@ -22,17 +22,19 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## This App uses Next.js
 
-To learn more about Next.js, take a look at the following resources:
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Deploy on DigitalOcean
 
-## Deploy on Vercel
+The easiest way to deploy and host Lightning Server is to use the [DigitialOcean's App Platform](https://www.digitalocean.com/products/app-platform), which will cost approximately $5.00 per month at the time of this writing. If you choose to use Vercel, functionality will be limited to a working Lightning Address only - you won't get the benefit of Nostr Zap receipts, email notifications, or push notifications.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## To Do
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Continue refactoring, polishing, and optimizing code
+- Add my Point of Sale code
+- Add code to automatically run the notifier.js
