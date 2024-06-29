@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start && curl https://islandbitcoin.com/api/notifier/run",
     "lint": "next lint",
     "postbuild": "echo 'Build complete! Running post-build command...' && curl https://islandbitcoin.com/api/notifier/run"
   },
