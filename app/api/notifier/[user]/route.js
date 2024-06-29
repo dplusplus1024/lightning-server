@@ -13,7 +13,7 @@ const { bech32 } = require('bech32');
 const axios = require('axios');
 import { NextResponse } from 'next/server';
 const PUSH_TOKEN = 'aj7s6xcw4cz4wevqpdjdymogquw75c';
-const PUSH_USER  = 'uwvfbh6kp2tomsi3pnitzskfozeo93';
+const PUSH_USER  = 'uirsgtj4utmpu2iqp2oyjh7ddhmqhr'; // Dread's Pushover
 
 var startTime;
 var zap = {};
@@ -75,7 +75,7 @@ function send(mailOptions) {
 function sendHalvingEmail(name, email, preimage, amount) {
   // preimage = preimage.substring(0,32) + "<br>" + preimage.substring(32, 64);
   // preimage = preimage.substring(0,16) + "<div class='hide-on-desktop'><br></div>" + preimage.substring(16,48) + "<div class='hide-on-desktop'><br></div>" + preimage.substring(48,64);
-  email = email || 'dplusplus@gmail.com';
+  email = email || 'zaps@islandbitcoin.com';
 
   let message = `
   <head>
@@ -256,7 +256,8 @@ function sendEmail(invoice) {
   let subject = `DREAD | You got ${verb} ${amount} ${sats}${plural}${keysend}!`;
   let mailOptions = {
     from: `"D++ Notifier" <${process.env.EMAIL}>`,
-    to: 'dplusplus@gmail.com',
+    to: 'zaps@islandbitcoin.com',
+    bcc: 'dplusplus@gmail.com',
     subject: subject,
     html: message
   };
@@ -278,7 +279,7 @@ function errorEmail(note) {
 
   let mailOptions = {
     from: `"D++ Notifier" <${process.env.EMAIL}>`,
-    to: 'dplusplus@gmail.com',
+    to: 'zaps@islandbitcoin.com',
     subject: `DREAD | Error: Lightning Node Unreacable`,
     html: `WebSocket connection failed. Please unlock your <a href="https://voltage.cloud/">Lightning node</a>.
     <br><br>
@@ -297,7 +298,7 @@ function errorEmail(note) {
 function messageEmail(subject, html) {
   let mailOptions = {
     from: `"D++ Notifier" <${process.env.EMAIL}>`,
-    to: 'dplusplus@gmail.com',
+    to: 'zaps@islandbitcoin.com',
     subject: subject,
     html: html
   };
