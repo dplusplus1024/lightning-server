@@ -24,11 +24,10 @@ const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 
 var startTime, preimage;
-const timeoutDuration = 300000; // 5 minutes in milliseconds
+const timeoutDuration = 300000; // time to wait for zap to be paid - 5 minutes in milliseconds
 
 function sha256(data) {
   return crypto.createHash('sha256').update(data).digest('hex');
-  //return crypto.createHash('sha256').update(data).digest();
 }
 
 const loaderOptions = {
@@ -47,8 +46,6 @@ const lnrpc = grpc.loadPackageDefinition(packageDefinition).lnrpc;
 // Dread's Start9 invoice macaroon
 const invMacaroon = "0201036c6e640229030a10b68e2355c045048923a6f18b3e919e911201301a110a08696e766f6963657312057772697465000006206de6b449ca08f2ee590ab12557a606d118c3fe5dd9eef429510da7512e25dc15";
 const socket = "one-love-bitcoin.m.voltageapp.io:10009";
-// D's invoice macaroon
-// const invMacaroon = "0201036C6E640258030A1076C83CCD62C8FEE0EF7D7E107DDC62FD1201301A160A0761646472657373120472656164120577726974651A170A08696E766F69636573120472656164120577726974651A0F0A076F6E636861696E12047265616400000620C62E99D6B11CB72385CD10B681E8C3CF8DB4DD55A6727FDC0D085384E4672014";
 const lndCert = null; // voltage doesn't want a cert
 const sslCreds = grpc.credentials.createSsl(lndCert);
 const macaroonCreds = grpc.credentials.createFromMetadataGenerator(function (args,callback) {
@@ -82,14 +79,11 @@ function createInvoice(user, address, amount, descriptionHash, comment) {
   let requestInvoice = {
     memo: comment,
     description_hash: Buffer.from(descriptionHash, 'hex'),
-    //description_hash: descriptionHash,
     value_msat: amount, // in millisatoshis
-    // value: amount,   // in satoshis
   }
-  //create invoice
+  // create invoice
   return new Promise(function(resolve, reject) {
     lightning.addInvoice(requestInvoice, function(err, response) {
-       // console.log(response);
        resolve(response.payment_request);
     });
  });
@@ -99,9 +93,6 @@ function createInvoice(user, address, amount, descriptionHash, comment) {
 function createDataInvoice(data) {
   let memo = {};
   data = JSON.parse(data);
-  // console.log("data from nostr zap:");
-  // console.log(data);
-  // console.log("end data from nostr zap");
   memo.pubkey = data.pubkey;
   memo.content = data.content;
   memo.event = data.tags.find(tag => tag[0] === 'e')?.[1];
@@ -113,13 +104,9 @@ function createDataInvoice(data) {
   }
 
   const r_hash = crypto.createHash('sha256').update(preimage).digest();
-  console.log("expected r_hash:");
-  console.log(r_hash);
 
   lightning.addInvoice(requestInvoice, function(err, response) {
-    console.log("Created a data store!");
-    console.log(response);
-    console.log('end response');
+    // console.log(response);
   });
 }
 
@@ -127,7 +114,6 @@ function createNostrInvoice(amount, descriptionHash) {
   let requestInvoice = {
     memo: "Zap!",
     description_hash: Buffer.from(descriptionHash, 'hex'),
-    //description_hash: descriptionHash,
     value_msat: amount, // in millisatoshis
   }
 
@@ -135,12 +121,7 @@ function createNostrInvoice(amount, descriptionHash) {
     lightning.addInvoice(requestInvoice, function(err, response) {
        // create a new invoice linked to this one for a data store
        // to link them, we'll use this invoice's hash as its preimage
-       console.log("hash for first invoice:");
-       console.log(response.r_hash);
        preimage = response.r_hash;
-
-       console.log("response:");
-       console.log(response);
        resolve(response.payment_request);
     });
  });
@@ -197,7 +178,7 @@ async function zapReceipt(data) {
   zap.id = nostr.getEventHash(zap);
   zap.sig = nostr.getSignature(zap, privateKey);
   const signedEvent = nostr.finishEvent(zap, privateKey);
-  // console.log("sending to relays...");
+
   let isPublished = false;
   for (let relayUrl of relays) {
     try {
@@ -228,17 +209,17 @@ function getHash(invoice) {
   }
 }
 
-async function doNostrStuff(bolt11, zap) {
+async function checkZap(bolt11, zap) {
   let hash = getHash(bolt11);
   console.log("New invoice generated. Waiting for payment...");
   pause(1000);
-  // check status of invoice here
+  // check status of invoice here... might be better to this to notifier.js...
   while (await getStatus(hash) == false) {
      pause(1000);
      const currentTime = new Date().getTime();
      if (currentTime - startTime > timeoutDuration) {
       console.log("Timed out waiting for payment status.");
-      return false; // check for five minutes and then halt
+      return false; // check for five minutes and then stop...
     }
   }
   // successful zap! invoice settled.
@@ -249,7 +230,6 @@ async function doNostrStuff(bolt11, zap) {
 
 export async function GET(req, { params }) {
   startTime = new Date().getTime();
-  console.log("Welcome to getInvoice.js!");
 
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -281,7 +261,7 @@ export async function GET(req, { params }) {
     lnurl.routes = [];
     logTime("Created an invoice for a nostr zap.");
 
-    doNostrStuff(bolt11, zap);
+    checkZap(bolt11, zap);
     return NextResponse.json(lnurl, { headers });
   }
 

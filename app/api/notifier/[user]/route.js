@@ -1,17 +1,19 @@
 // this has to be run on digital ocean to stay on!
 // it will automatically run when the "push" shell script is executed!
 
-import path from 'path';
-import crypto from 'crypto';
-const WebSocket = require('ws');
 const fs = require('fs');
-import * as nostr from 'nostr-tools';
-import nodemailer from 'nodemailer';
+const WebSocket = require('ws');
 const grpc = require('@grpc/grpc-js');
-const protoLoader = require('@grpc/proto-loader');
 const { bech32 } = require('bech32');
 const axios = require('axios');
+const protoLoader = require('@grpc/proto-loader');
+
+import path from 'path';
+import crypto from 'crypto';
+import * as nostr from 'nostr-tools';
+import nodemailer from 'nodemailer';
 import { NextResponse } from 'next/server';
+
 const PUSH_TOKEN = 'aj7s6xcw4cz4wevqpdjdymogquw75c';
 const PUSH_USER  = 'uirsgtj4utmpu2iqp2oyjh7ddhmqhr'; // Dread's Pushover
 
@@ -124,15 +126,13 @@ function sendEmail(invoice) {
     sats = "millisat";
   }
   let plural = amount > 1 ? 's' : '';
-  amount = amount.toLocaleString();
   let preimageBuffer = Buffer.from(invoice.r_preimage, 'base64');
   let preimage = preimageBuffer.toString('hex');
   let verb = zap.on ? "zapped" : "paid";
   let memo;
   let keysend = "";
   let type;
-
-  // invoice, keysend, zap, or Lightning Address
+  amount = amount.toLocaleString();
 
   if (zap.on) {
     type = "Zap";
@@ -152,7 +152,7 @@ function sendEmail(invoice) {
     }
   }
   else {
-    // not a zap, just a regular BOLT11, LN Address, or keysend payment
+    // not a zap, it's a regular BOLT11, LN Address, or keysend payment
     memo = invoice.memo;
     keysend = invoice.is_keysend ? " via keysend" : "";
     type    = memo.includes("Sent to: ") ? "LN Address" : (invoice.is_keysend ? "Keysend" : "Invoice");
@@ -166,14 +166,6 @@ function sendEmail(invoice) {
     else {
       memo = invoice.memo ? "Memo: " + invoice.memo : "";
     }
-
-    // temporarily want the whole damn invoice
-    // log the whole invoice to see all the details
-    // console.log(invoice);
-    // const allInvoiceDetails = Object.entries(invoice)
-    //   .map(([key, value]) => `${key}: ${value}`)
-    //   .join('<br>');
-    // memo = allInvoiceDetails;
   }
   let spacer = memo ? "<br><br>" : "";
   let message = `
@@ -279,7 +271,7 @@ function errorEmail(note) {
     <br><br>
     If all goes well, you won't have to re-run <a href="https://dpluspl.us/api/notifier">notifier.js</a>!
     <br><br>
-    Triggered ${note}.
+    Triggered ${note}
     `
   };
   send(mailOptions);
@@ -390,10 +382,8 @@ function notify() {
       checkPongInterval = setInterval(() => {
         const timeSinceLastPong = Date.now() - lastPongTimestamp;
         if (timeSinceLastPong >= 120000) { // send an email if it's been more than two minutes...
-          // don't need to do this because the new interval (recconectInterval) handles the reconnection...
-          // connected = false;
           errorEmail("inside checkPongInterval");
-          console.error('Pong not received in time, connection might be lost');
+          console.error('Pong not received in time, connection might be lost.');
           clearInterval(checkPongInterval);
         }
       }, PING_INTERVAL);
@@ -427,26 +417,25 @@ function notify() {
         else {
           // this happens when you can connect to Voltage, but the node is locked!
           connected = false;
-          errorEmail(`by "The websocket returned an undefined message. Voltage may need to be unlocked."`);
-          console.log("The websocket returned an undefined message. Voltage may need to be unlocked.");
+          errorEmail(`by "The websocket returned an undefined message. Your node may need to be unlocked, or there may be an issue with your macaroon."`);
+          console.log("The websocket returned an undefined message. Your node may need to be unlocked, or there may be an issue with your macaroon.");
         }
       }
     });
 
     ws.on('pong', function(data) {
       lastPongTimestamp = Date.now();
-      // console.log('Pong received:', data.toString());
     });
 
     ws.on('close', function() {
       connected = false;
-      errorEmail("inside ws.on('close')");
+      errorEmail("inside ws.on('close').");
       console.log('WebSocket closed.');
     });
 
     ws.on('error', function(err) {
       connected = false;
-      errorEmail("inside ws.on('error')");
+      errorEmail("inside ws.on('error').");
       console.log('Error connecting to WebSocket: ' + err);
     });
   }
@@ -461,6 +450,8 @@ export async function GET(req) {
     'Access-Control-Allow-Headers': 'Content-Type',
   };
   console.log("Starting notifier.js...");
+
   notify();
+
   return NextResponse.json({ message: "Starting notifier.js..." }, { headers });
 }
