@@ -228,6 +228,25 @@ function getHash(invoice) {
   }
 }
 
+function doNostrStuff(bolt11, zap) {
+  let hash = getHash(bolt11);
+  console.log("New invoice generated. Waiting for payment...");
+  pause(1000);
+  // check status of invoice here
+  while (await getStatus(hash) == false) {
+     pause(1000);
+     const currentTime = new Date().getTime();
+     if (currentTime - startTime > timeoutDuration) {
+      console.log("Timed out waiting for payment status.");
+      return false; // check for five minutes and then halt
+    }
+  }
+  // successful zap! invoice settled.
+  await zapReceipt({ bolt11: bolt11, description: zap });
+  logTime("Nostr zap receipt success!");
+  return true;
+}
+
 export async function GET(req, { params }) {
   startTime = new Date().getTime();
   console.log("Welcome to getInvoice.js!");
@@ -261,23 +280,9 @@ export async function GET(req, { params }) {
     lnurl.pr = bolt11;
     lnurl.routes = [];
     logTime("Created an invoice for a nostr zap.");
-    res.status(200).json(lnurl);
-    let hash = getHash(bolt11);
-    console.log("New invoice generated. Waiting for payment...");
-    pause(1000);
-    // check status of invoice here
-    while (await getStatus(hash) == false) {
-       pause(1000);
-       const currentTime = new Date().getTime();
-       if (currentTime - startTime > timeoutDuration) {
-        console.log("Timed out waiting for payment status.");
-        return false; // check for five minutes and then halt
-      }
-    }
-    // successful zap! invoice settled.
-    await zapReceipt({ bolt11: bolt11, description: zap });
-    logTime("Nostr zap receipt success!");
-    return true;
+
+    doNostrStuff(bolt11, zap);
+    return NextResponse.json(lnurl, { headers });
   }
 
   // not a nostr zap, just a regular invoice
