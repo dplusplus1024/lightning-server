@@ -1,5 +1,5 @@
 // this has to be run on digital ocean to stay on!
-// it will automatically run when the "push" shell script is executed
+// it will automatically run when the "push" shell script is executed!
 
 import path from 'path';
 import crypto from 'crypto';
