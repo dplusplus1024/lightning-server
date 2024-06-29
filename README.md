@@ -1,12 +1,11 @@
 ![Logo](https://i.imgur.com/iexBI5J.jpeg)
 
 
-
 ## Prerequisites
 
 You'll need a Lightning node running LND. [Voltage](https://voltage.cloud) is a great place to get started!
 
-## Lightnig Server uses Next.js
+## Lightning Server uses Next.js
 
 **Lightning Server** a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). Here's some more information about Next.js:
 
