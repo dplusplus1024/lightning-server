@@ -228,7 +228,7 @@ function getHash(invoice) {
   }
 }
 
-function doNostrStuff(bolt11, zap) {
+async function doNostrStuff(bolt11, zap) {
   let hash = getHash(bolt11);
   console.log("New invoice generated. Waiting for payment...");
   pause(1000);
