@@ -2,7 +2,14 @@
 
 ## About
 
-No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address that looks like you@yourdomain.com. Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on Nostr, as well as email and **push notifications** sent to all your devices whenever you receive a Lightning payment of any kind. Never miss a payment alert!
+No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address formatted like you@yourdomain.com. Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on Nostr, as well as email and **push notifications** sent to all your devices whenever you receive a Lightning payment of any kind. Never miss a payment alert!
+
+### Features
+
+- Lightning Address
+- Email notifications
+- Push notifications
+- Nostr Zaps
 
 ## Prerequisites
 
@@ -30,3 +37,4 @@ This is experimental software, currently still in beta. Use at your own risk!
 - Add code to automatically run notifier.js.
 - Add more detailed documentation.
 - Teach a workshop on how to run this server!
+- 
