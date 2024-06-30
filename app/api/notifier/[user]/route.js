@@ -1,21 +1,16 @@
 // this has to be run on digital ocean to stay on!
 // it will automatically run when the "push" shell script is executed!
-
 const fs = require('fs');
 const WebSocket = require('ws');
 const grpc = require('@grpc/grpc-js');
 const { bech32 } = require('bech32');
 const axios = require('axios');
 const protoLoader = require('@grpc/proto-loader');
-
 import path from 'path';
 import crypto from 'crypto';
 import * as nostr from 'nostr-tools';
 import nodemailer from 'nodemailer';
 import { NextResponse } from 'next/server';
-
-const PUSH_TOKEN = 'aj7s6xcw4cz4wevqpdjdymogquw75c';
-const PUSH_USER  = 'uirsgtj4utmpu2iqp2oyjh7ddhmqhr'; // Dread's Pushover
 
 var startTime;
 var zap = {};
@@ -24,9 +19,12 @@ var errorEmailSent = false;
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
+  // WARNING: this is NOT the same as your normal gmail username and password!
+  // you will need to set up a new account for the sole purpose of sending notification emails
+  // finally, create an "app password" at https://myaccount.google.com/apppasswords
   auth: {
-    user: "dppnotifier@gmail.com",
-    pass: "dacr lvac etrq yiln"
+    user: process.env.EMAIL_SENDER,
+    pass: process.env.EMAIL_PASSWORD
   }
 });
 
@@ -44,17 +42,13 @@ const packageDefinition = protoLoader.loadSync(
 );
 const lnrpc = grpc.loadPackageDefinition(packageDefinition).lnrpc;
 const sslCreds = grpc.credentials.createSsl(null);
-// Dread's invoice macaroon
-const invMacaroon = "0201036c6e64025e030a10dcd195aa075eb70ba5dae8121f8cf3331207383635383234331a160a0761646472657373120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a0f0a076f6e636861696e120472656164000006207df91761969da0945f372847d4d1b4625bdc13e0eef5faa69edcb54a53b7ac29";
 const macaroonCreds = grpc.credentials.createFromMetadataGenerator(function (args,callback) {
   let metadata = new grpc.Metadata();
-  metadata.add('macaroon', invMacaroon);
+  metadata.add('macaroon', process.env.INVOICE_MACAROON);
   callback(null, metadata);
 });
 const creds = grpc.credentials.combineChannelCredentials(sslCreds, macaroonCreds);
-const grpcHost = "one-love-bitcoin.m.voltageapp.io:10009";
-const restHost = "one-love-bitcoin.m.voltageapp.io:8080";
-const lightning = new lnrpc.Lightning(grpcHost, creds);
+const lightning = new lnrpc.Lightning(process.env.GRPC_HOST, creds);
 
 function send(mailOptions) {
   transporter.sendMail(mailOptions, function(error, info) {
@@ -67,56 +61,6 @@ function send(mailOptions) {
   });
 }
 
-// This is for the halving ticket confirmation email
-function sendHalvingEmail(name, email, preimage, amount) {
-  // preimage = preimage.substring(0,32) + "<br>" + preimage.substring(32, 64);
-  // preimage = preimage.substring(0,16) + "<div class='hide-on-desktop'><br></div>" + preimage.substring(16,48) + "<div class='hide-on-desktop'><br></div>" + preimage.substring(48,64);
-  email = email || 'zaps@islandbitcoin.com';
-
-  let message = `
-  <head>
-    <meta name="color-scheme" content="dark">
-    <meta name="supported-color-schemes" content="dark">
-    <style>
-    @media(min-width:501px) {
-      .hide-on-desktop {
-        display:none;
-      }
-    }
-    </style>
-  </head>
-  <center>
-  <body style="background-color: black">
-    <div style="background-color: black; padding: 20px;">
-      <div style="background-color: #f0f0f0; color: black; padding: 20px; border-radius: 10px; font-size: 16px; font-family: 'Times New Roman', serif;">
-        <p><img src=https://i.imgur.com/2Jw1Ymw.jpg width=155></p>
-        <p>Dear ${name},</p>
-        <p>You're going to <b>The Halving Experience</b>.</p>
-        <p style="font-size: 30px; color: black;">½</p>
-        <p>Join us on <a href="https://t.me/+kSr0IZkRIBw4Mzhh" target="_blank" style="color: blue;"><b>Telegram</b></a> to stay updated.</p>
-        <p>View our suggested attire <a href="https://photos.app.goo.gl/ZYhgkeJ9KWHJNgPJ6"><b>mood board</b></a>.</p>
-        <!--p>Your payment preimage for your records:<br>
-        <span id="preimage" style="font-weight: bold; font-family:monospace"><br>${preimage}</span></p-->
-        <p>The halving awaits,<br>
-        D++ & Martell</p>
-      </div>
-    </div>
-  </body>
-  </center>
-  `;
-
-  let mailOptions = {
-    from: `"½" <${process.env.EMAIL}>`,
-    to: email,
-    bcc: 'dplusplus@gmail.com',
-    subject: 'The Halving Experience',
-    html: message
-  };
-
-  send(mailOptions);
-}
-
-// This is for the default D++ Notifier email template
 function sendEmail(invoice) {
   let sats = "sat";
   let amount = Number(invoice.amt_paid_sat);
@@ -242,7 +186,7 @@ function sendEmail(invoice) {
   let subject = `DREAD | You got ${verb} ${amount} ${sats}${plural}${keysend}!`;
   let mailOptions = {
     from: `"D++ Notifier" <${process.env.EMAIL}>`,
-    to: 'zaps@islandbitcoin.com',
+    to: process.env.EMAIL_RECIPIENT,
     bcc: 'dplusplus@gmail.com',
     subject: subject,
     html: message
@@ -265,7 +209,7 @@ function errorEmail(note) {
 
   let mailOptions = {
     from: `"D++ Notifier" <${process.env.EMAIL}>`,
-    to: 'zaps@islandbitcoin.com',
+    to: process.env.EMAIL_RECIPIENT,
     subject: `DREAD | Error: Lightning Node Unreacable`,
     html: `WebSocket connection failed. Please unlock your <a href="https://voltage.cloud/">Lightning node</a>.
     <br><br>
@@ -283,8 +227,8 @@ function errorEmail(note) {
 
 function messageEmail(subject, html) {
   let mailOptions = {
-    from: `"D++ Notifier" <${process.env.EMAIL}>`,
-    to: 'zaps@islandbitcoin.com',
+    from: `"D++ Notifier" <${process.env.EMAIL_SENDER}>`,
+    to: process.env.EMAIL_RECIPIENT,
     subject: subject,
     html: html
   };
@@ -304,9 +248,6 @@ function findZapInvoice(r_preimage) {
 
   return new Promise(function(resolve, reject) {
     lightning.lookupInvoice(request, function(err, response) {
-      console.log("response inside of lightning.lookupInvoice: ");
-      // console.log(response);
-      console.log(response.memo);
       resolve(response.memo);
     });
   });
@@ -314,8 +255,8 @@ function findZapInvoice(r_preimage) {
 
 function pushNotification(subject, body) {
   axios.post('https://api.pushover.net/1/messages.json', {
-    token: PUSH_TOKEN,
-    user:  PUSH_USER,
+    token: process.env.PUSHOVER_TOKEN,
+    user:  process.env.PUSHOVER_USER,
     title: subject,
     message: body,
     html: 1
@@ -329,7 +270,6 @@ function pushNotification(subject, body) {
 }
 
 function notify() {
-  console.log("inside notify()!");
   let requestBody = {
     // add_index: <uint64>, // <uint64>
     // settle_index: <uint64>, // <uint64>
@@ -337,18 +277,19 @@ function notify() {
   let lastPongTimestamp = Date.now();
   let checkPongInterval, reconnectInterval;
 
-  const PING_INTERVAL = 10000; // ping every 10 seconds
+  const PING_INTERVAL = 10000;      // ping every 10 seconds
   const RECONNECT_INTERVAL = 60000; // attempt to reconnect every minute when disconnected
+  const PONG_TIMEOUT = 120000;      // email after we don't receive a pong in two minutes
 
   function connect() {
-    if (connected == true) // don't create multiple connections
-      return;
+    if (connected)
+      return; // don't create multiple connections
 
-    let ws = new WebSocket(`wss://${restHost}/v1/invoices/subscribe?method=GET`, {
+    let ws = new WebSocket(`wss://${process.env.REST_HOST}/v1/invoices/subscribe?method=GET`, {
       // Work-around for self-signed certificates.
       rejectUnauthorized: false,
       headers: {
-        'Grpc-Metadata-Macaroon': invMacaroon,
+        'Grpc-Metadata-Macaroon': process.env.INVOICE_MACAROON,
       },
     });
 
@@ -376,12 +317,12 @@ function notify() {
 
       ws.send(JSON.stringify(requestBody));
 
-      // send error email if we don't get a pong after a minute
-      setInterval(() => ws.ping('Are you there?'), PING_INTERVAL); // ping every 10 seconds
+      // send error email if we don't get a pong after a while
+      setInterval(() => ws.ping('Are you there?'), PING_INTERVAL);
       clearInterval(checkPongInterval);
       checkPongInterval = setInterval(() => {
         const timeSinceLastPong = Date.now() - lastPongTimestamp;
-        if (timeSinceLastPong >= 120000) { // send an email if it's been more than two minutes...
+        if (timeSinceLastPong >= PONG_TIMEOUT) {
           errorEmail("inside checkPongInterval");
           console.error('Pong not received in time, connection might be lost.');
           clearInterval(checkPongInterval);
@@ -415,7 +356,7 @@ function notify() {
         if (invoice)
           console.log("New invoice was added!");
         else {
-          // this happens when you can connect to Voltage, but the node is locked!
+          // node is locked or the invoice macaroon isn't working
           connected = false;
           errorEmail(`by "The websocket returned an undefined message. Your node may need to be unlocked, or there may be an issue with your macaroon."`);
           console.log("The websocket returned an undefined message. Your node may need to be unlocked, or there may be an issue with your macaroon.");
