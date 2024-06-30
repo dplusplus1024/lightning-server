@@ -2,7 +2,7 @@
 
 ## About
 
-No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address that looks like you@yourdomain.com (e.g. me@dplus.plus). Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on Nostr, as well as email and push notifications any time you receive a Lightning payment of any kind. That includes Zaps, Bolt11 invoices, keysends, and of course, Lightning Address payments!
+No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address that looks like you@yourdomain.com (e.g. me@dplus.plus). Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on Nostr, as well as email and push notifications sent to all your devices whenever you receive a Lightning payment of any kind. That includes Zaps, Bolt11 invoices, keysends, and of course, Lightning Address payments!
 
 ## Prerequisites
 
