@@ -26,15 +26,14 @@ function myNode() {
     default:
       meta = "Pay to Island Bitcoin";
   }
-  // on digital ocean
-  lnurl1.callback = `https://islandbitcoin.com/api/getInvoice/${user}`;
+  lnurl1.callback = `https://${process.env.DOMAIN}/api/getInvoice/${user}`;
   lnurl1.maxSendable = 1000000000000;
   lnurl1.minSendable = 1000;
-  lnurl1.metadata = JSON.stringify([["text/plain", meta],["text/identifier", `${user}@islandbitcoin.com`]]);
+  lnurl1.metadata = JSON.stringify([["text/plain", meta],["text/identifier", `${user}@${process.env.DOMAIN}`]]);
   lnurl1.commentAllowed = 32;
   lnurl1.tag = "payRequest";
   // this is the nostr pubkey that signs and sends zap receipts
-  lnurl1.nostrPubkey = "910bf554c8cb3384798d5b1402b79810a44b304c5c8fe1b27d396223e5a04f0e";
+  lnurl1.nostrPubkey = process.env.NOSTR_PUBLIC_KEY;
   lnurl1.allowsNostr = true;
 }
 

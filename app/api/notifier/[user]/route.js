@@ -1,21 +1,22 @@
 // this has to be run on digital ocean to stay on!
 // it will automatically run when the "push" shell script is executed!
+
+import path from 'path';
+import crypto from 'crypto';
+import * as nostr from 'nostr-tools';
+import nodemailer from 'nodemailer';
+import { NextResponse } from 'next/server';
 const fs = require('fs');
 const WebSocket = require('ws');
 const grpc = require('@grpc/grpc-js');
 const { bech32 } = require('bech32');
 const axios = require('axios');
 const protoLoader = require('@grpc/proto-loader');
-import path from 'path';
-import crypto from 'crypto';
-import * as nostr from 'nostr-tools';
-import nodemailer from 'nodemailer';
-import { NextResponse } from 'next/server';
 
-var startTime;
-var zap = {};
-var connected = false;
-var errorEmailSent = false;
+let startTime;
+let zap = {};
+let connected = false;
+let errorEmailSent = false;
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -52,12 +53,10 @@ const lightning = new lnrpc.Lightning(process.env.GRPC_HOST, creds);
 
 function send(mailOptions) {
   transporter.sendMail(mailOptions, function(error, info) {
-    if (error) {
-      console.log("error: ");
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
+    if (error)
+      console.log(`Mail error: ${error}`);
+    else
+      console.log(`Email sent: ${info.response}`);
   });
 }
 
@@ -65,7 +64,6 @@ function sendEmail(invoice) {
   let sats = "sat";
   let amount = Number(invoice.amt_paid_sat);
   if (amount == 0) {
-    // millisats baby
     amount = Number(invoice.amt_paid_msat);
     sats = "millisat";
   }
@@ -74,8 +72,8 @@ function sendEmail(invoice) {
   let preimage = preimageBuffer.toString('hex');
   let verb = zap.on ? "zapped" : "paid";
   let memo;
-  let keysend = "";
   let type;
+  let keysend = "";
   amount = amount.toLocaleString();
 
   if (zap.on) {
@@ -89,14 +87,14 @@ function sendEmail(invoice) {
       memo = `From: <a href="https://primal.net/p/${npub}">${npub}</a><br><br>Note: <a href="https://primal.net/e/${note}">${note}</a>`;
     }
     else {
-      // they zapped my profile
+      // they zapped your profile
       memo = `<a href="https://primal.net/p/${npub}">${npub}</a> zapped your profile.`;
       if (zap.data.content)
         memo += `<br><br>Message: ${zap.data.content}`;
     }
   }
   else {
-    // not a zap, it's a regular BOLT11, LN Address, or keysend payment
+    // not a zap - it's a regular BOLT11, LN Address, or keysend payment
     memo = invoice.memo;
     keysend = invoice.is_keysend ? " via keysend" : "";
     type    = memo.includes("Sent to: ") ? "LN Address" : (invoice.is_keysend ? "Keysend" : "Invoice");
@@ -185,7 +183,7 @@ function sendEmail(invoice) {
 
   let subject = `DREAD | You got ${verb} ${amount} ${sats}${plural}${keysend}!`;
   let mailOptions = {
-    from: `"D++ Notifier" <${process.env.EMAIL}>`,
+    from: `"Node Notifier" <${process.env.EMAIL}>`,
     to: process.env.EMAIL_RECIPIENT,
     bcc: 'dplusplus@gmail.com',
     subject: subject,
@@ -194,7 +192,7 @@ function sendEmail(invoice) {
 
   send(mailOptions);
 
-  // Send a push notification!!
+  // Send a push notification!
   if (type != "LN Address")
     type = type.toLowerCase();
   if (type == "zap")
@@ -208,7 +206,7 @@ function errorEmail(note) {
     return;
 
   let mailOptions = {
-    from: `"D++ Notifier" <${process.env.EMAIL}>`,
+    from: `"Node Notifier" <${process.env.EMAIL}>`,
     to: process.env.EMAIL_RECIPIENT,
     subject: `DREAD | Error: Lightning Node Unreacable`,
     html: `WebSocket connection failed. Please unlock your <a href="https://voltage.cloud/">Lightning node</a>.
@@ -227,7 +225,7 @@ function errorEmail(note) {
 
 function messageEmail(subject, html) {
   let mailOptions = {
-    from: `"D++ Notifier" <${process.env.EMAIL_SENDER}>`,
+    from: `"Node Notifier" <${process.env.EMAIL_SENDER}>`,
     to: process.env.EMAIL_RECIPIENT,
     subject: subject,
     html: html
@@ -236,13 +234,9 @@ function messageEmail(subject, html) {
 }
 
 function findZapInvoice(r_preimage) {
-  console.log("r_preimage inside of findZapInvoice");
   r_preimage = Buffer.from(r_preimage, 'base64');
-  console.log(r_preimage);
   const r_hash = crypto.createHash('sha256').update(r_preimage).digest();
-  console.log("r_hash inside of findZapInvoice");
-  console.log(r_hash);
-  let request = {
+  const request = {
     r_hash: r_hash
   };
 
@@ -270,10 +264,7 @@ function pushNotification(subject, body) {
 }
 
 function notify() {
-  let requestBody = {
-    // add_index: <uint64>, // <uint64>
-    // settle_index: <uint64>, // <uint64>
-  };
+  let requestBody = {};
   let lastPongTimestamp = Date.now();
   let checkPongInterval, reconnectInterval;
 
@@ -307,9 +298,9 @@ function notify() {
 
       setTimeout(() => {
         if (connected) {
-          // don't send welcome message unless we've established a lasting connection :D
+          // don't send welcome message unless we've established a lasting connection!
           errorEmailSent = false;
-          var message = "Successfully connected websocket."
+          let message = "Successfully connected websocket."
           messageEmail(message, message);
           console.log("Made a lasting connection!");
         }
@@ -332,10 +323,10 @@ function notify() {
 
     ws.on('message', async function(body) {
       zap.on = false;
-      var invoice = JSON.parse(body.toString()).result;
+      let invoice = JSON.parse(body.toString()).result;
       if (invoice?.state == "SETTLED") {
         console.log("Paid invoice detected!");
-        // if it's a zap, include information about who zapped me :)
+        // if it's a zap, include information about who zapped you!
         if (invoice.memo.includes("Zap!")) {
           zap.data = await findZapInvoice(invoice.r_hash);
           zap.data = JSON.parse(zap.data);
@@ -349,8 +340,9 @@ function notify() {
         else {
           // node is locked or the invoice macaroon isn't working
           connected = false;
-          errorEmail(`by "The websocket returned an undefined message. Your node may need to be unlocked, or there may be an issue with your macaroon."`);
-          console.log("The websocket returned an undefined message. Your node may need to be unlocked, or there may be an issue with your macaroon.");
+          let errorMessage = `The websocket returned an undefined message. Your node may need to be unlocked, or there may be an issue with your macaroon.`;
+          errorEmail(`by ${errorMessage}`);
+          console.log(errorMessage);
         }
       }
     });
@@ -381,6 +373,7 @@ export async function GET(req) {
     'Access-Control-Allow-Methods': 'GET, POST, PUT',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
+
   console.log("Starting notifier.js...");
 
   notify();
