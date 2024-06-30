@@ -2,7 +2,7 @@
 
 ## About
 
-**Lightning Server** is a Lightning Address server, meaning you'll be able to receive Lightning payments to an address that looks like you@yourdomain.com (e.g. me@dplus.plus). Additionally, you'll get Zap receipts on Nostr as well as email and push notifications any time you receive a Lightning payment of any kind (including Zaps, Bolt11 invoices, keysend, and of course Lightning Address payments)!
+**Lightning Server** is a [Lightning Address](https://lightningaddress.com) server, enabling you to receive Lightning payments to an address that looks like you@yourdomain.com (e.g. me@dplus.plus). Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on Nostr, as well as email and push notifications any time you receive a Lightning payment of any kind. That includes Zaps, Bolt11 invoices, keysends, and of course, Lightning Address payments!
 
 ## Prerequisites
 
