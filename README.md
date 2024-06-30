@@ -9,7 +9,7 @@ No more invoicing! **Lightning Server** enables you to receive [Lightning Addres
 - Lightning Address
 - Email notifications
 - Push notifications
-- Nostr Zaps
+- Nostr Zap receipts
 
 ## Prerequisites
 
