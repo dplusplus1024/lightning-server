@@ -2,13 +2,13 @@
 
 ## About
 
-No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address that looks like you@yourdomain.com (e.g. me@dplus.plus). Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on Nostr, as well as email and push notifications sent to all your devices whenever you receive a Lightning payment of any kind. Never miss a payment alert! That includes Zaps, Bolt11 invoices, keysends, and of course, Lightning Address payments!
+No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address that looks like you@yourdomain.com (e.g. me@dplus.plus). Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on Nostr, as well as email and push notifications sent to all your devices whenever you receive a Lightning payment of any kind. Never miss a payment alert!
 
 ## Prerequisites
 
 You'll need a Lightning node running [LND](https://github.com/lightningnetwork/lnd) and your own domain. Need a node? [Voltage](https://voltage.cloud) makes it easy and is a great place to get started! Make sure you have some key pieces of information handy, such as your node's REST and gRPC API endpoints, as well as your node's invoice macaroon in hexadecimal. 
 
-## Deploy Lightning Server
+## Deploying Lightning Server
 
 If you don't already have a VPS, the easiest way to deploy and host **Lightning Server** is to use [DigitialOcean's App Platform](https://www.digitalocean.com/products/app-platform), which will cost approximately $5.00 per month at the time of this writing. If you choose to use [Vercel](https://vercel.com), functionality will be *limited to a working Lightning Address only* - you won't get the benefit of Nostr Zap receipts, email notifications, or push notifications. [Heroku](https://www.heroku.com/) is not recommended.
 
