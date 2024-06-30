@@ -63,7 +63,10 @@ function createInvoice(user, address, amount, descriptionHash, comment) {
     else {
       // may change max comment to be more than 64 in the future?
       comment = comment.slice(0,64);
+      console.log("comment:");
+      console.log(comment);
       comment = `Sent to: ${address} | Comment: ${comment}`;
+
     }
   }
   let requestInvoice = {
