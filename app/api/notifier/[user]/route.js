@@ -341,16 +341,7 @@ function notify() {
           zap.data = JSON.parse(zap.data);
           zap.on = true;
         }
-        // always send default email to D++
         sendEmail(invoice);
-        // also send halving email if it's a halving ticket confirmation
-        if (invoice.memo.includes('HALVING:')) {
-          let name = invoice?.memo.split('EMAIL:')[0].split('HALVING:')[1];
-          let email = invoice?.memo.split('EMAIL:')[1];
-          let preimage = invoice?.r_preimage.toString('hex');
-          let amount = invoice?.amt_paid_sat;
-          sendHalvingEmail(name, email, preimage, amount);
-        }
       }
       else {
         if (invoice)
