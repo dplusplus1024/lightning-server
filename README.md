@@ -6,7 +6,7 @@ No more invoicing! **Lightning Server** enables you to receive [Lightning Addres
 
 ## Prerequisites
 
-You'll need a Lightning node running [LND](https://github.com/lightningnetwork/lnd) and your own domain. Need a node? [Voltage](https://voltage.cloud) makes it easy and is a great place to get started! Make sure you have some key pieces of information handy, such as your node's REST and gRPC API endpoints, as well as your node's invoice macaroon. 
+You'll need a Lightning node running [LND](https://github.com/lightningnetwork/lnd) and your own domain. Need a node? [Voltage](https://voltage.cloud) makes it easy and is a great place to get started! Make sure you have some key pieces of information handy, such as your node's REST and gRPC API endpoints, as well as your invoice macaroon. 
 
 ## Deploying Lightning Server
 
@@ -18,6 +18,10 @@ If you don't already have a VPS, the easiest way to deploy and host **Lightning 
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+## Warning
+
+This is experimental software, currently still in beta. Use at your own risk!
 
 ## To Do
 
