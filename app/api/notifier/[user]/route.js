@@ -107,7 +107,6 @@ function sendEmail(invoice) {
     }
     else {
       memo = invoice.memo ? "Memo: " + invoice.memo : "";
-      memo = invoice.memo == "Comment:" ? "" : memo; // fix for Zeus's empty comment
     }
   }
   let spacer = memo ? "<br><br>" : "";

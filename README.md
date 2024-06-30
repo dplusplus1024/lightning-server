@@ -1,8 +1,12 @@
 ![Logo](https://i.imgur.com/iexBI5J.jpeg)
 
+## About
+
+**Lightning Server** is a Lightning Address server, meaning you'll be able to receive Lightning payments to an address that looks like you@yourdomain.com (e.g. me@dplus.plus). Additionally, you'll get Zap receipts on Nostr as well as email and push notifications any time you receive a Lightning payment of any kind (including Zaps, Bolt11 invoices, keysend, and of course Lightning Address payments)!
+
 ## Prerequisites
 
-You'll need a Lightning node running LND. [Voltage](https://voltage.cloud) is a great place to get started!
+You'll need a Lightning node running [LND](https://github.com/lightningnetwork/lnd) and your own domain. Need a node? [Voltage](https://voltage.cloud) makes it easy and is a great place to get started! Make sure you have some key pieces of information handy, such as your node's REST and gRPC API endpoints, as well as your node's invoice macaroon in hexadecimal. 
 
 ## Deploy Lightning Server
 
