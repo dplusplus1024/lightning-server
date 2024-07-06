@@ -29,15 +29,7 @@ If you don't already have a VPS, the easiest way to deploy and host **Lightning 
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your `.env` file:
-
-| Variable Name        | Description                                                  |
-|----------------------|--------------------------------------------------------------|
-| `DOMAIN`             | The domain where your application is hosted.                 |
-| `MONGODB_USER`       | Optional: The username for your MongoDB database.            |
-| `MONGODB_PASS`       | Optional: The password for your MongoDB database.            |
-| `MONGODB_URL`        | Optional: The URL for your MongoDB instance.                 |
-| `NOSTR_PUBLIC_KEY`   | The Nostr public key for signing and publishing zap receipts.|
+To run this project, you will need to add the following environment variables to your `.env` file.
 
 ### Example `.env` file
 
@@ -47,8 +39,6 @@ DOMAIN=example.com
 INVOICE_MACAROON=myInvoiceMacaroon
 REST_HOST=my-node-address.com:8080
 GRPC_HOST=my-node-address.com:10009
-
-## OPTIONAL VARIABLES ############################################################
 NOSTR=true
 # Literally any key pair will do here!
 NOSTR_PUBLIC_KEY=myNostrPublicKey
@@ -66,6 +56,7 @@ USERS=user1,user2,user3
 META=Message to display to sender
 FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
 CATCH_ALL=false
+## OPTIONAL VARIABLES ############################################################
 USE_MONGO=true
 MONGODB_USER=myMongoUser
 MONGODB_PASS=myMongoPassword
