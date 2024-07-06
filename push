@@ -42,6 +42,7 @@ while :; do
     if [[ "$deployment_status" == "ACTIVE" ]]; then
         sleep 5
         curl -s https://$DOMAIN/api/notifier/run
+        echo ""
         break
     fi
 

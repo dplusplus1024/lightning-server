@@ -42,11 +42,36 @@ To run this project, you will need to add the following environment variables to
 ### Example `.env` file
 
 ```env
+## REQUIRED VARIABLES ############################################################
 DOMAIN=example.com
+INVOICE_MACAROON=myInvoiceMacaroon
+REST_HOST=my-node-address.com:8080
+GRPC_HOST=my-node-address.com:10009
+
+## OPTIONAL VARIABLES ############################################################
+NOSTR=true
+# Literally any key pair will do here!
+NOSTR_PUBLIC_KEY=myNostrPublicKey
+NOSTR_PRIVATE_KEY=myNostrPrivateKey
+PUSHOVER_TOKEN
+PUSHOVER_USER
+# WARNING: this is NOT the same as your normal gmail username and password!
+# you will need to set up a new account for the sole purpose of sending notification emails
+# finally, create an "app password" at https://myaccount.google.com/apppasswords
+EMAIL_SENDER
+EMAIL_PASSWORD
+EMAIL_RECIPIENT
+EMAIL_BCC
+USERS=user1,user2,user3
+META=Message to display to sender
+FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
+CATCH_ALL=false
+USE_MONGO=true
 MONGODB_USER=myMongoUser
 MONGODB_PASS=myMongoPassword
 MONGODB_URL=myMongoDBURL
-NOSTR_PUBLIC_KEY=myNostrPublicKey
+
+
 ```
 
 ## Running the Notifier
@@ -61,8 +86,8 @@ This is experimental software, currently still in beta. Use at your own risk!
 
 ## To Do
 
-- Continue refactoring, polishing, and optimizing code.
-- Add Lightning Point of Sale.
-- Add code to automatically run notifier.js.
-- Add more detailed documentation.
+- Continue refactoring, polishing, and optimizing code
+- Add Lightning Point of Sale
+- Add code to automatically run notifier.js
+- Add more detailed documentation
 - Host an online workshop on how to run this server!

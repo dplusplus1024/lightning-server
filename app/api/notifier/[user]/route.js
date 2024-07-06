@@ -176,7 +176,7 @@ function sendEmail(invoice) {
               <br><br><br><br>
             </div>
             <div class="footer">
-              Made with ❤️ by <a href="https://x.com/d_plus__plus">D++</a>.
+              Made with ❤️ by <a href="https://x.com/d_plus__plus">D++</a>
               <br><br>
             </div>
           </div>
