@@ -1,6 +1,5 @@
-// this has to be run on digital ocean to stay on!
-// it will automatically run when the "push" shell script is executed!
-
+// This has to be run at https://${DOMAIN}/api/notifier/app after you've deployed your project
+// It will run automatically if you use the ./push bash script (but please help me find a better way...)
 import path from 'path';
 import crypto from 'crypto';
 import * as nostr from 'nostr-tools';
@@ -74,6 +73,7 @@ function sendEmail(invoice) {
   let memo;
   let type;
   let keysend = "";
+  let user = "You";
   amount = amount.toLocaleString();
 
   if (zap.on) {
@@ -97,13 +97,12 @@ function sendEmail(invoice) {
     // not a zap - it's a regular BOLT11, LN Address, or keysend payment
     memo = invoice.memo;
     keysend = invoice.is_keysend ? " via keysend" : "";
-    type    = memo.includes("Sent to: ") ? "LN Address" : (invoice.is_keysend ? "Keysend" : "Invoice");
+    type = memo.includes("Sent to: ") ? "LN Address" : (invoice.is_keysend ? "Keysend" : "Invoice");
     if (type == "LN Address") {
       let address = decodeURIComponent(memo.split(' | ')[0]);
       let note = memo.split(' | ')[1];
-      memo = `${address}`;
-      if (note != "I love you!")
-        memo += `<br><br>${note}`;
+      memo = note ? `${address}<br><br>${note}` : `${address}`;
+      user = address.split('@')[0].toUpperCase() + ", you";
     }
     else {
       memo = invoice.memo ? "Memo: " + invoice.memo : "";
@@ -114,7 +113,7 @@ function sendEmail(invoice) {
   <!DOCTYPE html>
   <html>
   <head>
-    <title>Invoice Payment Notification</title>
+    <title>${type} Payment Notification</title>
     <style>
       body {
         background-color: #000;
@@ -181,26 +180,26 @@ function sendEmail(invoice) {
   </body>
   </html>`;
 
-  let subject = `DREAD | You got ${verb} ${amount} ${sats}${plural}${keysend}!`;
+  let subject = `${user} got ${verb} ${amount} ${sats}${plural}${keysend}!`;
   let mailOptions = {
     from: `"Node Notifier" <${process.env.EMAIL}>`,
     to: process.env.EMAIL_RECIPIENT,
-    bcc: 'dplusplus@gmail.com',
+    bcc: process.env.EMAIL_BCC,
     subject: subject,
     html: message
   };
 
   send(mailOptions);
 
-  // Send a push notification!
+  // send a push notification!
   if (type != "LN Address")
     type = type.toLowerCase();
   if (type == "zap")
     type = "Nostr";
-  pushNotification(`DREAD | You got ${verb} ${amount} ${sats}${plural} via ${type}!`, `Amount: ${amount} ${sats}${plural} ${spacer}${memo}`);
+  pushNotification(`${user} got ${verb} ${amount} ${sats}${plural} via ${type}!`, `Amount: ${amount} ${sats}${plural} ${spacer}${memo}`);
 }
 
-// If the node is unreachable, send an email notification to me
+// if the node is unreachable, send an email notification
 function errorEmail(note) {
   if (errorEmailSent)
     return;
@@ -208,10 +207,10 @@ function errorEmail(note) {
   let mailOptions = {
     from: `"Node Notifier" <${process.env.EMAIL}>`,
     to: process.env.EMAIL_RECIPIENT,
-    subject: `DREAD | Error: Lightning Node Unreacable`,
-    html: `WebSocket connection failed. Please unlock your <a href="https://voltage.cloud/">Lightning node</a>.
+    subject: `Error: Lightning Node Unreacable`,
+    html: `WebSocket connection failed. Please check your Lightning node.
     <br><br>
-    If all goes well, you won't have to re-run <a href="https://dpluspl.us/api/notifier">notifier.js</a>!
+    If all goes well, you won't have to re-run <a href="https://${DOMAIN}/api/notifier/run">notifier.js</a>!
     <br><br>
     Triggered ${note}
     `
@@ -256,10 +255,10 @@ function pushNotification(subject, body) {
     html: 1
   })
   .then(response => {
-    console.log('Push notification sent:', response.data);
+    console.log(`Push notification sent: ${response.data}`);
   })
   .catch(error => {
-    console.error('Error sending push notification:', error);
+    console.error(`Error sending push notification: ${error}`);
   });
 }
 

@@ -2,19 +2,19 @@ const axios = require('axios');
 const { NextResponse } = require('next/server');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
-const users = ['⚡', '🇯🇲', 'me', 'node', 'dread'];
-
+// list of valid users; not needed if process.env.CATCH_ALL is set to true
+const users = process.env.USERS.split(/\s*,\s*/);
 // redirects that forward to external Lightning Addresses
-const forwards = {
-  d:    "me@dplus.plus",
-  alby: "dread@getalby.com"
-}
+const forwards = JSON.stringify(process.env.FORWARDS);
+
 
 let lnurl = {};
 let user, startTime;
 
 function myNode() {
   let meta;
+  let address = `${user}@${process.env.DOMAIN}`;
+
   switch (user) {
     case "user1":
       meta = "Example 1";
@@ -23,12 +23,12 @@ function myNode() {
       meta = "Example 2";
       break;
     default:
-      meta = "Pay to Island Bitcoin";
+      meta = process.env.META || `Pay to ${address}`;
   }
   lnurl.callback = `https://${process.env.DOMAIN}/api/getInvoice/${user}`;
   lnurl.maxSendable = 1000000000000; // values are in millisats
   lnurl.minSendable = 1000;
-  lnurl.metadata = JSON.stringify([["text/plain", meta],["text/identifier", `${user}@${process.env.DOMAIN}`]]);
+  lnurl.metadata = JSON.stringify([["text/plain", meta],["text/identifier", `${address}`]]);
   lnurl.commentAllowed = 32;
   lnurl.tag = "payRequest";
   // this is the Nostr pubkey that signs and publishes zap receipts
@@ -107,16 +107,21 @@ export async function GET(req, { params }) {
     return NextResponse.json(result, { headers });
   }
   // check for user in external forwards database (MongoDB)...
-  let databaseUser = await getMongoUser(); // takes about .40 - .55 seconds
-  if (databaseUser) {
-    let result = await getLNURL(databaseUser);
-    logTime();
-    return NextResponse.json(result, { headers });
+  if (process.env.USE_MONGO === "true") {
+    let databaseUser = await getMongoUser(); // takes about .40 - .55 seconds
+    if (databaseUser) {
+      let result = await getLNURL(databaseUser);
+      logTime();
+      return NextResponse.json(result, { headers });
+    }
   }
-  // catch all case: want to allow for any arbitrary user or not?
-  // console.log("Catch all case: going to my node...");
-  // myNode();
-  // logTime();
-  // return NextResponse.json(lnurl, { headers });
-  return NextResponse.json({ message: `User ${user} not found.` }, { headers })
+  // you can decide if you want any arbitrary username to be valid or not
+  if (process.env.CATCH_ALL === "true") {
+    myNode();
+    logTime();
+    return NextResponse.json(lnurl, { headers });
+  }
+  else {
+    return NextResponse.json({ message: `User ${user} not found.` }, { headers })
+  }
 }

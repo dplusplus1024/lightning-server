@@ -51,9 +51,9 @@ NOSTR_PUBLIC_KEY=myNostrPublicKey
 
 ## Running the Notifier
 
-After you've deployed the project, you'll need to run the Notifier.js code at https://yourdomain.com/api/notifier/run
+After you've deployed the project, you'll need to start the Notifier.js at https://yourdomain.com/api/notifier/run
 
-Included is a bash script in the root directory that can be run from the console using `./push` any time you make changes to the project, but I feel like I'm missing something as there's got to be a better way to do this. Help anyone?
+Included is a bash script in the root directory that can be run from the console using `./push` anytime you make changes to the project. However, I feel like I'm missing something, as there's got to be a better way to do this. Help anyone?
 
 ## Warning
 

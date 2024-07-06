@@ -48,27 +48,9 @@ function sha256(data) {
 
 // get bolt 11 invoice from node in amount specified
 function createInvoice(user, address, amount, descriptionHash, comment) {
-  if (user == 'bazaar') {
-    comment = "BAZAAR:" + comment;
-  }
-  if (comment == undefined)
-    comment = `Sent to: ${address} | I love you!`;
-  else {
-    if (user == 'glitch') {
-      comment = "GLITCH:" + comment;
-    }
-    else if (user == 'halving') {
-      comment = "HALVING:" + comment;
-    }
-    else {
-      // may change max comment to be more than 64 in the future?
-      comment = comment.slice(0,64);
-      console.log("comment:");
-      console.log(comment);
-      comment = `Sent to: ${address} | Comment: ${comment}`;
-
-    }
-  }
+  comment = comment ? comment.slice(0, 64) : "";
+  comment = comment ? `Sent to: ${address} | Comment: ${comment}` : `Sent to: ${address} | `;
+  
   let requestInvoice = {
     memo: comment,
     description_hash: Buffer.from(descriptionHash, 'hex'),
@@ -107,7 +89,7 @@ function createNostrInvoice(amount, descriptionHash) {
   let requestInvoice = {
     memo: "Zap!",
     description_hash: Buffer.from(descriptionHash, 'hex'),
-    value_msat: amount, // in millisatoshis
+    value_msat: amount, // in millisats
   }
 
   return new Promise(function(resolve, reject) {

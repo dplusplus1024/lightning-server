@@ -1,4 +1,6 @@
 #!/bin/bash
+# If you're reading this please help; there's gotta be a better way to do this, lol.
+
 source .env
 git add .
 git commit -m "updated"
@@ -11,9 +13,9 @@ if [[ "$output" == *"Everything up-to-date"* ]]; then
 fi
 
 echo ""
-echo "************************************************************"
+echo "**************************************************************"
 echo " Waiting to run https://$DOMAIN/api/notifier/run..."
-echo "************************************************************"
+echo "**************************************************************"
 
 sleep 10
 
