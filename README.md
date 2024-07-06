@@ -2,7 +2,7 @@
 
 ## About
 
-No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address formatted like you@yourdomain.com. Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on Nostr, as well as **email** and **push notifications** sent to all your devices whenever you receive a Lightning payment of any kind. Never miss a payment alert!
+No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address like you@yourdomain.com. Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on Nostr, as well as **email** and **push notifications** sent to all your devices whenever you receive a Lightning payment of any kind. Never miss a payment alert!
 
 ### Features
 
@@ -10,10 +10,11 @@ No more invoicing! **Lightning Server** enables you to receive [Lightning Addres
 - Email notifications
 - Push notifications
 - Nostr Zap receipts
+- Easy Point of Sale (coming soon!)
 
 ## Prerequisites
 
-You'll need a Lightning node running [LND](https://github.com/lightningnetwork/lnd) and your own domain. Need a node? [Voltage](https://voltage.cloud) makes it easy and is a great place to get started! Make sure you have some key pieces of information handy, such as your node's REST and gRPC API endpoints, as well as your invoice macaroon. 
+You'll need a Lightning node running [LND](https://github.com/lightningnetwork/lnd) and your own domain. Need a node? [Voltage](https://voltage.cloud) makes it easy and is a great place to get started! Make sure you have some key pieces of information handy, such as your node's REST and gRPC API endpoints, as well as your invoice macaroon.
 
 ## Deploying Lightning Server
 
@@ -25,6 +26,25 @@ If you don't already have a VPS, the easiest way to deploy and host **Lightning 
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+To run this project, you will need to add the following environment variables to your `.env` file:
+
+| Variable Name        | Description                                                  |
+|----------------------|--------------------------------------------------------------|
+| `DOMAIN`             | The domain where your application is hosted.                 |
+| `MONGODB_USER`       | Optional: the username for your MongoDB database.            |
+| `MONGODB_PASS`       | Optional: The password for your MongoDB database.            |
+| `MONGODB_URL`        | Optional: The URL for your MongoDB instance.                 |
+| `NOSTR_PUBLIC_KEY`   | The Nostr public key for signing and publishing zap receipts.|
+
+### Example `.env` file
+
+```env
+DOMAIN=example.com
+MONGODB_USER=myMongoUser
+MONGODB_PASS=myMongoPassword
+MONGODB_URL=myMongoDBURL
+NOSTR_PUBLIC_KEY=myNostrPublicKey
 
 ## Warning
 
