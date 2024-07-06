@@ -17,7 +17,7 @@ const relays = [
   "wss://nostr.oxtr.dev",
 ];
 
-const timeoutDuration = 300000; // time to wait for zap to be paid - 5 minutes in milliseconds
+const ZAP_TIMEOUT = 300000; // time to wait for zap to be paid - 5 minutes in milliseconds
 let startTime, preimage;
 
 const loaderOptions = {
@@ -126,7 +126,7 @@ async function getNostrInvoice(amount, description) {
 }
 
 function logTime(message) {
-  console.log(message + " Time elapsed: " + (new Date().getTime() - startTime) + " milliseconds.");
+  console.log(`${message} Time elapsed: ${new Date().getTime() - startTime} milliseconds.`);
 }
 
 function getStatus(hash) {
@@ -184,6 +184,8 @@ async function zapReceipt(data) {
       console.error(`Failed to publish to ${relayUrl}:`, error);
     }
   }
+  if (!isPublished)
+    console.log(`Could not publish note to any relay. :(`);
 }
 
 function pause(ms) {
@@ -209,8 +211,8 @@ async function checkZap(bolt11, zap) {
   while (await getStatus(hash) == false) {
      pause(1000);
      const currentTime = new Date().getTime();
-     if (currentTime - startTime > timeoutDuration) {
-      console.log("Timed out waiting for payment status.");
+     if (currentTime - startTime > ZAP_TIMEOUT) {
+      console.log("Zap not paid in time.");
       return false; // check for five minutes and then stop...
     }
   }

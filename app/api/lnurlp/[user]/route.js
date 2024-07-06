@@ -1,86 +1,82 @@
 const axios = require('axios');
-import { NextResponse } from 'next/server';
+const { NextResponse } = require('next/server');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
-// const aliases = ['halving', 'bazaar', '💖', '%f0%9f%92%96', '⚡', '%e2%9a%a1', '%e2%9a%a1%ef%b8%8f', '%e2%9a%a1%ef%b8%8e', 'dplusplus', 'me', 'alias', 'd', 'sats', 'node', 'wallet', 'undefined', 'none', 'ping', 'tip', 'tips', 'ln', 'lnurl', 'glitch'];
+const users = ['⚡', '🇯🇲', 'me', 'node', 'dread'];
 
-const aliases = ['⚡', '🇯🇲', 'me', 'node', 'dread'];
-
-const database = {
+// redirects that forward to external Lightning Addresses
+const forwards = {
   d:    "me@dplus.plus",
   alby: "dread@getalby.com"
 }
 
-var lnurl1 = {};
-var user, domain, startTime;
+let lnurl = {};
+let user, startTime;
 
 function myNode() {
-  var meta;
+  let meta;
   switch (user) {
-    case "glitch":
-      meta = "G / L / I / T / C / H";
+    case "user1":
+      meta = "Example 1";
       break;
-    case "bazaar":
-      meta = "Bitcoin Bazaar";
+    case "user2":
+      meta = "Example 2";
       break;
     default:
       meta = "Pay to Island Bitcoin";
   }
-  lnurl1.callback = `https://${process.env.DOMAIN}/api/getInvoice/${user}`;
-  lnurl1.maxSendable = 1000000000000;
-  lnurl1.minSendable = 1000;
-  lnurl1.metadata = JSON.stringify([["text/plain", meta],["text/identifier", `${user}@${process.env.DOMAIN}`]]);
-  lnurl1.commentAllowed = 32;
-  lnurl1.tag = "payRequest";
-  // this is the nostr pubkey that signs and sends zap receipts
-  lnurl1.nostrPubkey = process.env.NOSTR_PUBLIC_KEY;
-  lnurl1.allowsNostr = true;
+  lnurl.callback = `https://${process.env.DOMAIN}/api/getInvoice/${user}`;
+  lnurl.maxSendable = 1000000000000; // values are in millisats
+  lnurl.minSendable = 1000;
+  lnurl.metadata = JSON.stringify([["text/plain", meta],["text/identifier", `${user}@${process.env.DOMAIN}`]]);
+  lnurl.commentAllowed = 32;
+  lnurl.tag = "payRequest";
+  // this is the Nostr pubkey that signs and publishes zap receipts
+  lnurl.nostrPubkey = process.env.NOSTR_PUBLIC_KEY;
+  lnurl.allowsNostr = true;
 }
 
-async function mongo() {
-  const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGDB_URL}`;
-  const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1});
-  var result = false;
+// optional if you'd like to dynamically add new forwards to your database, e.g. see https://dplus.plus/alias
+async function getMongoUser() {
+  const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_URL}`;
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
   try {
-     await client.connect();
-     const collection = client.db("LNURL").collection("aliases");
-     var cursor = await collection.findOne({ _id: user });
-     console.log('we found: ');
-     console.log(cursor);
-     if (!cursor) {
-       console.log("Not found in mongodb database.");
-     }
-     else {
-       console.log("Found in external database.");
-       result = cursor.lnAddress;
-     }
-     console.log('MongoDB operation successful.');
-   } catch (err) {
-     console.log('Error connecting to MongoDB: ' + err);
-   } finally {
-     await client.close();
-     return result;
-   }
+    await client.connect();
+    const collection = client.db("LNURL").collection("aliases");
+    const cursor = await collection.findOne({ _id: user });
+
+    if (!cursor) {
+      console.log("User not found in MongoDB database.");
+      return false;
+    }
+
+    console.log(`${cursor.lnAddress} found in MongoDB database.`);
+    return cursor.lnAddress;
+  } catch (err) {
+    console.error('Error connecting to MongoDB: ', err);
+    return false;
+  } finally {
+    await client.close();
+  }
 }
 
 async function getLNURL(lnAddress) {
-  console.log("inside getLNURL for " + lnAddress);
-  let name    = lnAddress.split("@")[0];
-  let address = lnAddress.split('@')[1];
-  let url     = `https://${address}/.well-known/lnurlp/${name}`;
-  console.log(url);
+  const [name, address] = lnAddress.split("@");
+  const url = `https://${address}/.well-known/lnurlp/${name}`;
+
   try {
     const response = await axios.get(url);
-    console.log("response.data: " + response.data);
+    console.log(`response.data: ${response.data}`);
     return response.data;
   } catch (error) {
-    console.log("There was an error getting the lnurl.");
-    return "There was an error fetching your lnurl.";
+    console.log("There was an error getting the LNURL.");
+    return "There was an error fetching your LNURL.";
   }
 }
 
 function logTime() {
-  console.log("Time elapsed: " + (new Date().getTime() - startTime) + " milliseconds.");
+  console.log(`Time elapsed: ${new Date().getTime() - startTime} milliseconds.`);
 }
 
 export async function GET(req, { params }) {
@@ -92,40 +88,35 @@ export async function GET(req, { params }) {
   };
 
   const referer = req.headers.referer || "an unknown source";
-  user = params.user.toLowerCase() || "none";
+  user = params.user.toLowerCase();
   console.log(user + ' visited from ' + referer + '.');
 
-  if (user == "none")
-    return;
+  if (!user)
+    return NextResponse.json({ message: "No user was specified." }, { headers });
 
   // check the aliases first...
-  if (aliases.includes(user)) {
-    console.log("In my alias list. Going to my node...");
+  if (users.includes(user)) {
     myNode();
     logTime(); // takes 0.0 seconds to return this
-    return NextResponse.json(lnurl1, { headers });
+    return NextResponse.json(lnurl, { headers });
   }
-  // check for peeps in the internal (fast) database...
-  if (user in database) {
-    console.log("Found in internal redirect database.");
-    let result = await getLNURL(database[user]);
+  // next, check if they're set up as a forward...
+  if (user in forwards) {
+    let result = await getLNURL(forwards[user]);
     logTime();
     return NextResponse.json(result, { headers });
   }
-  // check external database (MongoDB)
-  var getDatabase = await mongo(); // takes about .40 - .55 seconds
-  if (getDatabase) {
-    console.log("Found in external redirect database (MongoDB).");
-    let result = await getLNURL(getDatabase);
+  // check for user in external forwards database (MongoDB)...
+  let databaseUser = await getMongoUser(); // takes about .40 - .55 seconds
+  if (databaseUser) {
+    let result = await getLNURL(databaseUser);
     logTime();
-    console.log("the result is: ");
-    console.log(result);
     return NextResponse.json(result, { headers });
   }
-  // catch all case, send to D++ non-custodial node
-  // console.log("Catch all case: going to D++ node...");
+  // catch all case: want to allow for any arbitrary user or not?
+  // console.log("Catch all case: going to my node...");
   // myNode();
   // logTime();
-
-  // return NextResponse.json(lnurl1, { headers });
+  // return NextResponse.json(lnurl, { headers });
+  return NextResponse.json({ message: `User ${user} not found.` }, { headers })
 }

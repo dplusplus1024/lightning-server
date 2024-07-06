@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start && curl https://islandbitcoin.com/api/notifier/run",
+    "start": "next start",
     "lint": "next lint",
-    "postbuild": "echo 'Build complete! Running post-build command.' && curl https://islandbitcoin.com/api/notifier/run"
+    "postbuild": "node postbuild.js"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.10.10",
