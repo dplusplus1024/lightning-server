@@ -5,8 +5,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 // list of valid users; not needed if process.env.CATCH_ALL is set to true
 const users = process.env.USERS.split(/\s*,\s*/);
 // redirects that forward to external Lightning Addresses
-const forwards = JSON.stringify(process.env.FORWARDS);
-
+const forwards = JSON.parse(process.env.FORWARDS);
 
 let lnurl = {};
 let user, startTime;
@@ -25,6 +24,7 @@ function myNode() {
     default:
       meta = process.env.META || `Pay to ${address}`;
   }
+
   lnurl.callback = `https://${process.env.DOMAIN}/api/getInvoice/${user}`;
   lnurl.maxSendable = 1000000000000; // values are in millisats
   lnurl.minSendable = 1000;
@@ -116,12 +116,11 @@ export async function GET(req, { params }) {
     }
   }
   // you can decide if you want any arbitrary username to be valid or not
-  if (process.env.CATCH_ALL === "true") {
-    myNode();
-    logTime();
-    return NextResponse.json(lnurl, { headers });
+  if (process.env.CATCH_ALL === "false") {
+    return NextResponse.json({ message: `User ${user} not found.` }, { headers });
   }
-  else {
-    return NextResponse.json({ message: `User ${user} not found.` }, { headers })
-  }
+
+  myNode();
+  logTime();
+  return NextResponse.json(lnurl, { headers });
 }

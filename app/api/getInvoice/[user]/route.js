@@ -50,7 +50,7 @@ function sha256(data) {
 function createInvoice(user, address, amount, descriptionHash, comment) {
   comment = comment ? comment.slice(0, 64) : "";
   comment = comment ? `Sent to: ${address} | Comment: ${comment}` : `Sent to: ${address} | `;
-  
+
   let requestInvoice = {
     memo: comment,
     description_hash: Buffer.from(descriptionHash, 'hex'),
@@ -245,21 +245,21 @@ export async function GET(req, { params }) {
   // not a nostr zap, just a regular invoice
   let user = params.user.toLowerCase() || "none";
   let comment = url.searchParams.get('comment');
+  let address = `${user}@${process.env.DOMAIN}`;
+  let meta;
 
-  var meta;
   switch (user) {
-    case "glitch":
-      meta = "G / L / I / T / C / H";
+    case "user1":
+      meta = "Example 1";
       break;
-    case "bazaar":
-      meta = "Bitcoin Bazaar";
+    case "user2":
+      meta = "Example 2";
       break;
     default:
-      meta = "Pay to Island Bitcoin";
+      meta = process.env.META || `Pay to ${address}`;
   }
 
   user = encodeURIComponent(user.toLowerCase());
-  const address = `${user}@${process.env.DOMAIN}`;
   const memo = JSON.stringify([["text/plain", meta], ["text/identifier", `${address}`]]);
   const hash = sha256(memo);
 
