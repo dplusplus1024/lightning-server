@@ -59,6 +59,11 @@ function send(mailOptions) {
   });
 }
 
+function capitalize(string) {
+  if (string.length === 0) return string;
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function sendEmail(invoice) {
   let sats = "sat";
   let amount = Number(invoice.amt_paid_sat);
@@ -102,7 +107,8 @@ function sendEmail(invoice) {
       let address = decodeURIComponent(memo.split(' | ')[0]);
       let note = memo.split(' | ')[1];
       memo = note ? `${address}<br><br>${note}` : `${address}`;
-      user = address.split('@')[0].toUpperCase() + ", you";
+      user = address.split('@')[0];
+      user = capitalize(user.split("Sent to: ")[1]) + ", you";
     }
     else {
       memo = invoice.memo ? "Memo: " + invoice.memo : "";
@@ -170,7 +176,7 @@ function sendEmail(invoice) {
               <br><br><br><br>
             </div>
             <div class="footer">
-              © 2024 D++ All rights reserved.
+              Made with ❤️ by <a href="https://x.com/d_plus__plus">D++</a>.
               <br><br>
             </div>
           </div>
@@ -255,10 +261,10 @@ function pushNotification(subject, body) {
     html: 1
   })
   .then(response => {
-    console.log(`Push notification sent: ${response.data}`);
+    console.log("Push notification sent:", response.data);
   })
   .catch(error => {
-    console.error(`Error sending push notification: ${error}`);
+    console.error("Error sending push notification:", error);
   });
 }
 
