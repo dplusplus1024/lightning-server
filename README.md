@@ -56,9 +56,9 @@ EMAIL_BCC=someone.else@domain.com
 USERS=user1,user2,user3
 META=Message to display to sender
 FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
-CATCH_ALL=false
+CATCH_ALL=true
 ## OPTIONAL VARIABLES ############################################################
-USE_MONGO=true
+USE_MONGO=false
 MONGODB_USER=myMongoUser
 MONGODB_PASS=myMongoPassword
 MONGODB_URL=myMongoDBURL
