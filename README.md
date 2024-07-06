@@ -43,15 +43,16 @@ NOSTR=true
 # Literally any key pair will do here!
 NOSTR_PUBLIC_KEY=myNostrPublicKey
 NOSTR_PRIVATE_KEY=myNostrPrivateKey
-PUSHOVER_TOKEN
-PUSHOVER_USER
-# WARNING: this is NOT the same as your normal gmail username and password!
+# Grab these from https://pushover.net/
+PUSHOVER_TOKEN=apiToken
+PUSHOVER_USER=userString
+# WARNING: this is NOT the same as your normal Gmail username and password!
 # you will need to set up a new account for the sole purpose of sending notification emails
 # finally, create an "app password" at https://myaccount.google.com/apppasswords
-EMAIL_SENDER
-EMAIL_PASSWORD
-EMAIL_RECIPIENT
-EMAIL_BCC
+EMAIL_SENDER=notifier.address@gmail.com
+EMAIL_PASSWORD=created-an-app-password
+EMAIL_RECIPIENT=my.email@domain.com
+EMAIL_BCC=someone.else@domain.com
 USERS=user1,user2,user3
 META=Message to display to sender
 FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
