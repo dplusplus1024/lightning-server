@@ -4,6 +4,9 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const users = ['⚡', '🇯🇲', 'me', 'node', 'dread'];
 
+// This code runs once when the module is loaded
+console.log('This runs once on server start!');
+
 // redirects that forward to external Lightning Addresses
 const forwards = {
   d:    "me@dplus.plus",
