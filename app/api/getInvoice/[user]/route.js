@@ -17,9 +17,6 @@ const relays = [
   "wss://nostr.oxtr.dev",
 ];
 
-// This code runs once when the module is loaded
-console.log('getInvoice This runs once on server start!');
-
 const ZAP_TIMEOUT = 300000; // time to wait for zap to be paid - 5 minutes in milliseconds
 let startTime, preimage;
 

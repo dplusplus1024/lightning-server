@@ -18,9 +18,6 @@ let zap = {};
 let connected = false;
 let errorEmailSent = false;
 
-// This code runs once when the module is loaded
-console.log('Notifier - This runs once on server start!');
-
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   // WARNING: this is NOT the same as your normal gmail username and password!

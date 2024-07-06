@@ -1,5 +1,51 @@
-# #!/bin/bash
+#!/bin/bash
+source .env
 git add .
 git commit -m "updated"
 output=$(git push 2>&1)
 echo "$output"
+
+if [[ "$output" == *"Everything up-to-date"* ]]; then
+    echo -e "\nNothing was changed! No need to run https://$DOMAIN/api/notifier/run"
+    exit 0
+fi
+
+echo ""
+echo "***************************************************"
+echo " Waiting to run https://$DOMAIN/api/notifier/run..."
+echo "***************************************************"
+
+sleep 10
+
+recent_deployment_id=$(curl -s -X GET "https://api.digitalocean.com/v2/apps/$DIGITAL_OCEAN_APP_ID/deployments" \
+    -H "Authorization: Bearer $DIGITAL_OCEAN_API" \
+    -H "Content-Type: application/json" |
+    jq -r '.deployments[0].id')
+
+prev_status=""
+
+while :; do
+    deployment_status=$(curl -s -X GET "https://api.digitalocean.com/v2/apps/$DIGITAL_OCEAN_APP_ID/deployments/$recent_deployment_id" \
+        -H "Authorization: Bearer $DIGITAL_OCEAN_API" \
+        -H "Content-Type: application/json" |
+        jq -r '.deployment.phase')
+
+    if [[ "$deployment_status" == "$prev_status" ]]; then
+        echo -n ". "
+    else
+        echo -e "\nCurrent deployment status: $deployment_status"
+        prev_status=$deployment_status
+    fi
+
+    if [[ "$deployment_status" == "ACTIVE" ]]; then
+        sleep 5
+        curl -s https://$DOMAIN/api/notifier/run
+        break
+    fi
+
+    if [[ "$deployment_status" == "ERROR" ]]; then
+        exit 0
+    fi
+
+    sleep 2
+done
