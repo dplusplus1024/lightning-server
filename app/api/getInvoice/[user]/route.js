@@ -1,6 +1,6 @@
 import path from 'path';
 import { promises as fs } from 'fs';
-import { getEventHash, getSignature, finishEvent, relayInit } from 'nostr-tools'
+import { getEventHash, getSignature, finishEvent, relayInit } from 'nostr-tools';
 import crypto from 'crypto';
 import 'websocket-polyfill';
 import bolt11 from 'bolt11';
