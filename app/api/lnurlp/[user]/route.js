@@ -107,7 +107,7 @@ export async function GET(req, { params }) {
     return NextResponse.json(result, { headers });
   }
   // check for user in external forwards database (MongoDB)...
-  if (process.env.USE_MONGO === "true") {
+  if ((process.env.USE_MONGO || "").toLowerCase()  === "true") {
     let databaseUser = await getMongoUser(); // takes about .40 - .55 seconds
     if (databaseUser) {
       let result = await getLNURL(databaseUser);
@@ -116,7 +116,7 @@ export async function GET(req, { params }) {
     }
   }
   // you can decide if you want any arbitrary username to be valid or not
-  if (process.env.CATCH_ALL === "false") {
+  if ((process.env.CATCH_ALL || "").toLowerCase() === "false") {
     return NextResponse.json({ message: `User ${user} not found.` }, { headers });
   }
 

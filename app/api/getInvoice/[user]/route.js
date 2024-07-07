@@ -55,6 +55,7 @@ function createInvoice(user, address, amount, descriptionHash, comment) {
     memo: comment,
     description_hash: Buffer.from(descriptionHash, 'hex'),
     value_msat: amount, // in millisats
+    private: (process.env.PRIVATE_CHANNELS || "").toLowerCase() == "true" // enable automatic route hints based on the environment variable
   }
   // create invoice
   return new Promise(function(resolve, reject) {
@@ -64,7 +65,7 @@ function createInvoice(user, address, amount, descriptionHash, comment) {
  });
 }
 
-// using this invoice as a data store for nostr zaps... sorry lND!
+// using this invoice as a data store for nostr zaps... sorry LND!
 function createDataInvoice(data) {
   let memo = {};
   data = JSON.parse(data);
@@ -85,26 +86,24 @@ function createDataInvoice(data) {
   });
 }
 
-function createNostrInvoice(amount, descriptionHash) {
+function createNostrInvoice(amount, description) {
+  const descriptionHash = sha256(description);
+
   let requestInvoice = {
     memo: "Zap!",
     description_hash: Buffer.from(descriptionHash, 'hex'),
-    value_msat: amount, // in millisats
+    value_msat: amount, // in millisats,
+    private: (process.env.PRIVATE_CHANNELS || "").toLowerCase() == "true" // enable automatic route hints based on the environment variable
   }
 
   return new Promise(function(resolve, reject) {
     lightning.addInvoice(requestInvoice, function(err, response) {
-       // create a new invoice linked to this one for a data store
-       // to link them, we'll use this invoice's hash as its preimage
+       // We'll create a new invoice linked to this one for a data store
+       // To link them, we'll use this invoice's hash as the data store's preimage
        preimage = response.r_hash;
        resolve(response.payment_request);
     });
  });
-}
-
-async function getNostrInvoice(amount, description) {
-  const descriptionHash = sha256(description);
-  return await createNostrInvoice(amount, descriptionHash);
 }
 
 function logTime(message) {
@@ -228,7 +227,7 @@ export async function GET(req, { params }) {
   // it's a nostr zap
   if (zap) {
     // get invoice
-    let bolt11 = await getNostrInvoice(amount, zap);
+    let bolt11 = await createNostrInvoice(amount, zap);
 
     // using my node as a data store... sorry LND! and we don't need to await this...
     createDataInvoice(zap);

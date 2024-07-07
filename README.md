@@ -48,7 +48,7 @@ NOSTR_PRIVATE_KEY=anyNostrPrivateKey
 PUSHOVER_TOKEN=apiToken
 PUSHOVER_USER=userKey
 # This doesn't need to be your primary email; you can set up a new Gmail account
-# specifically for sending notification emails. Once you do, create an "app password"
+# specifically for sending notifications. Once you do, create an "app password"
 # at https://myaccount.google.com/apppasswords
 EMAIL_SENDER=notifier.address@gmail.com
 EMAIL_PASSWORD=youCreatedAnAppPassword
@@ -57,7 +57,10 @@ EMAIL_RECIPIENT=my.email@domain.com
 
 ## OPTIONAL VARIABLES ###############################################################
 EMAIL_BCC=someone.else@domain.com
-# This restricts your Lightning Address to usernames you define, e.g.
+# Set to "true" if you're using private channels to enable LND to automatically
+# add route hints to your invoices.
+PRIVATE_CHANNELS = true
+# This restricts your Lightning Addresses to usernames you define, e.g.
 # user1@yourdomain.com, etc. Users are separated by commas.
 USERS=user1,user2,user3
 # Set CATCH_ALL to "false" if you don't want any arbitrary username to be valid
