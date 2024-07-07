@@ -1,4 +1,4 @@
-// This has to be run at https://${DOMAIN}/api/notifier/app after you've deployed your project
+// This has to be run at https://${DOMAIN}/api/notifier/run after you've deployed your project
 // It will run automatically if you use the ./push bash script (but please help me find a better way...)
 import path from 'path';
 import crypto from 'crypto';
@@ -19,9 +19,9 @@ let errorEmailSent = false;
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  // WARNING: this is NOT the same as your normal gmail username and password!
-  // you will need to set up a new account for the sole purpose of sending notification emails
-  // finally, create an "app password" at https://myaccount.google.com/apppasswords
+  // This doesn't need to be your primary email; you can set up a new Gmail account
+  // specifically for sending notifications. Once you do, create an "app password"
+  // at https://myaccount.google.com/apppasswords
   auth: {
     user: process.env.EMAIL_SENDER,
     pass: process.env.EMAIL_PASSWORD
@@ -57,6 +57,11 @@ function send(mailOptions) {
     else
       console.log(`Email sent: ${info.response}`);
   });
+}
+
+function capitalize(string) {
+  if (string.length === 0) return string;
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function sendEmail(invoice) {
@@ -97,12 +102,13 @@ function sendEmail(invoice) {
     // not a zap - it's a regular BOLT11, LN Address, or keysend payment
     memo = invoice.memo;
     keysend = invoice.is_keysend ? " via keysend" : "";
-    type    = memo.includes("Sent to: ") ? "LN Address" : (invoice.is_keysend ? "Keysend" : "Invoice");
+    type = memo.includes("Sent to: ") ? "LN Address" : (invoice.is_keysend ? "Keysend" : "Invoice");
     if (type == "LN Address") {
       let address = decodeURIComponent(memo.split(' | ')[0]);
       let note = memo.split(' | ')[1];
       memo = note ? `${address}<br><br>${note}` : `${address}`;
-      user = address.split('@')[0].toUpperCase() + ", you";
+      user = address.split('@')[0];
+      user = capitalize(user.split("Sent to: ")[1]) + ", you";
     }
     else {
       memo = invoice.memo ? "Memo: " + invoice.memo : "";
@@ -170,7 +176,7 @@ function sendEmail(invoice) {
               <br><br><br><br>
             </div>
             <div class="footer">
-              © 2024 D++ All rights reserved.
+              Made with ❤️ by <a href="https://x.com/d_plus__plus">D++</a>
               <br><br>
             </div>
           </div>
@@ -196,7 +202,7 @@ function sendEmail(invoice) {
     type = type.toLowerCase();
   if (type == "zap")
     type = "Nostr";
-  pushNotification(`DREAD | You got ${verb} ${amount} ${sats}${plural} via ${type}!`, `Amount: ${amount} ${sats}${plural} ${spacer}${memo}`);
+  pushNotification(`${user} got ${verb} ${amount} ${sats}${plural} via ${type}!`, `Amount: ${amount} ${sats}${plural} ${spacer}${memo}`);
 }
 
 // if the node is unreachable, send an email notification
@@ -255,10 +261,10 @@ function pushNotification(subject, body) {
     html: 1
   })
   .then(response => {
-    console.log('Push notification sent:', response.data);
+    console.log("Push notification sent:", response.data);
   })
   .catch(error => {
-    console.error('Error sending push notification:', error);
+    console.error("Error sending push notification:", error);
   });
 }
 
