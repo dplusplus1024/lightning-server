@@ -55,7 +55,6 @@ function createInvoice(user, address, amount, descriptionHash, comment) {
     memo: comment,
     description_hash: Buffer.from(descriptionHash, 'hex'),
     value_msat: amount, // in millisats
-    private: (process.env.PRIVATE_CHANNELS || "").toLowerCase() == "true" // enable automatic route hints based on the environment variable
   }
   // create invoice
   return new Promise(function(resolve, reject) {
@@ -88,12 +87,11 @@ function createDataInvoice(data) {
 
 function createNostrInvoice(amount, description) {
   const descriptionHash = sha256(description);
-
+  
   let requestInvoice = {
     memo: "Zap!",
     description_hash: Buffer.from(descriptionHash, 'hex'),
-    value_msat: amount, // in millisats,
-    private: (process.env.PRIVATE_CHANNELS || "").toLowerCase() == "true" // enable automatic route hints based on the environment variable
+    value_msat: amount, // in millisats
   }
 
   return new Promise(function(resolve, reject) {
