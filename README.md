@@ -59,7 +59,7 @@ EMAIL_RECIPIENT=my.email@domain.com
 EMAIL_BCC=someone.else@domain.com
 # Set to "true" if you're using private channels to enable LND to automatically
 # add route hints to your invoices.
-PRIVATE_CHANNELS = true
+PRIVATE_CHANNELS=true
 # This restricts your Lightning Addresses to usernames you define, e.g.
 # user1@yourdomain.com, etc. Users are separated by commas.
 USERS=user1,user2,user3
