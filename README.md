@@ -29,9 +29,7 @@ If you don't already have a VPS, the easiest way to deploy and host **Lightning 
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your `.env` file.
-
-### Example `.env` file
+To run this project, you will need to add the following environment variables:
 
 ```env
 ## REQUIRED VARIABLES ###############################################################
