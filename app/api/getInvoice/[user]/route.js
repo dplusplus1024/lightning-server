@@ -64,7 +64,7 @@ function createInvoice(user, address, amount, descriptionHash, comment) {
  });
 }
 
-// using this invoice as a data store for nostr zaps... sorry LND!
+// using this invoice as a data store for nostr zaps... sorry lND!
 function createDataInvoice(data) {
   let memo = {};
   data = JSON.parse(data);
@@ -85,9 +85,7 @@ function createDataInvoice(data) {
   });
 }
 
-function createNostrInvoice(amount, description) {
-  const descriptionHash = sha256(description);
-  
+function createNostrInvoice(amount, descriptionHash) {
   let requestInvoice = {
     memo: "Zap!",
     description_hash: Buffer.from(descriptionHash, 'hex'),
@@ -96,12 +94,17 @@ function createNostrInvoice(amount, description) {
 
   return new Promise(function(resolve, reject) {
     lightning.addInvoice(requestInvoice, function(err, response) {
-       // We'll create a new invoice linked to this one for a data store
-       // To link them, we'll use this invoice's hash as the data store's preimage
+       // create a new invoice linked to this one for a data store
+       // to link them, we'll use this invoice's hash as its preimage
        preimage = response.r_hash;
        resolve(response.payment_request);
     });
  });
+}
+
+async function getNostrInvoice(amount, description) {
+  const descriptionHash = sha256(description);
+  return await createNostrInvoice(amount, descriptionHash);
 }
 
 function logTime(message) {
@@ -225,7 +228,7 @@ export async function GET(req, { params }) {
   // it's a nostr zap
   if (zap) {
     // get invoice
-    let bolt11 = await createNostrInvoice(amount, zap);
+    let bolt11 = await getNostrInvoice(amount, zap);
 
     // using my node as a data store... sorry LND! and we don't need to await this...
     createDataInvoice(zap);
@@ -257,6 +260,7 @@ export async function GET(req, { params }) {
   }
 
   user = encodeURIComponent(user.toLowerCase());
+
   const memo = JSON.stringify([["text/plain", meta], ["text/identifier", `${address}`]]);
   const hash = sha256(memo);
 
