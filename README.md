@@ -18,7 +18,7 @@ You'll need a Lightning node running [LND](https://github.com/lightningnetwork/l
 
 ## Deploying Lightning Server
 
-If you don't already have a VPS, the easiest way to deploy and host **Lightning Server** is to use [DigitalOcean's App Platform](https://www.digitalocean.com/products/app-platform), which will cost approximately $5.00 per month at the time of this writing. If you choose to use [Vercel](https://vercel.com), functionality will be *limited to a working Lightning Address only* - you won't get the benefit of Nostr Zap receipts, email notifications, or push notifications. [Heroku](https://www.heroku.com/) is not recommended.
+If you don't already have a VPS, the easiest way to deploy and host **Lightning Server** is on [DigitalOcean's App Platform](https://www.digitalocean.com/products/app-platform), which will cost approximately $5.00 per month at the time of this writing. If you choose to use [Vercel](https://vercel.com), functionality will be *limited to a working Lightning Address only* - you won't get the benefit of Nostr Zap receipts, email notifications, or push notifications. [Heroku](https://www.heroku.com/) is not recommended.
 
 ## Lightning Server uses Next.js
 
@@ -78,9 +78,9 @@ MONGODB_URL=myMongoDBURL
 
 ## Running the Notifier
 
-After you've deployed the project, you'll need to start the Notifier service at https://yourdomain.com/api/notifier/run in order for push, email, and Nostr notifications to work.
+After you've deployed the project, you'll need to start the [Notifier](https://github.com/dplusplus1024/Lightning-Server/blob/main/app/api/notifier/%5Buser%5D/route.js) service at https://yourdomain.com/api/notifier/run in order for push, email, and Nostr notifications to work.
 
-In the root directory is a [bash script](https://github.com/dplusplus1024/Lightning-Server/blob/main/push) that can be run from the console using `./push` anytime you make changes to the project. It will git add, commit, and push your changes to remote, then auto-run the Notifier. However, I feel like I'm missing something, as there's got to be a better way of doing this. Help anyone?
+In the root directory is a [bash script](https://github.com/dplusplus1024/Lightning-Server/blob/main/push) that can be run from the console using `./push` anytime you make changes to the project. It will git add, commit, and push your changes to remote, then auto-run the Notifier. This script assumes you're using DigitalOcean and will require two local environment variables, `DIGITAL_OCEAN_APP_ID` and `DIGITAL_OCEAN_API`. That said, I feel like I'm missing something, as there's got to be a better way of doing this. Help anyone?
 
 ## Warning
 
