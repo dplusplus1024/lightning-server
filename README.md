@@ -2,7 +2,7 @@
 
 ## About
 
-No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address like you@yourdomain.com. Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on Nostr, as well as **email** and **push notifications** sent to all your devices whenever you receive a Lightning payment of any kind. Never miss a payment alert!
+No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address like you@yourdomain.com. Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on [Nostr](https://damus.io/), as well as **email** and **push notifications** sent to all your devices whenever you receive a Lightning payment of any kind. Never miss a payment alert!
 
 ## Features
 
@@ -39,15 +39,15 @@ DOMAIN=example.com
 REST_HOST=my-node-address.com:8080
 GRPC_HOST=my-node-address.com:10009
 INVOICE_MACAROON=myInvoiceMacaroonInHex
-# Literally any Nostr key pair will do here; no need to use your primary pubkey!
+# Literally any Nostr key pair will do here; no need to use your primary keys!
 # Both must be in hex, not formatted as npub / nsec.
 NOSTR_PUBLIC_KEY=anyNostrPublicKey
 NOSTR_PRIVATE_KEY=anyNostrPrivateKey
 # For your push notifications! Install Pushover on your phone, then grab the
-# API information from https://pushover.net/api
+# API information https://pushover.net/api
 PUSHOVER_TOKEN=apiToken
 PUSHOVER_USER=userKey
-# This doesn't need to be your primary Gmail account; you can set up a new account
+# This doesn't need to be your primary email; you can set up a new Gmail account
 # specifically for sending notification emails. Once you do, create an "app password"
 # at https://myaccount.google.com/apppasswords
 EMAIL_SENDER=notifier.address@gmail.com
@@ -68,8 +68,8 @@ META=Message to display to sender
 # This is a JSON formatted string that will forward users to external Lightning
 # addresses. e.g. d@yourdomain.com will get forwarded to me@dplus.plus
 FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
-# If you want even more forwards, you can add them dynamically using MongoDB.
-# See an example at https://dplus.plus/alias
+# If you want even more forwards, you can set USE_MONGO to "true" add them dynamically
+# using MongoDB. See an example at https://dplus.plus/alias
 USE_MONGO=false
 MONGODB_USER=myMongoUser
 MONGODB_PASS=myMongoPassword
@@ -80,7 +80,7 @@ MONGODB_URL=myMongoDBURL
 
 After you've deployed the project, you'll need to start the [Notifier](https://github.com/dplusplus1024/Lightning-Server/blob/main/app/api/notifier/%5Buser%5D/route.js) service at https://yourdomain.com/api/notifier/run in order for push, email, and Nostr notifications to work.
 
-In the root directory is a [bash script](https://github.com/dplusplus1024/Lightning-Server/blob/main/push) that can be run from the console using `./push` anytime you make changes to the project. It will git add, commit, and push your changes to remote, then auto-run the Notifier. This script assumes you're using DigitalOcean and will require two local environment variables, `DIGITAL_OCEAN_APP_ID` and `DIGITAL_OCEAN_API`. That said, I feel like I'm missing something, as there's got to be a better way of doing this. Help anyone?
+In the root directory is a [bash script](https://github.com/dplusplus1024/Lightning-Server/blob/main/push) that can be run from the console using `./push` anytime you make changes to the project. It will git add, commit, and push your changes to remote, then auto-run the Notifier. This script assumes you're using DigitalOcean and will require two local environment variables, `DIGITAL_OCEAN_APP_ID` and `DIGITAL_OCEAN_API`. That said, *I feel like I'm missing something, as there's got to be a better way of doing this. Help anyone?*
 
 ## Warning
 
@@ -88,8 +88,7 @@ This is experimental software, currently still in beta. Use at your own risk!
 
 ## To Do
 
-- Continue refactoring, polishing, and optimizing code
+- Continue refactoring, polishing, and optimizing code and documentation
 - Add Lightning Point of Sale
-- Add code to automatically start the Notifier service
-- Add more detailed documentation
+- Find a better way to automatically start the [Notifier](https://github.com/dplusplus1024/Lightning-Server/blob/main/app/api/notifier/%5Buser%5D/route.js) service
 - Host an online workshop on how to run this server!
