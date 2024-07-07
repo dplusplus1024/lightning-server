@@ -34,29 +34,31 @@ To run this project, you will need to add the following environment variables to
 ### Example `.env` file
 
 ```env
-## REQUIRED VARIABLES ############################################################
+## REQUIRED VARIABLES ###############################################################
 DOMAIN=example.com
 INVOICE_MACAROON=myInvoiceMacaroon
 REST_HOST=my-node-address.com:8080
 GRPC_HOST=my-node-address.com:10009
 NOSTR=true
 # Literally any key Nostr pair will do here; no need to use your primary pubkey
-NOSTR_PUBLIC_KEY=myNostrPublicKey
-NOSTR_PRIVATE_KEY=myNostrPrivateKey
+NOSTR_PUBLIC_KEY=anyNostrPublicKey
+NOSTR_PRIVATE_KEY=anyNostrPrivateKey
 # For your push notifications! Install Pushover on your phone, then grab this
 # information from https://pushover.net/
 PUSHOVER_TOKEN=apiToken
 PUSHOVER_USER=userString
 # This doesn't need to be your primary Gmail account; you can set up a new account
 # specifically for sending notification emails. Once you do, create an "app password"
-# at [Google Account App Passwords](https://myaccount.google.com/apppasswords)
+# at https://myaccount.google.com/apppasswords
 EMAIL_SENDER=notifier.address@gmail.com
 EMAIL_PASSWORD=youCreatedAnAppPassword
 # Where the notifications will be sent to
 EMAIL_RECIPIENT=my.email@domain.com
+
+## OPTIONAL VARIABLES ###############################################################
 EMAIL_BCC=someone.else@domain.com
-# Optional, this restricts your Lightning Address to usernames you define, e.g.
-# user1@yourdomain.com, etc. Users are separated by commas.
+# This restricts your Lightning Address to usernames you define, e.g.
+# user1@yourdomain.com, etc. Users are separated by commas
 USERS=user1,user2,user3
 # Set this to "false" if you don't want any arbitrary username to be valid
 # e.g. if false, a payment to user4@yourdomain.com will fail
@@ -66,9 +68,8 @@ META=Message to display to sender
 # This is a JSON formatted string that will forward users to external Lightning
 # addresses. e.g. d@yourdomain.com will get forwarded to me@dplus.plus
 FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
-## OPTIONAL VARIABLES ############################################################
-# You probably won't use this, but I created a forwarding service that requires
-# MongoDB. See https://dplus.plus/alias
+# If you want even more forwards, you can add them dynamically using MongoDB.
+# See an example at https://dplus.plus/alias
 USE_MONGO=false
 MONGODB_USER=myMongoUser
 MONGODB_PASS=myMongoPassword
