@@ -245,22 +245,21 @@ export async function GET(req, { params }) {
   // not a nostr zap, just a regular invoice
   let user = params.user.toLowerCase() || "none";
   let comment = url.searchParams.get('comment');
-  let address = `${user}@${process.env.DOMAIN}`;
-  let meta;
 
+  var meta;
   switch (user) {
-    case "user1":
-      meta = "Example 1";
+    case "glitch":
+      meta = "G / L / I / T / C / H";
       break;
-    case "user2":
-      meta = "Example 2";
+    case "bazaar":
+      meta = "Bitcoin Bazaar";
       break;
     default:
-      meta = process.env.META || `Pay to ${address}`;
+      meta = "Pay to Island Bitcoin";
   }
 
   user = encodeURIComponent(user.toLowerCase());
-
+  const address = `${user}@${process.env.DOMAIN}`;
   const memo = JSON.stringify([["text/plain", meta], ["text/identifier", `${address}`]]);
   const hash = sha256(memo);
 
