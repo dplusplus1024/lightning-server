@@ -1,6 +1,6 @@
 import path from 'path';
 import { promises as fs } from 'fs';
-import * as nostr from 'nostr-tools';
+import { getEventHash, getSignature, finishEvent, relayInit } from 'nostr-tools'
 import crypto from 'crypto';
 import 'websocket-polyfill';
 import bolt11 from 'bolt11';
@@ -148,14 +148,14 @@ async function zapReceipt(data) {
   if (e) {
     zap.tags[zap.tags.length] = ["e", e];
   }
-  zap.id = nostr.getEventHash(zap);
-  zap.sig = nostr.getSignature(zap, process.env.NOSTR_PRIVATE_KEY);
-  const signedEvent = nostr.finishEvent(zap, process.env.NOSTR_PRIVATE_KEY);
+  zap.id = getEventHash(zap);
+  zap.sig = getSignature(zap, process.env.NOSTR_PRIVATE_KEY);
+  const signedEvent = finishEvent(zap, process.env.NOSTR_PRIVATE_KEY);
 
   let isPublished = false;
   for (let relayUrl of relays) {
     try {
-      let relay = nostr.relayInit(relayUrl);
+      let relay = relayInit(relayUrl);
       await relay.connect();
       await relay.publish(signedEvent);
       console.log(`Published to ${relayUrl}`);
