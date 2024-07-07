@@ -40,7 +40,7 @@ REST_HOST=my-node-address.com:8080
 GRPC_HOST=my-node-address.com:10009
 INVOICE_MACAROON=myInvoiceMacaroonInHex
 # Literally any Nostr key pair will do here; no need to use your primary keys!
-# Both must be in hex, not formatted as npub / nsec.
+# Both must be in hex, not formatted as npub/nsec.
 NOSTR_PUBLIC_KEY=anyNostrPublicKey
 NOSTR_PRIVATE_KEY=anyNostrPrivateKey
 # For your push notifications! Install Pushover on your phone, then grab the
@@ -80,7 +80,7 @@ MONGODB_URL=myMongoDBURL
 
 After you've deployed the project, you'll need to start the [Notifier](https://github.com/dplusplus1024/Lightning-Server/blob/main/app/api/notifier/%5Buser%5D/route.js) service at https://yourdomain.com/api/notifier/run in order for push, email, and Nostr notifications to work.
 
-In the root directory is a [bash script](https://github.com/dplusplus1024/Lightning-Server/blob/main/push) that can be run from the console using `./push` anytime you make changes to the project. It will git add, commit, and push your changes to remote, then auto-run the Notifier. This script assumes you're using DigitalOcean and will require two local environment variables, `DIGITAL_OCEAN_APP_ID` and `DIGITAL_OCEAN_API`. That said, *I feel like I'm missing something, as there's got to be a better way of doing this. Help anyone?*
+In the root directory is a [bash script](https://github.com/dplusplus1024/Lightning-Server/blob/main/push) that can be run from the console using `./push` anytime you make changes to the project. It will git add, commit, and push your changes to remote, then auto-run the Notifier. This script assumes you're using DigitalOcean and requires two local environment variables, `DIGITAL_OCEAN_APP_ID` and `DIGITAL_OCEAN_API`. That said, *I feel like I'm missing something, as there's got to be a better way of doing this. Help anyone?*
 
 ## Warning
 
