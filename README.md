@@ -68,7 +68,7 @@ META=Message to display to sender
 # This is a JSON formatted string that will forward users to external Lightning
 # addresses, e.g. d@yourdomain.com will get forwarded to me@dplus.plus
 FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
-# If you want even more forwards, you can set USE_MONGO to "true" add them
+# If you want even more forwards, you can set USE_MONGO to "true" and add them
 # dynamically using MongoDB. See an example at https://dplus.plus/alias
 USE_MONGO=false
 MONGODB_USER=myMongoUser
@@ -80,7 +80,7 @@ MONGODB_URL=myMongoDBURL
 
 After you've deployed the project, you'll need to start the [Notifier](https://github.com/dplusplus1024/Lightning-Server/blob/main/app/api/notifier/%5Buser%5D/route.js) service at https://yourdomain.com/api/notifier/run in order for push, email, and Nostr notifications to work.
 
-In the root directory is a [bash script](https://github.com/dplusplus1024/Lightning-Server/blob/main/push) that can be run from the console using `./push` anytime you make changes to the project. It will git add, commit, and push your changes to remote, then auto-run the Notifier. This script assumes you're using DigitalOcean and requires two local environment variables, `DIGITAL_OCEAN_APP_ID` and `DIGITAL_OCEAN_API`. That said, *I feel like I'm missing something, as there's got to be a better way of doing this. Help anyone?*
+In the root directory is a [bash script](https://github.com/dplusplus1024/Lightning-Server/blob/main/push) that can be run from the console using `./push` anytime you make changes. It will git add, commit, and push your changes to remote, then auto-run the Notifier. This script assumes you're using DigitalOcean and requires two local environment variables, `DIGITAL_OCEAN_APP_ID` and `DIGITAL_OCEAN_API`. That said, *I feel like I'm missing something, as there's got to be a better way of doing this. Help anyone?*
 
 ## Warning
 
