@@ -18,7 +18,7 @@ You'll need a Lightning node running [LND](https://github.com/lightningnetwork/l
 
 ## Deploying Lightning Server
 
-If you don't already have a VPS, the easiest way to deploy and host **Lightning Server** is to use [DigitialOcean's App Platform](https://www.digitalocean.com/products/app-platform), which will cost approximately $5.00 per month at the time of this writing. If you choose to use [Vercel](https://vercel.com), functionality will be *limited to a working Lightning Address only* - you won't get the benefit of Nostr Zap receipts, email notifications, or push notifications. [Heroku](https://www.heroku.com/) is not recommended.
+If you don't already have a VPS, the easiest way to deploy and host **Lightning Server** is to use [DigitalOcean's App Platform](https://www.digitalocean.com/products/app-platform), which will cost approximately $5.00 per month at the time of this writing. If you choose to use [Vercel](https://vercel.com), functionality will be *limited to a working Lightning Address only* - you won't get the benefit of Nostr Zap receipts, email notifications, or push notifications. [Heroku](https://www.heroku.com/) is not recommended.
 
 ## Lightning Server uses Next.js
 
@@ -40,37 +40,46 @@ INVOICE_MACAROON=myInvoiceMacaroon
 REST_HOST=my-node-address.com:8080
 GRPC_HOST=my-node-address.com:10009
 NOSTR=true
-# Literally any key pair will do here!
+# Literally any key Nostr pair will do here; no need to use your primary pubkey
 NOSTR_PUBLIC_KEY=myNostrPublicKey
 NOSTR_PRIVATE_KEY=myNostrPrivateKey
-# Grab these from https://pushover.net/
+# For your push notifications! Install Pushover on your phone, then grab this
+# information from https://pushover.net/
 PUSHOVER_TOKEN=apiToken
 PUSHOVER_USER=userString
-# WARNING: this is NOT the same as your normal Gmail username and password!
-# you will need to set up a new account for the sole purpose of sending notification emails
-# finally, create an "app password" at https://myaccount.google.com/apppasswords
+# This doesn't need to be your primary Gmail account; you can set up a new account
+# specifically for sending notification emails. Once you do, create an "app password"
+# at [Google Account App Passwords](https://myaccount.google.com/apppasswords)
 EMAIL_SENDER=notifier.address@gmail.com
-EMAIL_PASSWORD=created-an-app-password
+EMAIL_PASSWORD=youCreatedAnAppPassword
+# Where the notifications will be sent to
 EMAIL_RECIPIENT=my.email@domain.com
 EMAIL_BCC=someone.else@domain.com
+# Optional, this restricts your Lightning Address to usernames you define, e.g.
+# user1@yourdomain.com, etc. Users are separated by commas.
 USERS=user1,user2,user3
-META=Message to display to sender
-FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
+# Set this to "false" if you don't want any arbitrary username to be valid
+# e.g. if false, a payment to user4@yourdomain.com will fail
 CATCH_ALL=true
+# This is what the sender sees in their wallet when they enter your address
+META=Message to display to sender
+# This is a JSON formatted string that will forward users to external Lightning
+# addresses. e.g. d@yourdomain.com will get forwarded to me@dplus.plus
+FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
 ## OPTIONAL VARIABLES ############################################################
+# You probably won't use this, but I created a forwarding service that requires
+# MongoDB. See https://dplus.plus/alias
 USE_MONGO=false
 MONGODB_USER=myMongoUser
 MONGODB_PASS=myMongoPassword
 MONGODB_URL=myMongoDBURL
-
-
 ```
 
 ## Running the Notifier
 
-After you've deployed the project, you'll need to start the Notifier.js at https://yourdomain.com/api/notifier/run
+After you've deployed the project, you'll need to start the Notifier service at https://yourdomain.com/api/notifier/run in order for push, email, and Nostr notifications to work.
 
-Included is a bash script in the root directory that can be run from the console using `./push` anytime you make changes to the project. However, I feel like I'm missing something, as there's got to be a better way to do this. Help anyone?
+In the root directory is a [bash script](https://github.com/dplusplus1024/Lightning-Server/blob/main/push) that can be run from the console using `./push` anytime you make changes to the project. It will git add, commit, and push your changes to remote, then auto-run the Notifier. However, I feel like I'm missing something, as there's got to be a better way of doing this. Help anyone?
 
 ## Warning
 
@@ -80,6 +89,6 @@ This is experimental software, currently still in beta. Use at your own risk!
 
 - Continue refactoring, polishing, and optimizing code
 - Add Lightning Point of Sale
-- Add code to automatically run notifier.js
+- Add code to automatically start the Notifier service
 - Add more detailed documentation
 - Host an online workshop on how to run this server!
