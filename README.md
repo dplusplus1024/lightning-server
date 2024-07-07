@@ -39,14 +39,14 @@ DOMAIN=example.com
 REST_HOST=my-node-address.com:8080
 GRPC_HOST=my-node-address.com:10009
 INVOICE_MACAROON=myInvoiceMacaroonInHex
-# Literally any key Nostr pair will do here; no need to use your primary pubkey!
-# Must be in hex, not formatted as npub / nsec.
+# Literally any Nostr key pair will do here; no need to use your primary pubkey!
+# Both must be in hex, not formatted as npub / nsec.
 NOSTR_PUBLIC_KEY=anyNostrPublicKey
 NOSTR_PRIVATE_KEY=anyNostrPrivateKey
-# For your push notifications! Install Pushover on your phone, then grab this
-# information from https://pushover.net/
+# For your push notifications! Install Pushover on your phone, then grab the
+# API information from https://pushover.net/api
 PUSHOVER_TOKEN=apiToken
-PUSHOVER_USER=userString
+PUSHOVER_USER=userKey
 # This doesn't need to be your primary Gmail account; you can set up a new account
 # specifically for sending notification emails. Once you do, create an "app password"
 # at https://myaccount.google.com/apppasswords
@@ -60,7 +60,7 @@ EMAIL_BCC=someone.else@domain.com
 # This restricts your Lightning Address to usernames you define, e.g.
 # user1@yourdomain.com, etc. Users are separated by commas.
 USERS=user1,user2,user3
-# Set this to "false" if you don't want any arbitrary username to be valid
+# Set CATCH_ALL to "false" if you don't want any arbitrary username to be valid
 # e.g. if false, a payment to user4@yourdomain.com will fail.
 CATCH_ALL=true
 # This is what the sender sees in their wallet when they enter your address.
