@@ -36,11 +36,11 @@ To run this project, you will need to add the following environment variables to
 ```env
 ## REQUIRED VARIABLES ###############################################################
 DOMAIN=example.com
-INVOICE_MACAROON=myInvoiceMacaroon
 REST_HOST=my-node-address.com:8080
 GRPC_HOST=my-node-address.com:10009
-NOSTR=true
-# Literally any key Nostr pair will do here; no need to use your primary pubkey
+INVOICE_MACAROON=myInvoiceMacaroonInHex
+# Literally any key Nostr pair will do here; no need to use your primary pubkey!
+# Must be in hex, not formatted as npub / nsec.
 NOSTR_PUBLIC_KEY=anyNostrPublicKey
 NOSTR_PRIVATE_KEY=anyNostrPrivateKey
 # For your push notifications! Install Pushover on your phone, then grab this
@@ -58,12 +58,12 @@ EMAIL_RECIPIENT=my.email@domain.com
 ## OPTIONAL VARIABLES ###############################################################
 EMAIL_BCC=someone.else@domain.com
 # This restricts your Lightning Address to usernames you define, e.g.
-# user1@yourdomain.com, etc. Users are separated by commas
+# user1@yourdomain.com, etc. Users are separated by commas.
 USERS=user1,user2,user3
 # Set this to "false" if you don't want any arbitrary username to be valid
-# e.g. if false, a payment to user4@yourdomain.com will fail
+# e.g. if false, a payment to user4@yourdomain.com will fail.
 CATCH_ALL=true
-# This is what the sender sees in their wallet when they enter your address
+# This is what the sender sees in their wallet when they enter your address.
 META=Message to display to sender
 # This is a JSON formatted string that will forward users to external Lightning
 # addresses. e.g. d@yourdomain.com will get forwarded to me@dplus.plus
