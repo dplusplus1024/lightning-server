@@ -35,7 +35,7 @@ To run this project, you will need to add the following environment variables to
 
 ```env
 ## REQUIRED VARIABLES ###############################################################
-DOMAIN=example.com
+DOMAIN=yourdomain.com
 REST_HOST=my-node-address.com:8080
 GRPC_HOST=my-node-address.com:10009
 INVOICE_MACAROON=myInvoiceMacaroonInHex
@@ -44,7 +44,7 @@ INVOICE_MACAROON=myInvoiceMacaroonInHex
 NOSTR_PUBLIC_KEY=anyNostrPublicKey
 NOSTR_PRIVATE_KEY=anyNostrPrivateKey
 # For your push notifications! Install Pushover on your phone, then grab the
-# API information https://pushover.net/api
+# API information from https://pushover.net/api
 PUSHOVER_TOKEN=apiToken
 PUSHOVER_USER=userKey
 # This doesn't need to be your primary email; you can set up a new Gmail account
@@ -66,10 +66,10 @@ CATCH_ALL=true
 # This is what the sender sees in their wallet when they enter your address.
 META=Message to display to sender
 # This is a JSON formatted string that will forward users to external Lightning
-# addresses. e.g. d@yourdomain.com will get forwarded to me@dplus.plus
+# addresses, e.g. d@yourdomain.com will get forwarded to me@dplus.plus
 FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
-# If you want even more forwards, you can set USE_MONGO to "true" add them dynamically
-# using MongoDB. See an example at https://dplus.plus/alias
+# If you want even more forwards, you can set USE_MONGO to "true" add them
+# dynamically using MongoDB. See an example at https://dplus.plus/alias
 USE_MONGO=false
 MONGODB_USER=myMongoUser
 MONGODB_PASS=myMongoPassword

@@ -19,7 +19,7 @@ let errorEmailSent = false;
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  // This doesn't need to be your primary Gmail account; you can set up a new account
+  // This doesn't need to be your primary email; you can set up a new Gmail account
   // specifically for sending notification emails. Once you do, create an "app password"
   // at https://myaccount.google.com/apppasswords
   auth: {
