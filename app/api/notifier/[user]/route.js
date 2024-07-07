@@ -1,4 +1,4 @@
-// This has to be run at https://${DOMAIN}/api/notifier/app after you've deployed your project
+// This has to be run at https://${DOMAIN}/api/notifier/run after you've deployed your project
 // It will run automatically if you use the ./push bash script (but please help me find a better way...)
 import path from 'path';
 import crypto from 'crypto';
@@ -19,9 +19,9 @@ let errorEmailSent = false;
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  // WARNING: this is NOT the same as your normal Gmail username and password
-  // you will need to set up a new account for the sole purpose of sending notification emails
-  // finally, create an "app password" at https://myaccount.google.com/apppasswords
+  // This doesn't need to be your primary Gmail account; you can set up a new account
+  // specifically for sending notification emails. Once you do, create an "app password"
+  // at https://myaccount.google.com/apppasswords
   auth: {
     user: process.env.EMAIL_SENDER,
     pass: process.env.EMAIL_PASSWORD
