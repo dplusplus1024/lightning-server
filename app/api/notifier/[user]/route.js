@@ -5,15 +5,13 @@ import crypto from 'crypto';
 import * as nostr from 'nostr-tools';
 import nodemailer from 'nodemailer';
 import { NextResponse } from 'next/server';
-const fs = require('fs');
 const WebSocket = require('ws');
 const grpc = require('@grpc/grpc-js');
 const { bech32 } = require('bech32');
 const axios = require('axios');
 const protoLoader = require('@grpc/proto-loader');
 
-let startTime;
-let zap = {};
+const zap = {};
 let connected = false;
 let errorEmailSent = false;
 
@@ -237,20 +235,6 @@ function messageEmail(subject, html) {
   };
   send(mailOptions);
 }
-
-// function findZapInvoice(r_preimage) {
-//   r_preimage = Buffer.from(r_preimage, 'base64');
-//   const r_hash = crypto.createHash('sha256').update(r_preimage).digest();
-//   const request = {
-//     r_hash: r_hash
-//   };
-//
-//   return new Promise(function(resolve, reject) {
-//     lightning.lookupInvoice(request, function(err, response) {
-//       resolve(response.memo);
-//     });
-//   });
-// }
 
 function pushNotification(subject, body) {
   axios.post('https://api.pushover.net/1/messages.json', {

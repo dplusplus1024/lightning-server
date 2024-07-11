@@ -1,5 +1,4 @@
 import path from 'path';
-import { promises as fs } from 'fs';
 import { getEventHash, getSignature, finishEvent, relayInit } from 'nostr-tools';
 import crypto from 'crypto';
 import 'websocket-polyfill';
@@ -57,9 +56,10 @@ function createInvoice(user, address, amount, descriptionHash, comment) {
     memo: comment,
     description_hash: Buffer.from(descriptionHash, 'hex'),
     value_msat: amount, // in millisats
-    private: (process.env.PRIVATE_CHANNELS || "").toLowerCase() == "true" // enable automatic route hints based on the environment variable
+    // enable automatic route hints based on the environment variable
+    private: (process.env.PRIVATE_CHANNELS || "").toLowerCase() == "true"
   }
-  // create invoice
+
   return new Promise(function(resolve, reject) {
     lightning.addInvoice(requestInvoice, function(err, response) {
        resolve(response.payment_request);
@@ -80,7 +80,8 @@ function createNostrInvoice(amount, description) {
     memo: JSON.stringify(memo),
     description_hash: Buffer.from(descriptionHash, 'hex'),
     value_msat: amount, // in millisats,
-    private: (process.env.PRIVATE_CHANNELS || "").toLowerCase() == "true" // enable automatic route hints based on the environment variable
+    // enable automatic route hints based on the environment variable
+    private: (process.env.PRIVATE_CHANNELS || "").toLowerCase() == "true"
   }
 
   return new Promise(function(resolve, reject) {
@@ -100,20 +101,16 @@ function getStatus(hash) {
   };
 
   return new Promise(function(resolve, reject) {
-    lightning.lookupInvoice(request, function(err, response) {
-      if (response) {
-        resolve(response?.state == 'SETTLED');
-      }
-      else
-        resolve(false);
+    lightning.lookupInvoice(request, function(error, response) {
+      resolve(response?.state == 'SETTLED');
     });
   });
 }
 
 async function zapReceipt(data) {
   const note = JSON.parse(data.description);
-  let e = note.tags.find(tag => tag[0] === 'e')?.[1];
-  let p = note.tags.find(tag => tag[0] === 'p')?.[1];
+  const e = note.tags.find(tag => tag[0] === 'e')?.[1];
+  const p = note.tags.find(tag => tag[0] === 'p')?.[1];
 
   if (!p) {
     return;
@@ -150,7 +147,7 @@ async function zapReceipt(data) {
     }
   }
   if (!isPublished)
-    console.log(`Could not publish note to any relay. :(`);
+    console.log(`Could not publish note to any relay.`);
 }
 
 function pause(ms) {
@@ -199,7 +196,6 @@ export async function GET(req, { params }) {
   console.log("Welcome to getInvoice.js");
 
   const lnurl = {};
-  lnurl.routes = [];
   const url = new URL(req.url);
   const amountParam = url.searchParams.get('amount');
   if (amountParam === null || amountParam.trim() === '')
@@ -207,8 +203,8 @@ export async function GET(req, { params }) {
   const amount = Number(amountParam);
   if (isNaN(amount))
     return NextResponse.json({ message: "Invalid amount provided." }, { headers });
-
   const zap = url.searchParams.get('nostr');
+
   // it's a nostr zap
   if (zap) {
     // get invoice
