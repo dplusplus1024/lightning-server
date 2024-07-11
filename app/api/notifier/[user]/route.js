@@ -70,8 +70,6 @@ function sendEmail(invoice) {
     sats = "millisat";
   }
   let plural = amount > 1 ? 's' : '';
-  let preimageBuffer = Buffer.from(invoice.r_preimage, 'base64');
-  let preimage = preimageBuffer.toString('hex');
   let verb = zap.on ? "zapped" : "paid";
   let memo;
   let type;
@@ -170,7 +168,6 @@ function sendEmail(invoice) {
               <p style="font-size: 18px;">
               <b>You just got ${verb} <b>${amount}</b> ${sats}${plural}${keysend}!</b></p>
               ${memo}${spacer}
-              Preimage: ${preimage}
               <br><br><br><br>
             </div>
             <div class="footer">
