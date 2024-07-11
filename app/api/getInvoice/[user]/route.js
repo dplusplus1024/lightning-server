@@ -17,10 +17,10 @@ const relays = [
   "wss://nostr.oxtr.dev",
 ];
 
+let startTime;
 const ZAP_TIMEOUT = 300000; // time to wait for zap to be paid - 5 minutes in milliseconds
 const DEFAULT_PRIVATE_KEY = "6be6e45ea4eb02d3cc9cda30771281ceb92aa8b972bbea50243d269919979b1e";
 const NOSTR_PRIVATE_KEY = process.env.NOSTR_PRIVATE_KEY || DEFAULT_PRIVATE_KEY;
-let startTime, preimage;
 
 const loaderOptions = {
   keepCase: true,
@@ -67,32 +67,17 @@ function createInvoice(user, address, amount, descriptionHash, comment) {
  });
 }
 
-// using this invoice as a data store for nostr zaps... sorry LND!
-function createDataInvoice(data) {
-  let memo = {};
-  data = JSON.parse(data);
+function createNostrInvoice(amount, description) {
+  const memo = {};
+  const data = JSON.parse(description);
+  const descriptionHash = sha256(description);
+  memo.type = "Nostr Zap!";
   memo.pubkey = data.pubkey;
   memo.content = data.content;
   memo.event = data.tags.find(tag => tag[0] === 'e')?.[1];
 
   let requestInvoice = {
     memo: JSON.stringify(memo),
-    r_preimage: preimage,
-    value_msat: 0, // in millisats
-  }
-
-  const r_hash = crypto.createHash('sha256').update(preimage).digest();
-
-  lightning.addInvoice(requestInvoice, function(err, response) {
-    // console.log(response);
-  });
-}
-
-function createNostrInvoice(amount, description) {
-  const descriptionHash = sha256(description);
-
-  let requestInvoice = {
-    memo: "Zap!",
     description_hash: Buffer.from(descriptionHash, 'hex'),
     value_msat: amount, // in millisats,
     private: (process.env.PRIVATE_CHANNELS || "").toLowerCase() == "true" // enable automatic route hints based on the environment variable
@@ -100,9 +85,6 @@ function createNostrInvoice(amount, description) {
 
   return new Promise(function(resolve, reject) {
     lightning.addInvoice(requestInvoice, function(err, response) {
-       // We'll create a new invoice linked to this one for a data store
-       // To link them, we'll use this invoice's hash as the data store's preimage
-       preimage = response.r_hash;
        resolve(response.payment_request);
     });
  });
@@ -216,7 +198,8 @@ export async function GET(req, { params }) {
 
   console.log("Welcome to getInvoice.js");
 
-  let lnurl = {};
+  const lnurl = {};
+  lnurl.routes = [];
   const url = new URL(req.url);
   const amountParam = url.searchParams.get('amount');
   if (amountParam === null || amountParam.trim() === '')
@@ -231,11 +214,8 @@ export async function GET(req, { params }) {
     // get invoice
     let bolt11 = await createNostrInvoice(amount, zap);
 
-    // using my node as a data store... sorry LND! and we don't need to await this...
-    createDataInvoice(zap);
-
     lnurl.pr = bolt11;
-    lnurl.routes = [];
+
     logTime("Created an invoice for a nostr zap.");
 
     // give them 5 minutes to pay the invoice, polling our node every second...
@@ -265,7 +245,7 @@ export async function GET(req, { params }) {
   const hash = sha256(memo);
 
   lnurl.pr = await createInvoice(user, address, amount, hash, comment);
-  lnurl.routes = [];
+
   logTime("Invoice creation success!");
   return NextResponse.json(lnurl, { headers });
 }

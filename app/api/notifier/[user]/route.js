@@ -238,19 +238,19 @@ function messageEmail(subject, html) {
   send(mailOptions);
 }
 
-function findZapInvoice(r_preimage) {
-  r_preimage = Buffer.from(r_preimage, 'base64');
-  const r_hash = crypto.createHash('sha256').update(r_preimage).digest();
-  const request = {
-    r_hash: r_hash
-  };
-
-  return new Promise(function(resolve, reject) {
-    lightning.lookupInvoice(request, function(err, response) {
-      resolve(response.memo);
-    });
-  });
-}
+// function findZapInvoice(r_preimage) {
+//   r_preimage = Buffer.from(r_preimage, 'base64');
+//   const r_hash = crypto.createHash('sha256').update(r_preimage).digest();
+//   const request = {
+//     r_hash: r_hash
+//   };
+//
+//   return new Promise(function(resolve, reject) {
+//     lightning.lookupInvoice(request, function(err, response) {
+//       resolve(response.memo);
+//     });
+//   });
+// }
 
 function pushNotification(subject, body) {
   axios.post('https://api.pushover.net/1/messages.json', {
@@ -332,9 +332,8 @@ function notify() {
       if (invoice?.state == "SETTLED") {
         console.log("Paid invoice detected!");
         // if it's a zap, include information about who zapped you!
-        if (invoice.memo.includes("Zap!")) {
-          zap.data = await findZapInvoice(invoice.r_hash);
-          zap.data = JSON.parse(zap.data);
+        if (invoice.memo.includes("Nostr Zap!")) {
+          zap.data = JSON.parse(invoice.memo);
           zap.on = true;
         }
         sendEmail(invoice);
