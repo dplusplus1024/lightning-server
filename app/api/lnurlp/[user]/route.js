@@ -2,6 +2,8 @@ const axios = require('axios');
 const { NextResponse } = require('next/server');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
+const DEFAULT_PUBLIC_KEY = "702ba902c99b28ee2d78dea4ae2105bd4b18dde901d88b8e5fd247d886ce57f5";
+const NOSTR_PUBLIC_KEY = process.env.NOSTR_PUBLIC_KEY || DEFAULT_PUBLIC_KEY;
 // list of valid users; not needed if process.env.CATCH_ALL is set to true
 const users = process.env.USERS.split(/\s*,\s*/);
 // redirects that forward to external Lightning Addresses
@@ -32,7 +34,7 @@ function myNode() {
   lnurl.commentAllowed = 32;
   lnurl.tag = "payRequest";
   // this is the Nostr pubkey that signs and publishes zap receipts
-  lnurl.nostrPubkey = process.env.NOSTR_PUBLIC_KEY;
+  lnurl.nostrPubkey = NOSTR_PUBLIC_KEY;
   lnurl.allowsNostr = true;
 }
 

@@ -18,6 +18,8 @@ const relays = [
 ];
 
 const ZAP_TIMEOUT = 300000; // time to wait for zap to be paid - 5 minutes in milliseconds
+const DEFAULT_PRIVATE_KEY = "6be6e45ea4eb02d3cc9cda30771281ceb92aa8b972bbea50243d269919979b1e";
+const NOSTR_PRIVATE_KEY = process.env.NOSTR_PRIVATE_KEY || DEFAULT_PRIVATE_KEY;
 let startTime, preimage;
 
 const loaderOptions = {
@@ -149,8 +151,8 @@ async function zapReceipt(data) {
     zap.tags[zap.tags.length] = ["e", e];
   }
   zap.id = getEventHash(zap);
-  zap.sig = getSignature(zap, process.env.NOSTR_PRIVATE_KEY);
-  const signedEvent = finishEvent(zap, process.env.NOSTR_PRIVATE_KEY);
+  zap.sig = getSignature(zap, NOSTR_PRIVATE_KEY);
+  const signedEvent = finishEvent(zap, NOSTR_PRIVATE_KEY);
 
   let isPublished = false;
   for (let relayUrl of relays) {

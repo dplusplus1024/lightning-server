@@ -37,10 +37,6 @@ DOMAIN=yourdomain.com
 REST_HOST=my-node-address.com:8080
 GRPC_HOST=my-node-address.com:10009
 INVOICE_MACAROON=myInvoiceMacaroonInHex
-# Literally any Nostr key pair will do here; no need to use your primary keys!
-# Both must be in hex, not formatted as npub/nsec.
-NOSTR_PUBLIC_KEY=anyNostrPublicKey
-NOSTR_PRIVATE_KEY=anyNostrPrivateKey
 # For your push notifications! Install Pushover on your phone, then grab the
 # API information from https://pushover.net/api
 PUSHOVER_TOKEN=apiToken
@@ -75,6 +71,10 @@ USE_MONGO=false
 MONGODB_USER=myMongoUser
 MONGODB_PASS=myMongoPassword
 MONGODB_URL=myMongoDBURL
+# Literally any Nostr key pair will do here; no need to use your primary keys!
+# Both must be in hex, not formatted as npub/nsec.
+NOSTR_PUBLIC_KEY=anyNostrPublicKey
+NOSTR_PRIVATE_KEY=anyNostrPrivateKey
 ```
 
 ## Running the Notifier
