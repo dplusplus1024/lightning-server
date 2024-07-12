@@ -32,7 +32,7 @@ If you don't already have a VPS, the easiest way to deploy and host **Lightning 
 To run this project, you will need to add the following environment variables:
 
 ```env
-## REQUIRED VARIABLES ###############################################################
+## REQUIRED VARIABLES #############################################################
 DOMAIN=yourdomain.com
 REST_HOST=my-node-address.com:8080
 GRPC_HOST=my-node-address.com:10009
@@ -49,7 +49,7 @@ EMAIL_PASSWORD=youCreatedAnAppPassword
 # Where the notifications will be sent to
 EMAIL_RECIPIENT=my.email@domain.com
 
-## OPTIONAL VARIABLES ###############################################################
+## OPTIONAL VARIABLES #############################################################
 EMAIL_BCC=someone.else@domain.com
 # Set to "true" if you're using private channels to enable LND to automatically
 # add route hints to your invoices.
