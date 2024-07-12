@@ -2,14 +2,14 @@
 
 ## About
 
-No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address like you@yourdomain.com. Additionally, you'll get [Zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on [Nostr](https://damus.io/), as well as **email** and **push notifications** sent to all your devices whenever you receive a Lightning payment of any kind. Never miss a payment alert!
+No more invoicing! **Lightning Server** enables you to receive [Lightning Address](https://lightningaddress.com) payments to an address like you@yourdomain.com. Additionally, you'll get [zap receipts](https://github.com/nostr-protocol/nips/blob/master/57.md) on [Nostr](https://damus.io/), as well as **email** and **push notifications** sent to all your devices whenever you receive a Lightning payment of any kind. Never miss a payment alert!
 
 ## Features
 
 - Lightning Address
 - Email notifications
 - Push notifications
-- Nostr Zap receipts
+- Nostr zap receipts
 - Easy Point of Sale (coming soon!)
 
 ## Prerequisites
@@ -18,7 +18,7 @@ You'll need a Lightning node running [LND](https://github.com/lightningnetwork/l
 
 ## Deploying Lightning Server
 
-If you don't already have a VPS, the easiest way to deploy and host **Lightning Server** is on [DigitalOcean's App Platform](https://www.digitalocean.com/products/app-platform), which will cost approximately $5.00 per month at the time of this writing. If you choose to use [Vercel](https://vercel.com), functionality will be *limited to a working Lightning Address only* - you won't get the benefit of Nostr Zap receipts, email notifications, or push notifications. [Heroku](https://www.heroku.com/) is not recommended.
+If you don't already have a VPS, the easiest way to deploy and host **Lightning Server** is on [DigitalOcean's App Platform](https://www.digitalocean.com/products/app-platform), which will cost approximately $5.00 per month at the time of this writing. If you choose to use [Vercel](https://vercel.com), functionality will be *limited to a working Lightning Address only* - you won't get the benefit of Nostr zap receipts, email notifications, or push notifications. [Heroku](https://www.heroku.com/) is not recommended.
 
 ## Lightning Server uses Next.js
 
@@ -71,8 +71,8 @@ USE_MONGO=false
 MONGODB_USER=myMongoUser
 MONGODB_PASS=myMongoPassword
 MONGODB_URL=myMongoDBURL
-# Literally any Nostr key pair will do here; no need to use your primary keys!
-# Both must be in hex, not formatted as npub/nsec.
+# Any key pair in hex (not npub/nsec) will work; no need to use your primary keys!
+# If no keys are provided, zap receipts will use Lightning Server's default keys.
 NOSTR_PUBLIC_KEY=anyNostrPublicKey
 NOSTR_PRIVATE_KEY=anyNostrPrivateKey
 ```
@@ -90,6 +90,7 @@ This is experimental software, currently still in beta. Use at your own risk!
 ## To Do
 
 - Continue refactoring, polishing, and optimizing code and documentation
+- Add enhanced error handling
 - Add Lightning Point of Sale
 - Find a better way to automatically start the [Notifier](https://github.com/dplusplus1024/Lightning-Server/blob/main/app/api/notifier/%5Buser%5D/route.js) service
 - Host an online workshop on how to run this server!

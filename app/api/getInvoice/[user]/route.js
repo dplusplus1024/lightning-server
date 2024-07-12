@@ -169,7 +169,7 @@ async function checkZap(bolt11, zap) {
   let hash = getHash(bolt11);
   console.log("New invoice generated. Waiting for payment...");
   pause(1000);
-  // check status of invoice here... may want to move this to notifier.js...
+  // check status of invoice here... may want to eventually move this to notifier.js...
   while (await getStatus(hash) == false) {
      pause(1000);
      const currentTime = new Date().getTime();
