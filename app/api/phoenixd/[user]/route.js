@@ -50,7 +50,7 @@ export async function POST(req) {
 
       if (type == 'payment_received') {
         let subject = `You got paid ${amount} sat${plural} via phoenixd!`;
-        let message = `Amount: ${amount} sat${plural}<br><br>Received via <b>phoenixd</b> 🪽`;
+        let message = `Amount: ${amount} sat${plural} <br><br>Received via <b>phoenixd</b> 🪽`;
         pushNotification(subject, message);
       }
     } else {
