@@ -7,13 +7,10 @@ const crypto = require('crypto');
 const axios = require('axios');
 import { NextResponse } from 'next/server';
 
-const PUSH_TOKEN = process.env.TEST_PUSH_TOKEN;
-const PUSH_USER = process.env.TEST_PUSH_USER;
-
 function pushNotification(subject, body) {
   axios.post('https://api.pushover.net/1/messages.json', {
-    token: PUSH_TOKEN,
-    user: PUSH_USER,
+    token: process.env.PUSHOVER_TOKEN,
+    user:  process.env.PUSHOVER_USER,
     title: subject,
     message: body,
     html: 1
