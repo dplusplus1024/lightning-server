@@ -62,7 +62,7 @@ USERS=user1,user2,user3
 CATCH_ALL=true
 # This is what the sender sees in their wallet when they enter your address.
 META=Message to display to sender
-# This is a JSON formatted string that will forward users to external Lightning
+# This is a JSON string that will forward users to external Lightning
 # addresses, e.g. d@yourdomain.com will get forwarded to me@dplus.plus
 FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
 # If you want even more forwards, you can set USE_MONGO to "true" and add them
@@ -71,7 +71,7 @@ USE_MONGO=false
 MONGODB_USER=myMongoUser
 MONGODB_PASS=myMongoPassword
 MONGODB_URL=myMongoDBURL
-# Any key pair in hex (not npub/nsec) will work; no need to use your primary keys!
+# Any key pair in hex (not npub/nsec) will do; no need to use your primary keys!
 # If no keys are provided, zap receipts will use Lightning Server's default keys.
 NOSTR_PUBLIC_KEY=anyNostrPublicKey
 NOSTR_PRIVATE_KEY=anyNostrPrivateKey

@@ -1,5 +1,6 @@
 // This has to be run at https://${DOMAIN}/api/notifier/run after you've deployed your project
 // It will run automatically if you use the ./push bash script (but please help me find a better way...)
+
 import path from 'path';
 import crypto from 'crypto';
 import * as nostr from 'nostr-tools';
@@ -100,8 +101,8 @@ function sendEmail(invoice) {
     keysend = invoice.is_keysend ? " via keysend" : "";
     type = memo.includes("Sent to: ") ? "LN Address" : (invoice.is_keysend ? "Keysend" : "Invoice");
     if (type == "LN Address") {
-      let address = decodeURIComponent(memo.split(' | ')[0]);
-      let note = memo.split(' | ')[1];
+      const note = memo.split(' | ')[1];
+      const address = decodeURIComponent(memo.split(' | ')[0]);
       memo = note ? `${address}<br><br>${note}` : `${address}`;
       user = address.split('@')[0];
       user = capitalize(user.split("Sent to: ")[1]) + ", you";
@@ -110,8 +111,8 @@ function sendEmail(invoice) {
       memo = invoice.memo ? "Memo: " + invoice.memo : "";
     }
   }
-  let spacer = memo ? "<br><br>" : "";
-  let message = `
+  const spacer = memo ? "<br><br>" : "";
+  const message = `
   <!DOCTYPE html>
   <html>
   <head>
@@ -181,8 +182,8 @@ function sendEmail(invoice) {
   </body>
   </html>`;
 
-  let subject = `${user} got ${verb} ${amount} ${sats}${plural}${keysend}!`;
-  let mailOptions = {
+  const subject = `${user} got ${verb} ${amount} ${sats}${plural}${keysend}!`;
+  const mailOptions = {
     from: `"Node Notifier" <${process.env.EMAIL}>`,
     to: process.env.EMAIL_RECIPIENT,
     bcc: process.env.EMAIL_BCC,
@@ -205,7 +206,7 @@ function errorEmail(note) {
   if (errorEmailSent)
     return;
 
-  let mailOptions = {
+  const mailOptions = {
     from: `"Node Notifier" <${process.env.EMAIL}>`,
     to: process.env.EMAIL_RECIPIENT,
     subject: `Error: Lightning Node Unreacable`,
@@ -224,7 +225,7 @@ function errorEmail(note) {
 }
 
 function messageEmail(subject, html) {
-  let mailOptions = {
+  const mailOptions = {
     from: `"Node Notifier" <${process.env.EMAIL_SENDER}>`,
     to: process.env.EMAIL_RECIPIENT,
     subject: subject,
