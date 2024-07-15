@@ -1,5 +1,7 @@
 // This endpoint serves as the notifier for phoenixd webhooks!
 // Be sure to place your webhook-secret in env.PHOENIXD_WEBHOOK_SECRET
+// In phoenix.conf, add the following to turn on webhooks:
+// webhook=https://youdomain.com/api/phoenixd/route
 
 const crypto = require('crypto');
 const axios = require('axios');
@@ -8,12 +10,6 @@ import { NextResponse } from 'next/server';
 
 const PUSH_TOKEN = process.env.TEST_PUSH_TOKEN;
 const PUSH_USER  = process.env.TEST_PUSH_USER;
-
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };
 
 function pushNotification(subject, body) {
   axios.post('https://api.pushover.net/1/messages.json', {
@@ -31,12 +27,8 @@ function pushNotification(subject, body) {
   });
 }
 
-export async function GET(req) {
+export async function POST(req) {
   console.log("Welcome to phoenixd!");
-
-  if (req.method !== 'POST') {
-    return NextResponse.json({ message: 'Method not allowed.' });
-  }
 
   const body = await buffer(req);
   const bodyRaw = Buffer.from(body, 'utf8');
@@ -59,7 +51,7 @@ export async function GET(req) {
 
     if (type == 'payment_received') {
       let subject = `Test: You got paid ${amount} sat${plural} via phoenixd!`;
-      let message = `Amount: ${amount} sat${plural} was received on <b>phoenixd</b>.`;
+      let message = `Amount: ${amount} sat${plural} received on <b>phoenixd</b>.`;
       pushNotification(subject, message);
     }
   }
