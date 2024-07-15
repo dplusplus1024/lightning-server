@@ -1,3 +1,8 @@
+// This endpoint serves as the notifier for phoenixd webhooks!
+// Be sure to place your webhook-secret in env.PHOENIXD_WEBHOOK_SECRET
+// In phoenix.conf, add the following line to turn on webhooks:
+// webhook=https://youdomain.com/api/phoenixd/route
+
 const crypto = require('crypto');
 const axios = require('axios');
 import { NextResponse } from 'next/server';
@@ -25,7 +30,7 @@ export async function POST(req) {
   console.log("Welcome to phoenixd!");
 
   try {
-    const bodyRaw = await req.text(); // Using text() to get the raw body as a string
+    const bodyRaw = await req.text();
     const bodyJSON = JSON.parse(bodyRaw);
     console.log('Webhook received:', bodyJSON);
 
@@ -44,8 +49,8 @@ export async function POST(req) {
       amount = amount.toLocaleString();
 
       if (type == 'payment_received') {
-        let subject = `Test: You got paid ${amount} sat${plural} via phoenixd!`;
-        let message = `Amount: ${amount} sat${plural} received on <b>phoenixd</b>.`;
+        let subject = `You got paid ${amount} sat${plural} via phoenixd!`;
+        let message = `Amount: ${amount} sat${plural}<br><br>Received via <b>phoenixd</b> 🪽`;
         pushNotification(subject, message);
       }
     } else {
