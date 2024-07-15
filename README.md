@@ -34,8 +34,8 @@ To run this project, you will need to add the following environment variables:
 ```env
 ## REQUIRED VARIABLES #############################################################
 DOMAIN=yourdomain.com
-REST_HOST=my-node-address.com:8080
-GRPC_HOST=my-node-address.com:10009
+REST_HOST=lnd-node-address.com:8080
+GRPC_HOST=lnd-node-address.com:10009
 INVOICE_MACAROON=myInvoiceMacaroonInHex
 # For your push notifications! Install Pushover on your phone, then grab the
 # API information from https://pushover.net/api
