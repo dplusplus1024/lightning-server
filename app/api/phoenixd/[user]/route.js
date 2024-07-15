@@ -4,10 +4,8 @@
 const crypto = require('crypto');
 const axios = require('axios');
 import { buffer } from 'micro';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
-
-const PUSH_TOKEN = 'aj7s6xcw4cz4wevqpdjdymogquw75c';
-const PUSH_USER  = 'uwvfbh6kp2tomsi3pnitzskfozeo93';
 
 const PUSH_TOKEN = process.env.TEST_PUSH_TOKEN;
 const PUSH_USER  = process.env.TEST_PUSH_USER;
@@ -34,7 +32,7 @@ function pushNotification(subject, body) {
   });
 }
 
-export async function GET(req) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return NextResponse.json({ message: 'Method not allowed.' });
   }
