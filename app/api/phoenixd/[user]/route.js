@@ -40,6 +40,8 @@ function pushNotificationTest(subject, body) {
 }
 
 export async function POST(req) {
+  console.log("Welcome to the phoenixd webhook route!");
+  
   try {
     const bodyRaw = await req.text();
     const bodyJSON = JSON.parse(bodyRaw);
