@@ -134,6 +134,9 @@ function sendEmail(invoice) {
         border-radius: 8px;
         overflow: hidden;
       }
+      a {
+        color:white;
+      }
       .email-content {
         text-align: left;
         padding: 20px;
@@ -143,6 +146,7 @@ function sendEmail(invoice) {
         color: #fff;
         padding: 10px;
         font-size: 12px;
+        font-weight:bold;
       }
       @media only screen and (max-width: 600px) {
         .email-container {
@@ -161,10 +165,9 @@ function sendEmail(invoice) {
       <tr>
         <td style="text-align: center;">
           <div class="email-container">
-            <!-- Email content -->
             <div class="email-content">
               <br>
-              <center><img src="https://i.imgur.com/OaXh4HT.png" alt="Node Notifier" style="width:640px; margin: 0;"/></center>
+              <center><img src="https://i.imgur.com/OaXh4HT.png" alt="Node Notifier" style="width:425px; margin: 0;"/></center>
               <h1 style="text-shadow: 2px 2px 0px black;">${type} Payment Received</h1>
               <p style="font-size: 18px;">
               <b>You just got ${verb} <b>${amount}</b> ${sats}${plural}${keysend}!</b></p>
