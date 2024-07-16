@@ -119,7 +119,7 @@ function sendEmail(invoice) {
     <title>${type} Payment Notification</title>
     <style>
       body {
-        background-color: #000;
+        background-color: #0514f0;
         color: #fff;
         font-family: Arial, sans-serif;
         margin: 0;
@@ -164,8 +164,8 @@ function sendEmail(invoice) {
             <!-- Email content -->
             <div class="email-content">
               <br>
-              <center><img src="https://i.imgur.com/cF0aIqc.png" alt="D++ Logo" style="width:200px; margin: 0;"/></center>
-              <h1 style="color: #59fd00;">${type} Payment Received</h1>
+              <center><img src="https://i.imgur.com/OaXh4HT.png" alt="Node Notifier" style="margin: 0;"/></center>
+              <h1 style="text-shadow: 2px 2px 0px black;">${type} Payment Received</h1>
               <p style="font-size: 18px;">
               <b>You just got ${verb} <b>${amount}</b> ${sats}${plural}${keysend}!</b></p>
               ${memo}${spacer}
