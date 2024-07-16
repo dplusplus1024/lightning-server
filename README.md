@@ -70,11 +70,11 @@ FORWARDS={"d":"me@dplus.plus","alby":"dread@getalby.com"}
 USE_MONGO=false
 MONGODB_USER=myMongoUser
 MONGODB_PASS=myMongoPassword
-MONGODB_URL=myMongoDBURL
+MONGODB_URL=myMongoURL
 # Any key pair in hex (not npub/nsec) will do; no need to use your primary keys!
 # If no keys are provided, zap receipts will use Lightning Server's default keys.
-NOSTR_PUBLIC_KEY=anyNostrPublicKey
-NOSTR_PRIVATE_KEY=anyNostrPrivateKey
+NOSTR_PUBLIC_KEY=anyNostrPublicKeyInHex
+NOSTR_PRIVATE_KEY=anyNostrPrivateKeyInHex
 ```
 
 ## Running the Notifier

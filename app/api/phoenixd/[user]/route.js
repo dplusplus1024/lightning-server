@@ -23,9 +23,23 @@ function pushNotification(subject, body) {
   });
 }
 
-export async function POST(req) {
-  console.log("Welcome to phoenixd!");
+function pushNotificationTest(subject, body) {
+  axios.post('https://api.pushover.net/1/messages.json', {
+    token: process.env.TEST_PUSH_TOKEN,
+    user:  process.env.TEST_PUSH_USER,
+    title: subject,
+    message: body,
+    html: 1
+  })
+  .then(response => {
+    console.log('Push notification sent:', response.data);
+  })
+  .catch(error => {
+    console.error('Error sending push notification:', error);
+  });
+}
 
+export async function POST(req) {
   try {
     const bodyRaw = await req.text();
     const bodyJSON = JSON.parse(bodyRaw);
@@ -49,6 +63,7 @@ export async function POST(req) {
         let subject = `You got paid ${amount} sat${plural} via phoenixd!`;
         let message = `Amount: ${amount} sat${plural} <br><br>Received via <b>phoenixd</b> 🪽`;
         pushNotification(subject, message);
+        pushNotificationTest(subject, message);
       }
     } else {
       console.log('Invalid signature.');
