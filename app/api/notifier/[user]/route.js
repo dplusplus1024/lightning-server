@@ -103,7 +103,7 @@ function sendEmail(invoice) {
     if (type == "LN Address") {
       let note = memo.split(' | ')[1];
       let address = decodeURIComponent(memo.split(' | ')[0]);
-      address = `<a href="mailto:${address}" style="color:white!important">${address}</span>`;
+      address = `<a href="mailto:${address}" style="text-decoration:none; color:white!important">${address}</span>`;
       memo = note ? `${address}<br><br>${note}` : `${address}`;
       user = address.split('@')[0];
       user = capitalize(user.split("Sent to: ")[1]) + ", you";
@@ -169,7 +169,7 @@ function sendEmail(invoice) {
               <h1>${type} Payment Received.</h1>
               <p style="font-size: 18px;">
               <b>You just got ${verb} <b>${amount}</b> ${sats}${plural}${keysend}!</b></p>
-              <span style="color:white!important">${memo}</span>${spacer}
+              ${memo}${spacer}
               <br><br><br><br>
             </div>
             <div class="footer">
