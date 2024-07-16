@@ -101,8 +101,9 @@ function sendEmail(invoice) {
     keysend = invoice.is_keysend ? " via keysend" : "";
     type = memo.includes("Sent to: ") ? "LN Address" : (invoice.is_keysend ? "Keysend" : "Invoice");
     if (type == "LN Address") {
-      const note = memo.split(' | ')[1];
-      const address = decodeURIComponent(memo.split(' | ')[0]);
+      let note = memo.split(' | ')[1];
+      let address = decodeURIComponent(memo.split(' | ')[0]);
+      address = `<span style="color:white!important">${address}</span>`;
       memo = note ? `${address}<br><br>${note}` : `${address}`;
       user = address.split('@')[0];
       user = capitalize(user.split("Sent to: ")[1]) + ", you";
@@ -133,9 +134,6 @@ function sendEmail(invoice) {
         color: #fff;
         border-radius: 8px;
         overflow: hidden;
-      }
-      a {
-        color:white;
       }
       .email-content {
         text-align: left;
