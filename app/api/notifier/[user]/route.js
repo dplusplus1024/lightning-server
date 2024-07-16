@@ -103,7 +103,7 @@ function sendEmail(invoice) {
     if (type == "LN Address") {
       let note = memo.split(' | ')[1];
       let address = decodeURIComponent(memo.split(' | ')[0]);
-      address = `<span style="color:white!important">${address}</span>`;
+      address = `<a href="mailto:${address}" style="color:white!important">${address}</span>`;
       memo = note ? `${address}<br><br>${note}` : `${address}`;
       user = address.split('@')[0];
       user = capitalize(user.split("Sent to: ")[1]) + ", you";
