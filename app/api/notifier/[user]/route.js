@@ -168,14 +168,14 @@ function sendEmail(invoice) {
             <div class="email-content">
               <br>
               <center><img src="https://i.imgur.com/OaXh4HT.png" alt="Node Notifier" style="width:425px; margin: 0;"/></center>
-              <h1 style="text-shadow: 2px 2px 0px black;">${type} Payment Received</h1>
+              <h1>${type} Payment Received.</h1>
               <p style="font-size: 18px;">
               <b>You just got ${verb} <b>${amount}</b> ${sats}${plural}${keysend}!</b></p>
-              ${memo}${spacer}
+              <span style="color:white!important">${memo}</span>${spacer}
               <br><br><br><br>
             </div>
             <div class="footer">
-              Made with ❤️ by <a href="https://x.com/d_plus__plus">D++</a>
+              Made with ❤️ by <a href="https://x.com/d_plus__plus" style="color:white">D++</a>
               <br><br>
             </div>
           </div>
