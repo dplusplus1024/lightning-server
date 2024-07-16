@@ -139,6 +139,10 @@ function sendEmail(invoice) {
         text-align: left;
         padding: 20px;
       }
+      h1 {
+        font-size: 28px;
+        text-shadow: 2px 2px 0px black;
+      }
       .footer {
         text-align: center;
         color: #fff;
