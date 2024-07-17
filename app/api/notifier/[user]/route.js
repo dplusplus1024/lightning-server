@@ -86,11 +86,11 @@ function sendEmail(invoice) {
       const buffer = Buffer.from(zap.data.event, 'hex');
       const words = bech32.toWords(buffer);
       const note = bech32.encode("note", words);
-      memo = `From: <a href="https://primal.net/p/${npub}">${npub}</a><br><br>Note: <a href="https://primal.net/e/${note}">${note}</a>`;
+      memo = `From: <a href="https://primal.net/p/${npub}" style="color:white!important">${npub}</a><br><br>Note: <a href="https://primal.net/e/${note}" style="color:white!important">${note}</a>`;
     }
     else {
       // they zapped your profile
-      memo = `<a href="https://primal.net/p/${npub}">${npub}</a> zapped your profile.`;
+      memo = `<a href="https://primal.net/p/${npub}" style="color:white!important">${npub}</a> zapped your profile.`;
       if (zap.data.content)
         memo += `<br><br>Message: ${zap.data.content}`;
     }
