@@ -4,7 +4,7 @@
 source .env
 git add .
 git commit -m "updated"
-output=$(git push 2>&1)
+output=$(git push origin island-bitcoin 2>&1)
 echo "$output"
 
 if [[ "$output" == *"Everything up-to-date"* ]]; then
