@@ -10,6 +10,11 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      {
+        source： "/"，
+        destination: "https://trezoracademy.rsvpify.com", has: [{ type: "host", value: "trezoracademy.islandbitcoin.com" },
+        permanent: false,
+      },
     ];
   },
 };
