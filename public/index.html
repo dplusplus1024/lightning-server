@@ -7,13 +7,8 @@
 <title>Island Bitcoin</title>
 <style>
 body {
-  /* background-color: #ffc1ef; */
-  /* purple */
-  background-image:url('images/purple.jpg');
-  /* orange */
-  /* background-image:url('https://github.com/islandbitcoin/asset-library/blob/main/Illustration/JPG/NoGood_IslandBitcoin_Orange.jpg?raw=true'); */
-  background-size:cover;
-  background-position:top center;
+  background-size: cover;
+  background-position: top center;
   font-family: 'Arial', sans-serif;
   display: flex;
   justify-content: center;
@@ -24,16 +19,23 @@ body {
   overflow: hidden;
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
   body {
-    background-image:url('images/orange.jpg');
-    background-size:100%;
-    background-repeat:no-repeat;
+    background-size: 100%;
+    background-repeat: no-repeat;
   }
 }
 </style>
 </head>
 <body>
+<script>
+function doBackground() {
+  var maxBackgrounds = 4;
+  var random = Math.random() * maxBackgrounds << 0;
+  $('body').css('background-image', `url('images/${random}.jpg')`);
+}
 
+doBackground();
+</script>
 </body>
 </html>
