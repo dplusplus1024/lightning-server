@@ -11,8 +11,10 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        // Trezor Academy subdomain
         source： "/"，
-        destination: "https://trezoracademy.rsvpify.com", has: [{ type: "host", value: "trezoracademy.islandbitcoin.com" },
+        destination: "https://trezoracademy.rsvpify.com",
+        has: [{ type: "host", value: "trezoracademy.islandbitcoin.com" }],
         permanent: false,
       },
     ];
