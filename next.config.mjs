@@ -10,6 +10,13 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Trezor Academy subdomain
+      {
+        source: "/",
+        destination: "https://trezoracademy.rsvpify.com",
+        has: [{ type: "host", value: "trezoracademy.islandbitcoin.com" }],
+        permanent: false,
+      },
       // Main homepage
       {
         source: "/",
@@ -21,13 +28,6 @@ const nextConfig = {
         destination: "/index.html",
         has: [{ type: "host", value: "www.islandbitcoin.com" }],
         permanent: true,
-      },
-      // Trezor Academy subdomain
-      {
-        source: "/",
-        destination: "https://trezoracademy.rsvpify.com",
-        has: [{ type: "host", value: "trezoracademy.islandbitcoin.com" }],
-        permanent: false,
       },
     ];
   },
