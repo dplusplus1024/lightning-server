@@ -7,7 +7,7 @@ git commit -m "updated"
 output=$(git push origin island-bitcoin 2>&1)
 echo "$output"
 
-if [[ "$output" == *"Everything up-to-date"* ]]; then
+if [[ "$output" == *"nothing to commit, working tree clean"* ]]; then
     echo -e "\nNothing was changed! No need to run https://$DOMAIN/api/notifier/run"
     exit 0
 fi
