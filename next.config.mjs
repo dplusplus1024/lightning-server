@@ -6,6 +6,10 @@ const nextConfig = {
         source: "/.well-known/lnurlp/:user",
         destination: "/api/lnurlp/:user",
       },
+      {
+        source: "/.well-known/nostr.json",
+        destination: "/api/nostr/user",
+      },
     ];
   },
   async redirects() {
