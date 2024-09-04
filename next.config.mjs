@@ -8,7 +8,7 @@ const nextConfig = {
       },
       {
         source: "/.well-known/nostr.json",
-        destination: "/api/nostr/:name",
+        destination: "/api/nostr/name",
       },
     ];
   },
