@@ -33,6 +33,12 @@ const nextConfig = {
         has: [{ type: "host", value: "www.islandbitcoin.com" }],
         permanent: true,
       },
+      {
+        source: "/",
+        destination: "/setup",
+        has: [{ type: "host", value: "https://youtu.be/rT4FzWeXKmw" }],
+        permanent: true,
+      },
     ];
   },
 };
