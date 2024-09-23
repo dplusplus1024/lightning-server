@@ -265,8 +265,10 @@ function notify() {
   const PONG_TIMEOUT = 120000;      // email after we don't receive a pong in two minutes
 
   function connect() {
-    if (connected)
+    if (connected) {
+      console.log("Web socked already connected. Exiting.");
       return; // don't create multiple connections
+    }
 
     let ws = new WebSocket(`wss://${process.env.REST_HOST}/v1/invoices/subscribe?method=GET`, {
       // Work-around for self-signed certificates.
@@ -285,7 +287,7 @@ function notify() {
     }, RECONNECT_INTERVAL);
 
     ws.on('open', function() {
-      console.log('WebSocket connected');
+      console.log('WebSocket connected.');
       connected = true;
 
       setTimeout(() => {
