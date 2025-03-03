@@ -78,10 +78,36 @@ sleep 5
 
 # Get the most recent deployment ID
 step "Fetching recent deployment ID..."
-recent_deployment_id=$(curl -s -X GET "https://api.digitalocean.com/v2/apps/$DIGITAL_OCEAN_APP_ID/deployments" \
+deployment_response=$(curl -s -X GET "https://api.digitalocean.com/v2/apps/$DIGITAL_OCEAN_APP_ID/deployments" \
 -H "Authorization: Bearer $DIGITAL_OCEAN_API" \
--H "Content-Type: application/json" | \
-jq -r '.deployments[0].id')
+-H "Content-Type: application/json")
+
+# Check if we got a valid response
+if [[ $(echo "$deployment_response" | jq -r 'has("deployments")') != "true" ]]; then
+  error "API request failed. Response: $(echo "$deployment_response" | jq -r '.message // "Unknown error"')"
+  error "Please check your DIGITAL_OCEAN_API token and DIGITAL_OCEAN_APP_ID"
+  exit 1
+fi
+
+# Check if there are any deployments
+if [[ $(echo "$deployment_response" | jq -r '.deployments | length') -eq 0 ]]; then
+  warning "No deployments found. Waiting for deployment to start..."
+  sleep 15
+  deployment_response=$(curl -s -X GET "https://api.digitalocean.com/v2/apps/$DIGITAL_OCEAN_APP_ID/deployments" \
+  -H "Authorization: Bearer $DIGITAL_OCEAN_API" \
+  -H "Content-Type: application/json")
+  
+  if [[ $(echo "$deployment_response" | jq -r '.deployments | length') -eq 0 ]]; then
+    error "Still no deployments found after waiting. Deployment may not have triggered."
+    warning "Continuing without waiting for deployment. Running notifier directly..."
+    step "Running notifier..."
+    notifier_result=$(curl -s "https://$DOMAIN/api/notifier/run")
+    success "Notifier executed: $notifier_result"
+    exit 0
+  fi
+fi
+
+recent_deployment_id=$(echo "$deployment_response" | jq -r '.deployments[0].id')
 
 if [[ -z "$recent_deployment_id" || "$recent_deployment_id" == "null" ]]; then
   error "Failed to get deployment ID. Check your credentials and app ID."
@@ -90,6 +116,18 @@ fi
 
 success "Found deployment ID: $recent_deployment_id"
 
+# Add a fallback option
+step "Would you like to run the notifier directly without waiting? [y/N] (10s timeout)"
+read -t 10 -n 1 run_directly
+echo ""
+
+if [[ "$run_directly" == "y" || "$run_directly" == "Y" ]]; then
+  step "Running notifier directly..."
+  notifier_result=$(curl -s "https://$DOMAIN/api/notifier/run")
+  success "Notifier executed: $notifier_result"
+  exit 0
+fi
+
 # Track the deployment status
 prev_status=""
 dots=""
@@ -97,10 +135,11 @@ step "Monitoring deployment status..."
 
 while true; do
   # Get the current deployment status
-  deployment_status=$(curl -s -X GET "https://api.digitalocean.com/v2/apps/$DIGITAL_OCEAN_APP_ID/deployments/$recent_deployment_id" \
+  deployment_response=$(curl -s -X GET "https://api.digitalocean.com/v2/apps/$DIGITAL_OCEAN_APP_ID/deployments/$recent_deployment_id" \
   -H "Authorization: Bearer $DIGITAL_OCEAN_API" \
-  -H "Content-Type: application/json" | \
-  jq -r '.deployment.phase')
+  -H "Content-Type: application/json")
+  
+  deployment_status=$(echo "$deployment_response" | jq -r '.deployment.phase // "UNKNOWN"')
   
   # Handle null status
   if [[ -z "$deployment_status" || "$deployment_status" == "null" ]]; then
