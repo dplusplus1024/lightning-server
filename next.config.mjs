@@ -14,20 +14,7 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      // Trezor Academy subdomains
-      {
-        source: "/",
-        destination: "https://trezoracademy.rsvpify.com",
-        has: [{ type: "host", value: "trezoracademy.islandbitcoin.com" }],
-        permanent: false,
-      },
-      {
-        source: "/",
-        destination: "https://falmouthbitcoinworkshop.rsvpify.com",
-        has: [{ type: "host", value: "falmouth.islandbitcoin.com" }],
-        permanent: false,
-      },
-      // Main homepage
+      // Main homepages
       {
         source: "/",
         destination: "/index.html",
@@ -36,13 +23,13 @@ const nextConfig = {
       {
         source: "/",
         destination: "/index.html",
-        has: [{ type: "host", value: "www.taddesse.xyz" }],
-        permanent: true,
-      },
-      {
-        source: "/",
-        destination: "/community.html",
         has: [{ type: "host", value: "www.islandbitcoin.com" }],
+        permanent: true,
+      },
+      {
+        source: "/",
+        destination: "/corporate.html",
+        has: [{ type: "host", value: "taddesse.xyz" }],
         permanent: true,
       },
     ];
