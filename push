@@ -19,10 +19,10 @@ echo "**************************************************************"
 
 sleep 10
 
-# recent_deployment_id=$(curl -s -X GET "https://api.digitalocean.com/v2/apps/$DIGITAL_OCEAN_APP_ID/deployments" \
-#     -H "Authorization: Bearer $DIGITAL_OCEAN_API" \
-#     -H "Content-Type: application/json" |
-#     jq -r '.deployments[0].id')
+recent_deployment_id=$(curl -s -X GET "https://api.digitalocean.com/v2/apps/$DIGITAL_OCEAN_APP_ID/deployments" \
+    -H "Authorization: Bearer $DIGITAL_OCEAN_API" \
+    -H "Content-Type: application/json" |
+    jq -r '.deployments[0].id')
 
 prev_status=""
 
