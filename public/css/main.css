@@ -9,6 +9,7 @@
   --dark-gray: #1e1e1e;
   --medium-gray: #555555;
   --light-gray: #eeeeee;
+  --site-background: white; /* New variable for consistent background color */
 }
 
 * {
@@ -19,10 +20,11 @@
 }
 
 body {
-  background-color: white;
+  background-color: var(--site-background);
   color: var(--dark-gray);
   height: 100vh;
   overflow: hidden;
+  position: relative; /* Added to ensure proper positioning context */
 }
 
 .header {
@@ -30,9 +32,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: transparent;
+  background-color: var(--site-background); /* Now explicitly using the same background color */
   width: 100%;
-  z-index: 50;
+  z-index: 50; /* Keeping high z-index to stay above particles */
   position: relative;
   height: 73px;
 }
@@ -40,6 +42,7 @@ body {
 .logo {
   display: flex;
   align-items: center;
+  z-index: 51; /* Ensure logo stays above particles */
 }
 
 .logo img {
@@ -49,6 +52,7 @@ body {
 .nav-links {
   display: flex;
   gap: 2rem;
+  z-index: 51; /* Ensure nav links stay above particles */
 }
 
 .nav-links a {
@@ -89,6 +93,25 @@ body {
   position: relative;
   padding: 0;
   overflow: hidden;
+  z-index: 10; /* Lower than header but above particles */
+}
+
+/* Modified particles container to cover the entire viewport */
+.particles-container {
+  position: fixed; /* Changed from absolute to fixed */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1; /* Ensure it's behind content but visible */
+}
+
+.particle {
+  position: absolute;
+  background-color: var(--bitcoin-orange);
+  border-radius: 50%;
+  opacity: 0.1;
 }
 
 .hero-content {
@@ -166,9 +189,9 @@ body {
 
 .map-container {
   width: 100%;
-  max-width: 1280px; /* Increased by approximately 30% from 800px */
+  max-width: 1280px;
   height: calc(100vh - 200px);
-  max-height: 800px; /* Increased by approximately 30% from 500px */
+  max-height: 800px;
   position: relative;
   display: flex;
   align-items: center;
@@ -176,7 +199,8 @@ body {
   perspective: 1000px;
   margin: 0 auto;
   flex: 1 1 auto;
-  background-color: white;
+  background-color: transparent; /* Changed from white to transparent */
+  z-index: 20; /* Ensure it's above particles */
 }
 
 .island-container {
@@ -190,7 +214,7 @@ body {
 }
 
 .parallax-container {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -213,11 +237,42 @@ body {
   -webkit-mask-position: center;
 }
 
-/* Existing particle base styling can remain. 
-We'll add more "electric" styling below. */
-/* Base particle styles */
+.color-spotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;
+}
 
-/* "Electric" flicker effect */
+/* Add this for the fading edge effect */
+.color-spotlight::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), transparent 175px, rgba(0, 0, 0, 0.9) 200px);
+  mix-blend-mode: saturation;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#spotlight-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Electric flicker effect */
 .electric {
   animation: electricFlicker 1s infinite alternate;
 }
@@ -396,7 +451,7 @@ We'll add more "electric" styling below. */
 
 .tooltip {
   position: absolute;
-  bottom: 20px;
+  bottom: 90px;
   left: 50%;
   transform: translateX(-50%);
   background-color: white;
@@ -424,43 +479,107 @@ We'll add more "electric" styling below. */
   }
 }
 
-.particles-container {
-  position: absolute;
+/* MOBILE RESPONSIVE STYLES */
+
+/* Mobile Navigation Styles */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.mobile-menu-toggle span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: var(--dark-gray);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+/* Mobile Nav Container */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 80%;
+  max-width: 300px;
+  height: 100%;
+  background-color: var(--site-background);
+  z-index: 999;
+  transition: right 0.3s ease;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  padding: 80px 20px 20px;
+  overflow-y: auto;
+}
+
+.mobile-nav.active {
+  right: 0;
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mobile-nav-links a {
+  color: var(--dark-gray);
+  text-decoration: none;
+  font-weight: 420;
+  font-size: 1.2rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+/* Overlay for when mobile menu is open */
+.mobile-nav-overlay {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
-  /* overflow: hidden;  <-- Remove or comment this out if you want large circles to show fully */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.particle {
-  position: absolute;
-  background-color: var(--bitcoin-orange);
-  border-radius: 50%;
-  opacity: 0.1;
+.mobile-nav-overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
 
-@media (max-width: 992px) {
-  .hero-content {
-    padding: 0.5rem 1rem;
-  }
+/* Animation for hamburger icon */
+.mobile-menu-toggle.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
 
+.mobile-menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
   .hero-content h1 {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
 
   .hero-content p {
-    font-size: 1rem;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
   }
 
   .map-container {
-    max-height: 400px;
-  }
-
-  .cta-button {
-    padding: 0.6rem 1.2rem;
+    height: calc(100vh - 250px);
   }
 }
 
@@ -473,96 +592,166 @@ We'll add more "electric" styling below. */
     display: none;
   }
 
-  .mobile-menu-button {
-    display: block;
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .hero-content {
+    padding: 1rem 1.5rem;
+    margin-top: 1rem;
   }
 
   .hero-content h1 {
     font-size: 1.8rem;
-    margin-bottom: 0.5rem;
   }
 
   .hero-content p {
     font-size: 0.9rem;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1.2rem;
   }
 
   .cta-buttons {
-    gap: 1rem;
+    flex-direction: column;
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .cta-button {
+    width: 100%;
+    text-align: center;
   }
 
   .map-container {
-    max-height: 350px;
-    max-width: 95%;
+    height: 55vh;
+  }
+
+  .tooltip {
+    width: 90%;
+    bottom: 20px;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 8px 12px;
+  }
+
+  /* Adjust map markers for touch */
+  .map-marker {
+    width: 32px;
+    height: 32px;
+  }
+
+  .map-marker:hover {
+    transform: scale(1.2);
+  }
+
+  /* Company popup adjustments */
+  .company-popup {
+    width: 85%;
+    max-width: 250px;
+    padding: 15px;
+  }
+
+  .company-popup h3 {
+    font-size: 1.1rem;
+  }
+
+  .company-popup p {
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
+  .header {
+    padding: 0.8rem 1rem;
+  }
+
+  .logo svg {
+    width: 200px;
+  }
+
   .hero-content h1 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 
   .hero-content p {
-    font-size: 0.85rem;
-  }
-
-  .cta-button {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .map-container {
-    max-height: 300px;
+    height: 50vh;
+  }
+
+  /* Adjust particles for better mobile performance */
+  .particle {
+    opacity: 0.05;
+  }
+
+  /* Adjust footer for very small screens */
+  .footer-column:first-child,
+  .footer-column:last-child {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .footer-links li {
+    margin-right: 0.5rem;
   }
 }
 
-/* Horizontal Footer Styles */
+/* Fix for island visualization on mobile */
+@media (max-width: 768px) {
+  .parallax-container {
+    transform: scale(0.7);
+  }
+
+  /* Disable parallax effect on mobile for better performance */
+  .parallax-container:hover {
+    transform: scale(0.7) !important;
+  }
+}
+
+/* Add touch support for map markers */
+@media (hover: none) {
+  .map-marker::after {
+    opacity: 1;
+    font-size: 8px;
+    bottom: -20px;
+  }
+}
+
+/* Updated footer styles with vertical alignment */
 .footer {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: transparent;
+  background-color: var(--site-background);
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   padding: 0.8rem 0;
   z-index: 40;
 }
 
 .footer-container {
+  width: 100%;
+  padding: 0 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 0;
 }
 
-.footer-column {
+.footer-left {
   display: flex;
   align-items: center;
 }
 
-.footer-column:first-child {
-  margin-left: 3rem;
+.footer-right {
+  display: flex;
+  align-items: center;
 }
 
-.footer-column:last-child {
-  margin-right: 3rem;
-}
-
-@media (max-width: 768px) {
-  .footer-column:first-child {
-    margin-left: 1.5rem;
-  }
-
-  .footer-column:last-child {
-    margin-right: 1.5rem;
-  }
-}
-.footer-column h4 {
-  color: var(--dark-gray);
-  font-size: 0.9rem;
-  margin-right: 1rem;
-  white-space: nowrap;
+.footer-logo {
+  margin-right: 1.5rem;
+  display: flex;
+  align-items: center;
 }
 
 .footer-links {
@@ -571,6 +760,14 @@ We'll add more "electric" styling below. */
   margin: 0;
   display: flex;
   flex-wrap: wrap;
+}
+
+.main-links {
+  flex-wrap: wrap;
+}
+
+.legal-links {
+  justify-content: flex-end;
 }
 
 .footer-links li {
@@ -589,43 +786,85 @@ We'll add more "electric" styling below. */
   color: var(--bitcoin-orange);
 }
 
-.footer-bottom {
-  display: none;
-}
-
+/* Responsive adjustments */
 @media (max-width: 992px) {
-  .footer {
-    padding: 0.8rem 1.5rem;
+  .footer-container {
+    padding: 0 1.5rem;
   }
 
-  .footer-column h4 {
-    font-size: 0.8rem;
-    margin-right: 0.5rem;
+  .footer-logo {
+    margin-right: 1rem;
   }
 
   .footer-links li {
-    margin-right: 0.8rem;
-  }
-
-  .footer-links a {
-    font-size: 0.75rem;
+    margin-right: 1rem;
   }
 }
 
 @media (max-width: 768px) {
+  .map-container {
+    height: auto;
+    min-height: 60vh;
+    margin-bottom: 70px; /* Extra margin to ensure visibility */
+  }
+
   .footer-container {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .footer-column {
-    margin-bottom: 0.5rem;
+  .footer-left,
+  .footer-right {
     width: 100%;
-    overflow-x: auto;
-    padding-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-right {
+    margin-top: 0.5rem;
+  }
+
+  .footer-logo svg {
+    width: 100px;
+    height: 25px;
+  }
+
+  .footer-links li {
+    margin-right: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .footer-links a {
+    font-size: 0.75rem;
+  }
+
+  .legal-links {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer-left {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-logo {
+    margin-bottom: 0.5rem;
   }
 
   .footer-links {
     flex-wrap: nowrap;
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 5px;
+  }
+
+  .map-container {
+    bottom: 10vh;
+    min-height: 50vh;
+  }
+
+  .footer-container {
+    padding: 0 1rem;
   }
 }

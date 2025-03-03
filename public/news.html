@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>News | Taddesse</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <style>
+        /* Override main-content styles from main.css */
+        body {
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .main-content {
+            height: auto !important;
+            min-height: calc(100vh - 73px);
+            overflow-y: visible !important;
+            padding-bottom: 80px;
+            /* Add space for footer */
+        }
+
+        /* News specific styles */
+        .news-hero {
+            text-align: center;
+            padding: 3rem 1.5rem 2rem;
+            position: relative;
+            background: linear-gradient(135deg, rgba(10, 37, 64, 0.8) 0%, rgba(255, 153, 0, 0.5) 100%);
+            color: white;
+            border-radius: 0 0 30% 30% / 10%;
+        }
+
+        .news-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .news-hero p {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .news-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .news-filters {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            background-color: var(--light-gray);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn.active {
+            background-color: var(--bitcoin-orange);
+            color: white;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background-color: var(--bitcoin-orange-light);
+            color: white;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .featured-news {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .featured-news {
+                flex-direction: row;
+                height: 350px;
+            }
+        }
+
+        .featured-image {
+            flex: 1;
+            min-height: 250px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .featured-content {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: var(--bitcoin-orange);
+            color: white;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            align-self: flex-start;
+        }
+
+        .featured-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark-gray);
+        }
+
+        .featured-date {
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .featured-excerpt {
+            color: var(--medium-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .read-more-btn {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            background-color: var(--bitcoin-orange);
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+            font-size: 0.9rem;
+        }
+
+        .read-more-btn:hover {
+            background-color: #ff8000;
+            transform: translateY(-2px);
+        }
+
+        .news-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-card-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .news-card-content {
+            padding: 1.5rem;
+        }
+
+        .news-card-tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background-color: var(--bitcoin-orange);
+            color: white;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .news-card-tag.press {
+            background-color: #3498db;
+        }
+
+        .news-card-tag.announcement {
+            background-color: #2ecc71;
+        }
+
+        .news-card-tag.event {
+            background-color: #9b59b6;
+        }
+
+        .news-card-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark-gray);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-card-date {
+            color: var(--medium-gray);
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .news-card-excerpt {
+            color: var(--medium-gray);
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+            gap: 0.5rem;
+        }
+
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            color: var(--dark-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .page-link.active {
+            background-color: var(--bitcoin-orange);
+            color: white;
+        }
+
+        .page-link:hover:not(.active) {
+            background-color: var(--light-gray);
+        }
+
+        @media (max-width: 768px) {
+            .news-hero h1 {
+                font-size: 2rem;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-title {
+                font-size: 1.5rem;
+            }
+
+            .main-content {
+                padding-bottom: 120px;
+                /* Extra space for footer on mobile */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Mobile navigation overlay -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+
+    <!-- Particles container -->
+    <div class="particles-container" id="particles"></div>
+
+    <header class="header">
+        <div class="logo">
+            <a href="corporate.html">
+
+                <svg width="300" height="80" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Company Name -->
+                    <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+                        style="font-family: Helvetica, Arial, sans-serif; font-size: 36px; letter-spacing: 0.05em; font-weight: 500;"
+                        fill="#333333">
+                        TADDESSE
+                    </text>
+                    <!-- Underline for a sleek accent -->
+                    <line x1="110" y1="60" x2="190" y2="60" stroke="#333333" stroke-width="1" stroke-linecap="round" />
+                </svg>
+            </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="nav-links">
+            <a href="about.html">About Us</a>
+            <a href="companies.html">Portfolio</a>
+            <a href="investor.html">Investors</a>
+            <a href="news.html" class="active">News</a>
+            <a href="careers.html">Careers</a>
+        </nav>
+
+        <!-- Mobile Menu Toggle Button -->
+        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobile-nav">
+        <nav class="mobile-nav-links">
+            <a href="about.html">About Us</a>
+            <a href="companies.html">Portfolio</a>
+            <a href="investor.html">Investors</a>
+            <a href="news.html">News</a>
+            <a href="careers.html">Careers</a>
+        </nav>
+    </div>
+
+    <div class="main-content" style="height: auto; overflow-y: auto; overflow-x: hidden;">
+        <!-- News Hero Section -->
+        <div class="news-hero">
+            <h1>Latest News & Updates</h1>
+            <p>Stay informed about the latest developments, announcements, and events from Taddesse and our portfolio
+                companies.</p>
+        </div>
+
+        <!-- News Content -->
+        <div class="news-container">
+            <!-- News Filters -->
+            <div class="news-filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Press Releases</button>
+                <button class="filter-btn">Announcements</button>
+                <button class="filter-btn">Events</button>
+                <button class="filter-btn">Education</button>
+            </div>
+
+            <!-- News Grid -->
+            <div class="news-grid">
+                <!-- Featured News -->
+                <article class="featured-news">
+                    <div class="featured-image" style="background-image: url('/api/placeholder/600/350')"></div>
+                    <div class="featured-content">
+                        <span class="featured-tag">Announcement</span>
+                        <h2 class="featured-title">Taddesse Expands Caribbean Presence with New Jamaica Office</h2>
+                        <div class="featured-date">February 28, 2025</div>
+                        <p class="featured-excerpt">Taddesse, Inc. has announced the opening of a new corporate office
+                            in Kingston, Jamaica, strengthening its commitment to developing Bitcoin infrastructure and
+                            services throughout the Caribbean region. The expansion comes as part of the company's
+                            strategic plan to create more accessible financial services.</p>
+                        <a href="#" class="read-more-btn">Read Full Story</a>
+                    </div>
+                </article>
+
+                <!-- Regular News Cards -->
+                <article class="news-card">
+                    <div class="news-card-image" style="background-image: url('/api/placeholder/400/300')"></div>
+                    <div class="news-card-content">
+                        <span class="news-card-tag press">Press Release</span>
+                        <h3 class="news-card-title">Island Bitcoin Jamaica Partners with Local Merchants to Launch
+                            Bitcoin Rewards Program</h3>
+                        <div class="news-card-date">February 20, 2025</div>
+                        <p class="news-card-excerpt">Island Bitcoin Jamaica has partnered with over 50 local merchants
+                            to launch a first-of-its-kind Bitcoin rewards program that allows customers to earn Bitcoin
+                            on everyday purchases.</p>
+                        <a href="#" class="read-more-btn">Read More</a>
+                    </div>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-card-image" style="background-image: url('/api/placeholder/400/300')"></div>
+                    <div class="news-card-content">
+                        <span class="news-card-tag event">Event</span>
+                        <h3 class="news-card-title">Taddesse to Present at Bitcoin 2025 Conference in Miami</h3>
+                        <div class="news-card-date">February 15, 2025</div>
+                        <p class="news-card-excerpt">Taddesse's CEO will be a featured speaker at the upcoming Bitcoin
+                            2025 Conference in Miami, sharing insights on the company's vision for Bitcoin adoption in
+                            the Caribbean.</p>
+                        <a href="#" class="read-more-btn">Read More</a>
+                    </div>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-card-image" style="background-image: url('/api/placeholder/400/300')"></div>
+                    <div class="news-card-content">
+                        <span class="news-card-tag announcement">Announcement</span>
+                        <h3 class="news-card-title">Brave Island Mining Achieves 100% Renewable Energy Goal</h3>
+                        <div class="news-card-date">February 10, 2025</div>
+                        <p class="news-card-excerpt">Our Bitcoin mining subsidiary has successfully transitioned to 100%
+                            renewable energy sources ahead of schedule, setting a new standard for sustainable mining
+                            operations in the region.</p>
+                        <a href="#" class="read-more-btn">Read More</a>
+                    </div>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-card-image" style="background-image: url('/api/placeholder/400/300')"></div>
+                    <div class="news-card-content">
+                        <span class="news-card-tag">Education</span>
+                        <h3 class="news-card-title">Island Bitcoin Foundation Launches Free Educational Series for Local
+                            Schools</h3>
+                        <div class="news-card-date">February 5, 2025</div>
+                        <p class="news-card-excerpt">The Island Bitcoin Foundation has initiated a new educational
+                            program bringing Bitcoin and financial literacy education to high schools throughout Jamaica
+                            and neighboring islands.</p>
+                        <a href="#" class="read-more-btn">Read More</a>
+                    </div>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-card-image" style="background-image: url('/api/placeholder/400/300')"></div>
+                    <div class="news-card-content">
+                        <span class="news-card-tag press">Press Release</span>
+                        <h3 class="news-card-title">Taddesse Reports Strong Fourth Quarter Financial Results</h3>
+                        <div class="news-card-date">January 28, 2025</div>
+                        <p class="news-card-excerpt">Taddesse, Inc. has announced its financial results for the fourth
+                            quarter of 2024, showing significant growth across all business segments and expanded market
+                            presence.</p>
+                        <a href="#" class="read-more-btn">Read More</a>
+                    </div>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-card-image" style="background-image: url('/api/placeholder/400/300')"></div>
+                    <div class="news-card-content">
+                        <span class="news-card-tag">Education</span>
+                        <h3 class="news-card-title">Understanding Bitcoin's Role in Emerging Economies: New Research
+                            Report</h3>
+                        <div class="news-card-date">January 20, 2025</div>
+                        <p class="news-card-excerpt">Taddesse has published a comprehensive research report examining
+                            Bitcoin's growing impact on financial inclusion and economic development in emerging
+                            markets.</p>
+                        <a href="#" class="read-more-btn">Read More</a>
+                    </div>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-card-image" style="background-image: url('/api/placeholder/400/300')"></div>
+                    <div class="news-card-content">
+                        <span class="news-card-tag announcement">Announcement</span>
+                        <h3 class="news-card-title">Island Bitcoin Releases New Point-of-Sale Solution for Caribbean
+                            Businesses</h3>
+                        <div class="news-card-date">January 15, 2025</div>
+                        <p class="news-card-excerpt">Our technology team has developed a new Bitcoin payment solution
+                            specifically designed for small businesses in the Caribbean, featuring simplified onboarding
+                            and integration with local banking systems.</p>
+                        <a href="#" class="read-more-btn">Read More</a>
+                    </div>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-card-image" style="background-image: url('/api/placeholder/400/300')"></div>
+                    <div class="news-card-content">
+                        <span class="news-card-tag event">Event</span>
+                        <h3 class="news-card-title">Caribbean Bitcoin Conference Set for March 2025 in Kingston</h3>
+                        <div class="news-card-date">January 10, 2025</div>
+                        <p class="news-card-excerpt">Taddesse and the Island Bitcoin Foundation are proud to announce
+                            the inaugural Caribbean Bitcoin Conference, bringing together leaders and innovators from
+                            across the region.</p>
+                        <a href="#" class="read-more-btn">Read More</a>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <a href="#" class="page-link">4</a>
+                <a href="#" class="page-link"><i class="fas fa-angle-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <svg width="120" height="30" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Company Name -->
+                        <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+                            style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; letter-spacing: 0.05em; font-weight: 500;"
+                            fill="#333333">
+                            TADDESSE
+                        </text>
+                        <!-- Underline for a sleek accent -->
+                        <line x1="45" y1="22" x2="75" y2="22" stroke="#333333" stroke-width="1"
+                            stroke-linecap="round" />
+                    </svg>
+                </div>
+                <ul class="footer-links main-links">
+                    <li><a href="companies.html#florida">Island Bitcoin LLC</a></li>
+                    <li><a href="companies.html#el-salvador">Island Bitcoin S.A de C.V.</a></li>
+                    <li><a href="companies.html#jamaica">Island Bitcoin Jamaica Limited</a></li>
+                    <li><a href="companies.html#mining">Brave Island Mining Association</a></li>
+                    <li><a href="companies.html#foundation">Island Bitcoin Foundation</a></li>
+                </ul>
+            </div>
+            <div class="footer-right">
+                <ul class="footer-links legal-links">
+                    <li><a href="#">&copy; 2025 Taddesse, Inc.</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                    <li><a href="legal.html">Legal</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

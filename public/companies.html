@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Portfolio Companies | Taddesse</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <style>
+        /* Override main-content styles from main.css */
+        body {
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .main-content {
+            height: auto !important;
+            min-height: calc(100vh - 73px);
+            overflow-y: visible !important;
+            padding-bottom: 80px;
+            /* Add space for footer */
+        }
+
+        /* Additional styles specific to companies page */
+        .companies-hero {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .companies-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto 4rem;
+            padding: 0 1.5rem;
+            position: relative;
+        }
+
+        .company-tile {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            height: 300px;
+        }
+
+        .company-tile:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(255, 153, 0, 0.2);
+        }
+
+        .company-link {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .company-content {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .company-logo {
+            max-width: 180px;
+            max-height: 100px;
+            margin-bottom: 1.5rem;
+        }
+
+        .company-name {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        .company-location {
+            font-size: 0.9rem;
+            color: var(--medium-gray);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .company-location i {
+            margin-right: 0.5rem;
+            color: var(--bitcoin-orange);
+        }
+
+        .company-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--medium-gray);
+        }
+
+        .company-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%);
+            z-index: 1;
+        }
+
+        .company-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            transition: opacity 0.3s ease;
+        }
+
+        .company-tile:hover .company-bg {
+            opacity: 0.15;
+        }
+
+        .learn-more {
+            margin-top: 1.5rem;
+            padding: 0.5rem 1.2rem;
+            background-color: var(--bitcoin-orange);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .learn-more:hover {
+            background-color: #ff8000;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 992px) {
+            .companies-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .companies-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .company-tile {
+                max-width: 450px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .main-content {
+                padding-bottom: 120px;
+                /* Extra space for footer on mobile */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Mobile navigation overlay -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+
+    <!-- Particles container -->
+    <div class="particles-container" id="particles"></div>
+
+    <header class="header">
+        <div class="logo">
+            <a href="corporate.html">
+                <svg width="300" height="80" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Company Name -->
+                    <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+                        style="font-family: Helvetica, Arial, sans-serif; font-size: 36px; letter-spacing: 0.05em; font-weight: 500;"
+                        fill="#333333">
+                        TADDESSE
+                    </text>
+                    <!-- Underline for a sleek accent -->
+                    <line x1="110" y1="60" x2="190" y2="60" stroke="#333333" stroke-width="1" stroke-linecap="round" />
+                </svg>
+            </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="nav-links">
+            <a href="about.html">About Us</a>
+            <a href="companies.html" class="active">Portfolio</a>
+            <a href="investor.html">Investors</a>
+            <a href="news.html">News</a>
+            <a href="careers.html">Careers</a>
+        </nav>
+
+        <!-- Mobile Menu Toggle Button -->
+        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobile-nav">
+        <nav class="mobile-nav-links">
+            <a href="about.html">About Us</a>
+            <a href="companies.html">Portfolio</a>
+            <a href="investor.html">Investors</a>
+            <a href="news.html">News</a>
+            <a href="careers.html">Careers</a>
+        </nav>
+    </div>
+
+    <div class="main-content" style="height: auto; overflow-y: auto; overflow-x: hidden;">
+        <!-- Companies Hero Section -->
+        <div class="hero-content">
+            <h1>Portfolio</h1>
+            <p>Taddesse has established a diverse ecosystem of innovative companies, each contributing to our vision of
+                empowering individuals and communities through transformative solutions across the Caribbean and beyond.
+            </p>
+        </div>
+
+        <!-- Companies Grid -->
+        <div class="companies-grid">
+            <!-- Island Bitcoin LLC -->
+            <div class="company-tile" id="florida">
+                <a href="https://islandbitcoin.com" class="company-link">
+                    <div class="company-bg" style="background-image: url('/api/placeholder/500/300')"></div>
+                    <div class="company-overlay"></div>
+                    <div class="company-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" class="company-logo">
+                            <defs>
+                                <linearGradient id="sunGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffcc33" />
+                                    <stop offset="100%" stop-color="#ff9900" />
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Background Shape -->
+                            <rect width="300" height="150" rx="10" fill="#ffffff" opacity="0.1" />
+
+                            <!-- Island Silhouette -->
+                            <path d="M60,100 Q90,60 120,85 Q150,60 180,85 Q210,60 240,100 L240,120 L60,120 Z"
+                                fill="#1e3a5f" opacity="0.9" />
+
+                            <!-- Bitcoin Symbol -->
+                            <circle cx="150" cy="65" r="28" fill="url(#sunGradient)" />
+                            <path
+                                d="M160,55 L160,75 Q168,73 168,65 Q168,57 160,55 M152,55 L152,75 M145,50 L145,80 M155,50 L155,80"
+                                stroke="white" stroke-width="4" stroke-linecap="round" fill="none" />
+
+                            <!-- Water Lines -->
+                            <path d="M70,108 Q100,102 130,108 Q160,114 190,108 Q220,102 230,108" stroke="#4682B4"
+                                stroke-width="2" fill="none" opacity="0.6" />
+                            <path d="M80,114 Q110,108 140,114 Q170,120 200,114 Q230,108 240,114" stroke="#4682B4"
+                                stroke-width="2" fill="none" opacity="0.7" />
+
+                            <!-- Company Name -->
+                            <text x="150" y="140" font-family="Arial, sans-serif" font-size="14" font-weight="bold"
+                                text-anchor="middle" fill="#ff9900">ISLAND BITCOIN LLC</text>
+                        </svg>
+                        <h3 class="company-name">Island Bitcoin LLC</h3>
+                        <div class="company-location">
+                            <i class="fas fa-map-marker-alt"></i> Florida, USA
+                        </div>
+                        <p class="company-description">Specializing in innovative Bitcoin software development and
+                            cutting-edge solutions.</p>
+                        <button class="learn-more">VISIT WEBSITE</button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Island Bitcoin S.A de C.V. -->
+            <div class="company-tile" id="el-salvador">
+                <a href="https://islandbitcoin.sv" class="company-link">
+                    <div class="company-bg" style="background-image: url('/api/placeholder/500/300')"></div>
+                    <div class="company-overlay"></div>
+                    <div class="company-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" class="company-logo">
+                            <defs>
+                                <linearGradient id="svGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#0047AB" />
+                                    <stop offset="100%" stop-color="#1e3a5f" />
+                                </linearGradient>
+                                <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffcc33" />
+                                    <stop offset="100%" stop-color="#ff9900" />
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Background Shape -->
+                            <rect width="300" height="150" rx="10" fill="#ffffff" opacity="0.1" />
+
+                            <!-- El Salvador Map Outline -->
+                            <path
+                                d="M80,75 L90,65 L115,60 L135,65 L160,60 L180,65 L205,70 L220,80 L225,90 L220,100 L205,110 L180,115 L155,110 L135,115 L110,110 L90,105 L80,95 Z"
+                                fill="url(#svGradient)" stroke="#ffffff" stroke-width="2" />
+
+                            <!-- Bitcoin Symbol -->
+                            <circle cx="150" cy="85" r="22" fill="url(#coinGradient)" />
+                            <path
+                                d="M158,77 L158,93 Q165,91 165,85 Q165,79 158,77 M152,77 L152,93 M146,73 L146,97 M154,73 L154,97"
+                                stroke="white" stroke-width="3" stroke-linecap="round" fill="none" />
+
+                            <!-- Volcano with lightning (representing Bitcoin volcano bonds) -->
+                            <path d="M135,85 L120,110 L150,110 Z" fill="#555555" opacity="0.7" />
+                            <path d="M165,85 L180,110 L150,110 Z" fill="#555555" opacity="0.7" />
+                            <path d="M145,72 L140,85 M155,72 L160,85" stroke="#ffcc33" stroke-width="2"
+                                stroke-linecap="round" />
+
+                            <!-- Company Name -->
+                            <text x="150" y="138" font-family="Arial, sans-serif" font-size="12" font-weight="bold"
+                                text-anchor="middle" fill="#ff9900">ISLAND BITCOIN S.A de C.V.</text>
+                        </svg>
+                        <h3 class="company-name">Island Bitcoin S.A de C.V.</h3>
+                        <div class="company-location">
+                            <i class="fas fa-map-marker-alt"></i> El Salvador
+                        </div>
+                        <p class="company-description">Comprehensive Bitcoin services in the world's first country to
+                            adopt Bitcoin as legal tender.</p>
+                        <button class="learn-more">VISIT WEBSITE</button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Island Bitcoin Jamaica Limited -->
+            <div class="company-tile" id="jamaica">
+                <a href="https://islandbitcoin.jm" class="company-link">
+                    <div class="company-bg" style="background-image: url('/api/placeholder/500/300')"></div>
+                    <div class="company-overlay"></div>
+                    <div class="company-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" class="company-logo">
+                            <defs>
+                                <linearGradient id="jamaicaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#009B77" />
+                                    <stop offset="100%" stop-color="#006747" />
+                                </linearGradient>
+                                <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffcc33" />
+                                    <stop offset="100%" stop-color="#ff9900" />
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Background Shape -->
+                            <rect width="300" height="150" rx="10" fill="#ffffff" opacity="0.1" />
+
+                            <!-- Jamaica Flag Inspired Background -->
+                            <path d="M75,45 L225,45 L225,105 L75,105 Z" fill="url(#jamaicaGradient)" />
+                            <path d="M75,45 L150,75 L75,105 Z" fill="#000000" opacity="0.8" />
+                            <path d="M225,45 L150,75 L225,105 Z" fill="#000000" opacity="0.8" />
+
+                            <!-- Bitcoin Symbol -->
+                            <circle cx="150" cy="75" r="25" fill="url(#coinGradient)" />
+                            <path
+                                d="M160,65 L160,85 Q168,83 168,75 Q168,67 160,65 M152,65 L152,85 M145,60 L145,90 M155,60 L155,90"
+                                stroke="white" stroke-width="3.5" stroke-linecap="round" fill="none" />
+
+                            <!-- Palm Tree -->
+                            <path d="M85,90 L95,90 L90,65 Z" fill="#8B4513" />
+                            <path d="M75,70 Q90,60 105,70" stroke="#006747" stroke-width="4" stroke-linecap="round"
+                                fill="none" />
+                            <path d="M78,62 Q90,55 102,62" stroke="#006747" stroke-width="3" stroke-linecap="round"
+                                fill="none" />
+                            <path d="M80,55 Q90,50 100,55" stroke="#006747" stroke-width="2" stroke-linecap="round"
+                                fill="none" />
+
+                            <!-- Beach with waves -->
+                            <path d="M210,85 Q220,80 230,85" stroke="#1e90ff" stroke-width="2" fill="none" />
+                            <path d="M205,90 Q220,85 235,90" stroke="#1e90ff" stroke-width="2" fill="none" />
+
+                            <!-- Company Name -->
+                            <text x="150" y="130" font-family="Arial, sans-serif" font-size="13" font-weight="bold"
+                                text-anchor="middle" fill="#ff9900">ISLAND BITCOIN JAMAICA LTD.</text>
+                        </svg>
+                        <h3 class="company-name">Island Bitcoin Jamaica Limited</h3>
+                        <div class="company-location">
+                            <i class="fas fa-map-marker-alt"></i> Kingston, Jamaica
+                        </div>
+                        <p class="company-description">Focused on retail solutions and Bitcoin rewards programs driving
+                            adoption throughout the Caribbean.</p>
+                        <button class="learn-more">VISIT WEBSITE</button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Brave Island Mining Association -->
+            <div class="company-tile" id="mining">
+                <a href="https://bravemining.org" class="company-link">
+                    <div class="company-bg" style="background-image: url('/api/placeholder/500/300')"></div>
+                    <div class="company-overlay"></div>
+                    <div class="company-content">
+
+                        <rect width="180" height="80" fill="none" />
+                        <text x="50%" y="40%" dominant-baseline="middle" text-anchor="middle"
+                            font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#ff9900">Brave
+                            Island</text>
+                        </svg>
+                        <h3 class="company-name">Mining Association</h3>
+                        <div class="company-location">
+                            <i class="fas fa-map-marker-alt"></i> Worldwide
+                        </div>
+                        <p class="company-description">Sustainable Bitcoin mining operations leveraging renewable energy
+                            sources in the Caribbean.</p>
+                        <button class="learn-more">VISIT WEBSITE</button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Island Bitcoin Foundation -->
+            <div class="company-tile" id="foundation">
+                <a href="https://islandbitcoinfoundation.org" class="company-link">
+                    <div class="company-bg" style="background-image: url('/api/placeholder/500/300')"></div>
+                    <div class="company-overlay"></div>
+                    <div class="company-content">
+                        <svg class="company-logo" width="180" height="80" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="180" height="80" fill="none" />
+                            <text x="50%" y="40%" dominant-baseline="middle" text-anchor="middle"
+                                font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#ff9900">Island
+                                Bitcoin</text>
+                            <text x="50%" y="80%" dominant-baseline="middle" text-anchor="middle"
+                                font-family="Arial, sans-serif" font-size="16" fill="#555555">Foundation</text>
+                        </svg>
+                        <h3 class="company-name">Island Bitcoin Foundation</h3>
+                        <div class="company-location">
+                            <i class="fas fa-map-marker-alt"></i> Nassau, Bahamas
+                        </div>
+                        <p class="company-description">Non-profit focused on Bitcoin education, community initiatives,
+                            and fostering financial literacy.</p>
+                        <button class="learn-more">VISIT WEBSITE</button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Taddesse, Inc. (Parent Company) -->
+            <div class="company-tile" id="delaware">
+                <a href="index.html" class="company-link">
+                    <div class="company-bg" style="background-image: url('/api/placeholder/500/300')"></div>
+                    <div class="company-overlay"></div>
+                    <div class="company-content">
+                        <svg class="company-logo" width="180" height="80" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Company Name -->
+                            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+                                style="font-family: Helvetica, Arial, sans-serif; font-size: 24px; letter-spacing: 0.05em; font-weight: 500;"
+                                fill="#333333">
+                                TADDESSE
+                            </text>
+                            <!-- Underline for a sleek accent -->
+                            <line x1="60" y1="60" x2="120" y2="60" stroke="#333333" stroke-width="1"
+                                stroke-linecap="round" />
+                        </svg>
+                        <h3 class="company-name">Taddesse, Inc.</h3>
+                        <div class="company-location">
+                            <i class="fas fa-map-marker-alt"></i> Delaware, USA
+                        </div>
+                        <p class="company-description">Parent investment company overseeing strategic direction and
+                            capital allocation across the ecosystem.</p>
+                        <button class="learn-more">VISIT WEBSITE</button>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <svg width="120" height="30" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Company Name -->
+                        <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+                            style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; letter-spacing: 0.05em; font-weight: 500;"
+                            fill="#333333">
+                            TADDESSE
+                        </text>
+                        <!-- Underline for a sleek accent -->
+                        <line x1="45" y1="22" x2="75" y2="22" stroke="#333333" stroke-width="1"
+                            stroke-linecap="round" />
+                    </svg>
+                </div>
+                <ul class="footer-links main-links">
+                    <li><a href="companies.html#florida">Island Bitcoin LLC</a></li>
+                    <li><a href="companies.html#el-salvador">Island Bitcoin S.A de C.V.</a></li>
+                    <li><a href="companies.html#jamaica">Island Bitcoin Jamaica Limited</a></li>
+                    <li><a href="companies.html#mining">Brave Island Mining Association</a></li>
+                    <li><a href="companies.html#foundation">Island Bitcoin Foundation</a></li>
+                </ul>
+            </div>
+            <div class="footer-right">
+                <ul class="footer-links legal-links">
+                    <li><a href="#">&copy; 2025 Taddesse, Inc.</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                    <li><a href="legal.html">Legal</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

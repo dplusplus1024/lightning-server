@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>About Us | Taddesse</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <style>
+        /* Additional styles specific to about page */
+        .about-hero {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .about-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+            text-align: center;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .team-member {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 153, 0, 0.15);
+        }
+
+        .team-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .team-info {
+            padding: 1.5rem;
+        }
+
+        .team-info h3 {
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .team-title {
+            color: var(--medium-gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .team-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-social a {
+            color: var(--medium-gray);
+            margin: 0 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .team-social a:hover {
+            color: var(--bitcoin-orange);
+        }
+
+        .read-more {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--bitcoin-orange);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .read-more:hover {
+            background-color: #ff8000;
+            transform: translateY(-2px);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .value-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            text-align: left;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--bitcoin-orange);
+        }
+
+        .value-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-gray);
+        }
+
+        .value-card p {
+            color: var(--medium-gray);
+            line-height: 1.6;
+        }
+
+        .section-heading {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .section-heading:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--bitcoin-orange);
+        }
+
+        @media (max-width: 768px) {
+
+            .team-grid,
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-member {
+                max-width: 350px;
+                margin: 0 auto;
+            }
+
+            .value-card {
+                text-align: center;
+                max-width: 350px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Mobile navigation overlay -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+
+    <!-- Particles container -->
+    <div class="particles-container" id="particles"></div>
+
+    <header class="header">
+        <div class="logo">
+            <a href="corporate.html">
+                <svg width="300" height="80" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Company Name -->
+                    <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+                        style="font-family: Helvetica, Arial, sans-serif; font-size: 36px; letter-spacing: 0.05em; font-weight: 500;"
+                        fill="#333333">
+                        TADDESSE
+                    </text>
+                    <!-- Underline for a sleek accent -->
+                    <line x1="110" y1="60" x2="190" y2="60" stroke="#333333" stroke-width="1" stroke-linecap="round" />
+                </svg>
+            </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="nav-links">
+            <a href="about.html" class="active">About Us</a>
+            <a href="companies.html">Portfolio</a>
+            <a href="investor.html">Investors</a>
+            <a href="news.html">News</a>
+            <a href="careers.html">Careers</a>
+        </nav>
+
+        <!-- Mobile Menu Toggle Button -->
+        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobile-nav">
+        <nav class="mobile-nav-links">
+            <a href="about.html">About Us</a>
+            <a href="companies.html">Portfolio</a>
+            <a href="investor.html">Investors</a>
+            <a href="news.html">News</a>
+            <a href="careers.html">Careers</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <!-- About Hero Section -->
+        <div class="hero-content">
+            <h1>About Us</h1>
+            <p>We pioneer transformative solutions across the Caribbean and beyond, empowering individuals with tools
+                for sovereignty and financial independence. Our forward-thinking approach reshapes prosperity paradigms,
+                fundamentally altering how communities thrive through decentralized innovation across island nations and
+                continental markets.</p>
+            <p> Interested in joining our team? Check out our <a href="careers.html">Careers Page</a> for current
+                openings.</p>
+        </div>
+
+        <!-- Team Section -->
+        <div class="about-section">
+            <h2 class="section-heading">Our Executive Team</h2>
+
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="images/placeholder.png" alt="Jabari Ennis" class="team-img">
+                    <div class="team-info">
+                        <h3>Jabari Ennis</h3>
+                        <div class="team-title">Founder, CEO, & CTO</div>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                        <a href="#" class="read-more">READ MORE</a>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <img src="images/placeholder.png" alt="Michael Ennis" class="team-img">
+                    <div class="team-info">
+                        <h3>Michael Ennis</h3>
+                        <div class="team-title">Director of Business Development</div>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                        <a href="#" class="read-more">READ MORE</a>
+                    </div>
+                </div>
+
+                <!-- <div class="team-member">
+                    <img src="images/placeholder.png" alt="Elena Rodriguez" class="team-img">
+                    <div class="team-info">
+                        <h3>Elena Rodriguez</h3>
+                        <div class="team-title">Director of Product</div>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                        <a href="#" class="read-more">READ MORE</a>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <img src="images/placeholder.png" alt="David Kim" class="team-img">
+                    <div class="team-info">
+                        <h3>David Kim</h3>
+                        <div class="team-title">General Counsel</div>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                        <a href="#" class="read-more">READ MORE</a>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <img src="images/placeholder.png" alt="Liam Wilson" class="team-img">
+                    <div class="team-info">
+                        <h3>Liam Wilson</h3>
+                        <div class="team-title">Director of Finance</div>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                        <a href="#" class="read-more">READ MORE</a>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <svg width="120" height="30" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Company Name -->
+                        <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+                            style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; letter-spacing: 0.05em; font-weight: 500;"
+                            fill="#333333">
+                            TADDESSE
+                        </text>
+                        <!-- Underline for a sleek accent -->
+                        <line x1="45" y1="22" x2="75" y2="22" stroke="#333333" stroke-width="1"
+                            stroke-linecap="round" />
+                    </svg>
+                </div>
+                <ul class="footer-links main-links">
+                    <li><a href="companies.html#florida">Island Bitcoin LLC</a></li>
+                    <li><a href="companies.html#el-salvador">Island Bitcoin S.A de C.V.</a></li>
+                    <li><a href="companies.html#jamaica">Island Bitcoin Jamaica Limited</a></li>
+                    <li><a href="companies.html#jamaica">Brave Island Mining Association</a></li>
+                    <li><a href="companies.html#foundation">Island Bitcoin Foundation</a></li>
+                </ul>
+            </div>
+            <div class="footer-right">
+                <ul class="footer-links legal-links">
+                    <li><a href="#">&copy; 2025 Taddesse, Inc.</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                    <li><a href="legal.html">Legal</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Taddesse</title>
+  <stylesheet href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+
+<body>
+  <!-- Mobile navigation overlay -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+
+  <!-- Moved particles container outside the main-content to cover the entire page -->
+  <div class="particles-container" id="particles"></div>
+
+  <header class="header">
+    <div class="logo">
+      <svg width="300" height="80" xmlns="http://www.w3.org/2000/svg">
+        <!-- Company Name -->
+        <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+          style="font-family: Helvetica, Arial, sans-serif; font-size: 36px; letter-spacing: 0.05em; font-weight: 500;"
+          fill="#333333">
+          TADDESSE
+        </text>
+        <!-- Underline for a sleek accent -->
+        <line x1="110" y1="60" x2="190" y2="60" stroke="#333333" stroke-width="1" stroke-linecap="round" />
+      </svg>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <nav class="nav-links">
+      <a href="about.html">About Us</a>
+      <a href="companies.html">Portfolio</a>
+      <a href="investor.html">Investors</a>
+      <a href="news.html">News</a>
+      <a href="careers.html">Careers</a>
+    </nav>
+
+    <!-- Mobile Menu Toggle Button -->
+    <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav" id="mobile-nav">
+    <nav class="mobile-nav-links">
+      <a href="about.html">About Us</a>
+      <a href="companies.html">Portfolio</a>
+      <a href="investor.html">Investors</a>
+      <a href="news.html">News</a>
+      <a href="careers.html">Careers</a>
+    </nav>
+  </div>
+
+  <div class="main-content">
+    <div class="hero-content">
+      <h1>Pioneering Sovereign Innovation</h1>
+      <p>Taddesse is a global ecosystem of companies providing 21st century innovative services, open source
+        software development, and
+        sustainable community initiatives.</p>
+      <div class="cta-buttons">
+        <a href="about.html" class="cta-button">Learn More</a>
+        <a href="contact.html" class="cta-button secondary">Contact Us</a>
+      </div>
+    </div>
+
+    <div class="map-container">
+      <!-- Removed particles container from here since we moved it to the top level -->
+
+      <div class="island-container">
+        <div class="parallax-container" id="parallax-container">
+          <img src="images/island.jpeg" alt="Island Bitcoin" class="island-image" id="island-image">
+
+          <!-- Map Markers with company-specific icons -->
+          <div class="map-marker" id="florida-marker" style="top: 25%; left: 20%;" data-label="Florida">
+            <img src="/api/placeholder/24/24" alt="Florida" id="florida-icon">
+          </div>
+          <div class="map-marker" id="el-salvador-marker" style="top: 60%; left: 40%;" data-label="El Salvador">
+            <img src="/api/placeholder/24/24" alt="El Salvador" id="el-salvador-icon">
+          </div>
+          <div class="map-marker" id="jamaica-marker" style="top: 50%; left: 65%;" data-label="Jamaica">
+            <img src="/api/placeholder/24/24" alt="Jamaica" id="jamaica-icon">
+          </div>
+          <div class="map-marker" id="delaware-marker" style="top: 30%; left: 75%;" data-label="Delaware">
+            <img src="/api/placeholder/24/24" alt="Delaware" id="delaware-icon">
+          </div>
+          <div class="map-marker" id="foundation-marker" style="top: 70%; left: 55%;" data-label="Foundation">
+            <img src="/api/placeholder/24/24" alt="Foundation" id="foundation-icon">
+          </div>
+        </div>
+      </div>
+
+      <!-- Company Info Popup -->
+      <div class="company-popup" id="company-popup">
+        <button class="close-popup" id="close-popup">✕</button>
+        <h3 id="popup-title">Island Bitcoin LLC</h3>
+        <p id="popup-description">Specializing in innovative Bitcoin software development, our Florida-based team
+          creates cutting-edge solutions that empower individuals and businesses in the Bitcoin ecosystem.</p>
+        <a href="#" id="popup-link" class="company-popup-btn">Learn More</a>
+      </div>
+
+      <div class="tooltip" style="text-align: center;">
+        Move mouse to explore our island • Click markers to discover our subsidary organizations</div>
+    </div>
+  </div>
+
+  <!-- Updated footer with vertically aligned columns -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <svg width="120" height="30" xmlns="http://www.w3.org/2000/svg">
+            <!-- Company Name -->
+            <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+              style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; letter-spacing: 0.05em; font-weight: 500;"
+              fill="#333333">
+              TADDESSE
+            </text>
+            <!-- Underline for a sleek accent -->
+            <line x1="45" y1="22" x2="75" y2="22" stroke="#333333" stroke-width="1" stroke-linecap="round" />
+          </svg>
+        </div>
+        <ul class="footer-links main-links">
+          <li><a href="companies.html#florida">Island Bitcoin LLC</a></li>
+          <li><a href="companies.html#el-salvador">Island Bitcoin S.A de C.V.</a></li>
+          <li><a href="companies.html#jamaica">Island Bitcoin Jamaica Limited</a></li>
+          <li><a href="companies.html#jamaica">Brave Island Mining Association</a></li>
+          <li><a href="companies.html#foundation">Island Bitcoin Foundation</a></li>
+        </ul>
+      </div>
+      <div class="footer-right">
+        <ul class="footer-links legal-links">
+          <li><a href="#">&copy; 2025 Taddesse, Inc.</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="legal.html">Legal</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>
