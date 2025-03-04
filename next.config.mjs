@@ -29,7 +29,7 @@ const nextConfig = {
       {
         source: "/",
         destination: "/corporate.html",
-        has: [{ type: "host", value: "taddesse.xyz" }],
+        has: [{ type: "host", value: "www.taddesse.xyz" }],
         permanent: true,
       },
     ];

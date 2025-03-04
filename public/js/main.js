@@ -1,4 +1,32 @@
 // Company data - keep as is since it's configuration data
+const companyData = {
+  florida: {
+    name: "Island Bitcoin LLC",
+    description:
+      "Specializing in innovative Bitcoin software development, our Florida-based team creates cutting-edge solutions that empower individuals and businesses in the Bitcoin ecosystem.",
+    link: "companies.html#florida",
+  },
+  "el-salvador": {
+    name: "Island Bitcoin S.A de C.V.",
+    description: "Our El Salvador division focuses on Bitcoin payment infrastructure and financial inclusion initiatives across Central America.",
+    link: "companies.html#el-salvador",
+  },
+  jamaica: {
+    name: "Island Bitcoin Jamaica Limited",
+    description: "Leading Caribbean Bitcoin education and adoption through community-focused programs and local merchant solutions.",
+    link: "companies.html#jamaica",
+  },
+  delaware: {
+    name: "Taddesse Inc.",
+    description: "Our corporate headquarters coordinating global strategy and investment across the Taddesse ecosystem of companies.",
+    link: "companies.html#delaware",
+  },
+  foundation: {
+    name: "Island Bitcoin Foundation",
+    description: "A non-profit organization dedicated to promoting financial literacy, Bitcoin education, and sustainable development initiatives.",
+    link: "companies.html#foundation",
+  },
+};
 
 // Cache DOM selectors at the top level to reduce DOM queries
 document.addEventListener("DOMContentLoaded", function () {
@@ -140,8 +168,8 @@ function createParticles(container) {
 // Optimize particle animation with requestAnimationFrame
 function animateParticle(particle) {
   // Cache values from dataset to avoid DOM access in animation loop
-  const origX = parseFloat(particle.dataset.origX) - 90;
-  const origY = parseFloat(particle.dataset.origY);
+  const origX = parseFloat(particle.dataset.origX) + 100;
+  const origY = parseFloat(particle.dataset.origY) - 10;
   const offsetX = (Math.random() - 0.5) * 20;
   const offsetY = (Math.random() - 0.5) * 20;
 
@@ -198,39 +226,56 @@ function animateParticle(particle) {
   requestAnimationFrame(animate);
 }
 
-// Optimize marker setup with event delegation
+// Fixed marker setup function that maintains performance while ensuring popups work
 function setupMarkers(markers, popup, popupTitle, popupDescription, popupLink, closePopup) {
-  if (!markers || !popup) return;
+  // Exit early if elements don't exist
+  if (!markers.length || !popup) return;
 
-  const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   const mapContainer = document.querySelector(".map-container");
 
-  // Use event delegation for marker clicks
-  const markerContainer = markers[0].parentNode;
-  markerContainer.addEventListener("click", function (event) {
-    // Find the closest marker if it exists
-    const marker = event.target.closest(".map-marker");
-    if (!marker) return;
+  // Revert to individual marker listeners for reliability
+  markers.forEach((marker) => {
+    marker.addEventListener("click", function (event) {
+      event.stopPropagation();
+      const id = this.id.replace("-marker", "");
+      const company = companyData[id];
 
-    event.stopPropagation();
-    const id = marker.id.replace("-marker", "");
-    const company = companyData[id];
+      if (company) {
+        // Update popup content
+        popupTitle.textContent = company.name;
+        popupDescription.textContent = company.description;
+        popupLink.href = company.link;
 
-    if (company) {
-      // Update popup content
-      popupTitle.textContent = company.name;
-      popupDescription.textContent = company.description;
-      popupLink.href = company.link;
+        // Position popup
+        if (window.innerWidth <= 768) {
+          // Center popup for mobile
+          popup.style.left = "50%";
+          popup.style.top = "50%";
+          popup.style.transform = "translate(-50%, -50%)";
+        } else {
+          // Desktop positioning
+          const rect = this.getBoundingClientRect();
+          const mapRect = mapContainer.getBoundingClientRect();
 
-      // Position popup
-      positionPopup(popup, marker, mapContainer);
+          let left = rect.left - mapRect.left + 30;
+          let top = rect.top - mapRect.top;
 
-      // Show popup
-      popup.classList.add("visible");
-    }
+          if (left + 320 > mapRect.width) {
+            left = rect.left - mapRect.left - 330;
+          }
+
+          popup.style.left = `${left}px`;
+          popup.style.top = `${top}px`;
+          popup.style.transform = "none";
+        }
+
+        // Show popup
+        popup.classList.add("visible");
+      }
+    });
   });
 
-  // Close button handler
+  // Close popup handlers (unchanged)
   if (closePopup) {
     closePopup.addEventListener("click", function (event) {
       event.stopPropagation();
@@ -238,37 +283,12 @@ function setupMarkers(markers, popup, popupTitle, popupDescription, popupLink, c
     });
   }
 
-  // Close on document click
+  // Document click to close popup
   document.addEventListener("click", function (event) {
     if (!popup.contains(event.target) && !event.target.closest(".map-marker")) {
       popup.classList.remove("visible");
     }
   });
-
-  // Helper function for popup positioning
-  function positionPopup(popup, marker, mapContainer) {
-    if (window.innerWidth <= 768) {
-      // Center popup for mobile
-      popup.style.left = "50%";
-      popup.style.top = "50%";
-      popup.style.transform = "translate(-50%, -50%)";
-    } else {
-      // Desktop positioning
-      const rect = marker.getBoundingClientRect();
-      const mapRect = mapContainer.getBoundingClientRect();
-
-      let left = rect.left - mapRect.left + 30;
-      let top = rect.top - mapRect.top;
-
-      if (left + 320 > mapRect.width) {
-        left = rect.left - mapRect.left - 330;
-      }
-
-      popup.style.left = `${left}px`;
-      popup.style.top = `${top}px`;
-      popup.style.transform = "none";
-    }
-  }
 }
 
 // Optimize island interaction

@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Contact Us | Taddesse</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <style>
+        /* Override main-content styles from main.css */
+        body {
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .main-content {
+            height: auto !important;
+            min-height: calc(100vh - 73px);
+            overflow-y: visible !important;
+            padding-bottom: 80px;
+            /* Add space for footer */
+        }
+
+        /* Contact page specific styles */
+        .contact-hero {
+            position: relative;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(10, 37, 64, 0.9) 0%, rgba(255, 153, 0, 0.7) 100%);
+            color: white;
+            border-radius: 0 0 30% 30% / 10%;
+        }
+
+        .contact-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .contact-hero p {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        @media (min-width: 992px) {
+            .contact-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .contact-form-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-form-container h2 {
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .contact-form-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--bitcoin-orange);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--bitcoin-orange);
+            box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            background-color: var(--bitcoin-orange);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #ff8000;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 153, 0, 0.3);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .info-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-card h2 {
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .info-card h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--bitcoin-orange);
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 153, 0, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--bitcoin-orange);
+        }
+
+        .contact-text h3 {
+            color: var(--dark-gray);
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-text p,
+        .contact-text a {
+            color: var(--medium-gray);
+            line-height: 1.5;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-text a:hover {
+            color: var(--bitcoin-orange);
+        }
+
+        .social-links {
+            display: flex;
+            margin-top: 1rem;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background-color: var(--light-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background-color: var(--bitcoin-orange);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 153, 0, 0.3);
+        }
+
+        .office-locations {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .office-locations {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .office-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .office-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .office-card h3 {
+            color: var(--bitcoin-orange);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .office-card h3 i {
+            margin-right: 0.5rem;
+        }
+
+        .office-card address {
+            color: var(--medium-gray);
+            font-style: normal;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .office-card a {
+            color: var(--bitcoin-orange);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .office-card a i {
+            margin-left: 0.3rem;
+            font-size: 0.8rem;
+        }
+
+        .contact-map {
+            border-radius: 12px;
+            overflow: hidden;
+            height: 300px;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(0.5);
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(255, 153, 0, 0.1) 0%, rgba(10, 37, 64, 0.1) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-pin {
+            width: 60px;
+            height: 60px;
+            background-color: white;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        .map-pin-inner {
+            width: 30px;
+            height: 30px;
+            background-color: var(--bitcoin-orange);
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 153, 0, 0.5);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(255, 153, 0, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 153, 0, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .contact-hero h1 {
+                font-size: 2rem;
+            }
+
+            .contact-hero p {
+                font-size: 1rem;
+            }
+
+            .main-content {
+                padding-bottom: 120px;
+                /* Extra space for footer on mobile */
+            }
+
+            .office-locations {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Mobile navigation overlay -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+
+    <!-- Particles container -->
+    <div class="particles-container" id="particles"></div>
+
+    <header class="header">
+        <div class="logo">
+            <a href="corporate.html">
+                <svg width="300" height="80" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Company Name -->
+                    <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+                        style="font-family: Helvetica, Arial, sans-serif; font-size: 36px; letter-spacing: 0.05em; font-weight: 500;"
+                        fill="#333333">
+                        TADDESSE
+                    </text>
+                    <!-- Underline for a sleek accent -->
+                    <line x1="110" y1="60" x2="190" y2="60" stroke="#333333" stroke-width="1" stroke-linecap="round" />
+                </svg>
+            </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="nav-links">
+            <a href="about.html">About Us</a>
+            <a href="companies.html">Portfolio</a>
+            <a href="investor.html">Investors</a>
+            <a href="news.html">News</a>
+            <a href="careers.html">Careers</a>
+        </nav>
+
+        <!-- Mobile Menu Toggle Button -->
+        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobile-nav">
+        <nav class="mobile-nav-links">
+            <a href="about.html">About Us</a>
+            <a href="companies.html">Portfolio</a>
+            <a href="investor.html">Investors</a>
+            <a href="news.html">News</a>
+            <a href="careers.html">Careers</a>
+        </nav>
+    </div>
+
+    <div class="main-content" style="height: auto; overflow-y: auto; overflow-x: hidden;">
+        <!-- Contact Hero Section -->
+        <div class="contact-hero">
+            <h1>Get in Touch</h1>
+            <p>Have questions about our services or want to learn more about how we can help?</p>
+            <p>We'd love to hear from you.</p>
+        </div>
+
+        <!-- Contact Content -->
+        <div class="contact-container">
+            <!-- Contact Form -->
+            <div class="contact-form-container">
+                <h2>Send Us a Message</h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Your name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" class="form-control" id="subject" placeholder="What's this about?">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea class="form-control" id="message" placeholder="How can we help you?"
+                            required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Send Message</button>
+                </form>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <div class="info-card">
+                    <h2>Contact Information</h2>
+
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Headquarters</h3>
+                            <p>1234 Corporate Plaza<br>Dover, DE 19901<br>United States</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Email Us</h3>
+                            <p><a href="mailto:info@taddesse.com">info@taddesse.xyz</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Call Us</h3>
+                            <p><a href="tel:+18885551234">+1 (888) 555-1234</a></p>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram-plane"></i></a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h2>Office Locations</h2>
+                    <div class="office-locations">
+                        <div class="office-card">
+                            <h3><i class="fas fa-sun"></i> Florida</h3>
+                            <address>
+                                Island Bitcoin LLC<br>
+                                5500 Tech Way, Suite 300<br>
+                                Miami, FL 33134
+                            </address>
+                            <a href="mailto:florida@islandbitcoin.com">florida@islandbitcoin.com <i
+                                    class="fas fa-chevron-right"></i></a>
+                        </div>
+
+                        <div class="office-card">
+                            <h3><i class="fas fa-umbrella-beach"></i> Jamaica</h3>
+                            <address>
+                                Island Bitcoin Jamaica Ltd.<br>
+                                25 Hope Road<br>
+                                Kingston, Jamaica
+                            </address>
+                            <a href="mailto:jamaica@islandbitcoin.com">jamaica@islandbitcoin.com <i
+                                    class="fas fa-chevron-right"></i></a>
+                        </div>
+
+                        <div class="office-card">
+                            <h3><i class="fab fa-bitcoin"></i> El Salvador</h3>
+                            <address>
+                                Island Bitcoin S.A de C.V.<br>
+                                Calle El Mirador, Colonia Escalón<br>
+                                San Salvador, El Salvador
+                            </address>
+                            <a href="mailto:elsalvador@islandbitcoin.com">elsalvador@islandbitcoin.com <i
+                                    class="fas fa-chevron-right"></i></a>
+                        </div>
+
+                        <div class="office-card">
+                            <h3><i class="fas fa-graduation-cap"></i> Foundation</h3>
+                            <address>
+                                Island Bitcoin Foundation<br>
+                                27 Hope Road<br>
+                                Kingston, Jamaica
+                            </address>
+                            <a href="mailto:foundation@islandbitcoin.org">foundation@islandbitcoin.org <i
+                                    class="fas fa-chevron-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map -->
+                <div class="contact-map">
+                    <img src="/api/placeholder/1000/300" alt="Map Location" class="map-placeholder">
+                    <div class="map-overlay">
+                        <div class="map-pin">
+                            <div class="map-pin-inner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <svg width="120" height="30" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Company Name -->
+                        <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+                            style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; letter-spacing: 0.05em; font-weight: 500;"
+                            fill="#333333">
+                            TADDESSE
+                        </text>
+                        <!-- Underline for a sleek accent -->
+                        <line x1="45" y1="22" x2="75" y2="22" stroke="#333333" stroke-width="1"
+                            stroke-linecap="round" />
+                    </svg>
+                </div>
+                <ul class="footer-links main-links">
+                    <li><a href="companies.html#florida">Island Bitcoin LLC</a></li>
+                    <li><a href="companies.html#el-salvador">Island Bitcoin S.A de C.V.</a></li>
+                    <li><a href="companies.html#jamaica">Island Bitcoin Jamaica Limited</a></li>
+                    <li><a href="companies.html#mining">Brave Island Mining Association</a></li>
+                    <li><a href="companies.html#foundation">Island Bitcoin Foundation</a></li>
+                </ul>
+            </div>
+            <div class="footer-right">
+                <ul class="footer-links legal-links">
+                    <li><a href="#">&copy; 2025 Taddesse, Inc.</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                    <li><a href="legal.html">Legal</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Simple form validation
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Basic validation
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            if (name && email && message) {
+                // In a real implementation, you would send this data to a server
+                alert('Thank you for your message. We will get back to you soon!');
+                this.reset();
+            } else {
+                alert('Please fill out all required fields.');
+            }
+        });
+    </script>
+</body>
+
+</html>

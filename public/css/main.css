@@ -256,7 +256,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), transparent 175px, rgba(0, 0, 0, 0.9) 200px);
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), transparent 175px, rgba(255, 255, 255, 0.9) 200px);
   mix-blend-mode: saturation;
   pointer-events: none;
   z-index: 1;
