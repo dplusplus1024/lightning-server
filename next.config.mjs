@@ -10,10 +10,23 @@ const nextConfig = {
         source: "/.well-known/nostr.json",
         destination: "/api/nostr/name",
       },
-      // Add these rewrites to handle all HTML files
+      // Handle static assets explicitly
       {
-        source: "/:path*",
-        destination: "/:path*",
+        source: "/css/:path*",
+        destination: "/css/:path*",
+      },
+      {
+        source: "/js/:path*",
+        destination: "/js/:path*",
+      },
+      {
+        source: "/images/:path*",
+        destination: "/images/:path*",
+      },
+      // Handle HTML pages
+      {
+        source: "/:path*.html",
+        destination: "/:path*.html",
       },
     ];
   },
