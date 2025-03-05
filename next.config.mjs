@@ -10,6 +10,11 @@ const nextConfig = {
         source: "/.well-known/nostr.json",
         destination: "/api/nostr/name",
       },
+      // Add these rewrites to handle all HTML files
+      {
+        source: "/:path*",
+        destination: "/:path*",
+      },
     ];
   },
   async redirects() {
@@ -35,5 +40,4 @@ const nextConfig = {
     ];
   },
 };
-
 export default nextConfig;
