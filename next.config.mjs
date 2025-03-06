@@ -11,18 +11,23 @@ const nextConfig = {
         destination: "/api/nostr/name",
       },
       // Handle static assets explicitly
-      {
-        source: "/css/:path*",
-        destination: "/css/:path*",
-      },
-      {
-        source: "/js/:path*",
-        destination: "/js/:path*",
-      },
-      {
-        source: "/images/:path*",
-        destination: "/images/:path*",
-      },
+      // {
+      //   source: "/css/:path*",
+      //   destination: "/css/:path*",
+      // },
+      // {
+      //   source: "/js/:path*",
+      //   destination: "/js/:path*",
+      // },
+      // {
+      //   source: "/images/:path*",
+      //   destination: "/images/:path*",
+      // },
+      // // Handle HTML pages
+      // {
+      //   source: "/:path*.html",
+      //   destination: "/:path*.html",
+      // },
     ];
   },
   async redirects() {
