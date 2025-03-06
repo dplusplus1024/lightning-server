@@ -23,11 +23,6 @@ const nextConfig = {
         source: "/images/:path*",
         destination: "/images/:path*",
       },
-      // Handle HTML pages
-      {
-        source: "/:path*.html",
-        destination: "/:path*.html",
-      },
     ];
   },
   async redirects() {
