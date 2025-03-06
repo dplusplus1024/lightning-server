@@ -32,10 +32,17 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      // Main homepages
+      // Put domain-specific redirects first
       {
         source: "/",
-        destination: "/index.html",
+        destination: "/corporate.html",
+        has: [{ type: "host", value: "www.taddesse.xyz" }],
+        permanent: true,
+      },
+      {
+        source: "/",
+        destination: "/corporate.html",
+        has: [{ type: "host", value: "taddesse.xyz" }], // Add this rule for non-www version
         permanent: true,
       },
       {
@@ -44,10 +51,10 @@ const nextConfig = {
         has: [{ type: "host", value: "www.islandbitcoin.com" }],
         permanent: true,
       },
+      // General fallback comes last
       {
         source: "/",
-        destination: "/corporate.html",
-        has: [{ type: "host", value: "www.taddesse.xyz" }],
+        destination: "/index.html",
         permanent: true,
       },
     ];
