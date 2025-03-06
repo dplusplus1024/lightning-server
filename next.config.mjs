@@ -10,39 +10,34 @@ const nextConfig = {
         source: "/.well-known/nostr.json",
         destination: "/api/nostr/name",
       },
-      // Handle static assets explicitly
-      // {
-      //   source: "/css/:path*",
-      //   destination: "/css/:path*",
-      // },
-      // {
-      //   source: "/js/:path*",
-      //   destination: "/js/:path*",
-      // },
-      // {
-      //   source: "/images/:path*",
-      //   destination: "/images/:path*",
-      // },
-      // // Handle HTML pages
-      // {
-      //   source: "/:path*.html",
-      //   destination: "/:path*.html",
-      // },
+      // Add necessary rewrites for static assets
+      {
+        source: "/css/:path*",
+        destination: "/css/:path*",
+      },
+      {
+        source: "/js/:path*",
+        destination: "/js/:path*",
+      },
+      {
+        source: "/images/:path*",
+        destination: "/images/:path*",
+      },
     ];
   },
   async redirects() {
     return [
-      // Put domain-specific redirects first
+      // Domain-specific home pages should come FIRST
       {
         source: "/",
         destination: "/corporate.html",
-        has: [{ type: "host", value: "www.taddesse.xyz" }],
+        has: [{ type: "host", value: "taddesse.xyz" }], // Removed www.
         permanent: true,
       },
       {
         source: "/",
         destination: "/corporate.html",
-        has: [{ type: "host", value: "taddesse.xyz" }], // Add this rule for non-www version
+        has: [{ type: "host", value: "www.taddesse.xyz" }], // Keep this for www version too
         permanent: true,
       },
       {
@@ -51,7 +46,13 @@ const nextConfig = {
         has: [{ type: "host", value: "www.islandbitcoin.com" }],
         permanent: true,
       },
-      // General fallback comes last
+      {
+        source: "/",
+        destination: "/index.html",
+        has: [{ type: "host", value: "islandbitcoin.com" }], // Added non-www version
+        permanent: true,
+      },
+      // Default fallback (should be last)
       {
         source: "/",
         destination: "/index.html",
@@ -60,4 +61,5 @@ const nextConfig = {
     ];
   },
 };
+
 export default nextConfig;
