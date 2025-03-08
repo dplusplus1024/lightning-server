@@ -868,3 +868,69 @@ body {
     padding: 0 1rem;
   }
 }
+
+/* Allow scrolling on mobile devices */
+@media (max-width: 768px) {
+  body {
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .main-content {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  /* Improve map container sizing */
+  .map-container {
+    height: 70vh; /* Increased from 55vh */
+    min-height: 450px;
+    margin-bottom: 80px; /* Ensure space for footer */
+    overflow: visible;
+  }
+
+  /* Adjust island container to show full island */
+  .island-container {
+    overflow: visible;
+    padding-bottom: 20px;
+  }
+
+  /* Adjust footer positioning for scrollable content */
+  .footer {
+    position: relative;
+    bottom: auto;
+  }
+
+  /* Adjust the scaling to fit better */
+  .parallax-container {
+    transform: scale(0.8);
+  }
+}
+
+/* Smaller phones need more adjustment */
+@media (max-width: 576px) {
+  .map-container {
+    height: 60vh;
+    min-height: 400px;
+    position: relative;
+    bottom: auto;
+  }
+
+  /* Smaller scale for very small screens */
+  .parallax-container {
+    transform: scale(0.65);
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 375px) {
+  .map-container {
+    min-height: 350px;
+  }
+
+  .parallax-container {
+    transform: scale(0.55);
+  }
+}

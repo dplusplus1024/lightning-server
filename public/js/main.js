@@ -569,3 +569,54 @@ function adjustViewportForMobile(particlesContainer) {
     }
   }
 }
+
+// Add this function to your existing JS file
+function checkMobileView() {
+  const isMobile = window.innerWidth <= 768;
+  const body = document.body;
+  const mainContent = document.querySelector(".main-content");
+  const footer = document.querySelector(".footer");
+
+  if (isMobile) {
+    // Enable scrolling on mobile
+    body.style.overflow = "auto";
+    body.style.height = "auto";
+
+    // Change main content to allow scrolling
+    mainContent.style.height = "auto";
+    mainContent.style.overflow = "visible";
+
+    // Change footer to standard positioning
+    footer.style.position = "relative";
+
+    // Ensure island is fully visible by adjusting scale based on screen width
+    const parallaxContainer = document.getElementById("parallax-container");
+    if (parallaxContainer) {
+      if (window.innerWidth <= 375) {
+        parallaxContainer.style.transform = "scale(0.55)";
+      } else if (window.innerWidth <= 576) {
+        parallaxContainer.style.transform = "scale(0.65)";
+      } else {
+        parallaxContainer.style.transform = "scale(0.8)";
+      }
+    }
+  } else {
+    // Reset to desktop styles
+    body.style.overflow = "hidden";
+    body.style.height = "100vh";
+    mainContent.style.height = "calc(100vh - 73px)";
+    footer.style.position = "fixed";
+  }
+}
+
+// Call on page load and resize
+document.addEventListener("DOMContentLoaded", function () {
+  checkMobileView();
+
+  // Add resize event with debounce
+  let resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(checkMobileView, 250);
+  });
+});
